@@ -1,48 +1,41 @@
-/* SignUp Styles */
-.signup-container {
+.activate-container {
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 2rem;
-  padding-top: 5rem; /* Add padding for navbar */
+  padding-top: 5rem;
 }
 
-.signup-content {
+.activate-content {
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: 16px;
   padding: 2rem;
   width: 100%;
-  max-width: 500px;
+  max-width: 400px;
   backdrop-filter: blur(10px);
 }
 
-.signup-header {
+.activate-header {
   text-align: center;
   margin-bottom: 2.5rem;
 }
 
-.signup-header h1 {
+.activate-header h1 {
   color: white;
   margin-bottom: 0.75rem;
   font-size: 2.5rem;
   font-weight: 500;
 }
 
-.signup-header p {
+.activate-header p {
   color: rgba(255, 255, 255, 0.8);
   font-size: 1.2rem;
 }
 
-.signup-form {
+.activate-form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-}
-
-.name-fields {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
   gap: 1.25rem;
 }
 
@@ -67,7 +60,7 @@
   background-color: rgba(255, 255, 255, 0.15);
 }
 
-.signup-button {
+.activate-button {
   background-color: #00adef;
   color: white;
   padding: 1rem;
@@ -81,61 +74,39 @@
   width: 100%;
 }
 
-.signup-button:hover {
+.activate-button:hover {
   background-color: #015885;
   transform: translateY(-1px);
 }
 
-.signup-button:active {
+.activate-button:active {
   transform: translateY(0);
 }
 
-.login-link {
-  text-align: center;
-  margin-top: 1rem;
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.9rem;
-}
-
-.login-link a {
-  color: #00adef;
-  text-decoration: none;
-  margin-left: 0.5rem;
-  transition: opacity 0.3s ease;
-}
-
-.login-link a:hover {
-  opacity: 0.8;
-}
-
 @media (max-width: 768px) {
-  .signup-container {
+  .activate-container {
     padding: 1rem;
     padding-top: 5rem;
     margin-top: 1rem;
   }
 
-  .signup-content {
+  .activate-content {
     margin: 0;
     padding: 1.5rem;
   }
 
-  .name-fields {
-    grid-template-columns: 1fr;
-  }
-
-  .signup-header h1 {
+  .activate-header h1 {
     font-size: 2rem;
   }
 
-  .signup-header p {
+  .activate-header p {
     font-size: 1rem;
   }
 }
 
 @media (max-width: 480px) {
-  .signup-container {
+  .activate-container {
     padding-top: 5.5rem;
     margin-top: 1.5rem;
   }
-}
+} 
