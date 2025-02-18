@@ -1,0 +1,93 @@
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    padding-top: 5rem; /* Add padding for navbar */
+  }
+  
+  .login-content {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    backdrop-filter: blur(10px);
+  }
+  
+  .login-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+  
+  .login-header h1 {
+    color: white;
+    margin-bottom: 0.75rem;
+    font-size: 2.5rem;
+    font-weight: 500;
+  }
+  
+  .login-header p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.2rem;
+  }
+  
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  
+  .login-button {
+    background-color: #00adef;
+    color: white;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+    width: 100%;
+  }
+  
+  .login-button:hover {
+    background-color: #0099d6;
+    transform: translateY(-1px);
+  }
+  
+  .login-button:active {
+    transform: translateY(0);
+  }
+  
+  @media (max-width: 768px) {
+    .login-container {
+      padding: 1rem;
+      padding-top: 5rem;
+      margin-top: 1rem;
+    }
+  
+    .login-content {
+      margin: 0;
+      padding: 1.5rem;
+    }
+  
+    .login-header h1 {
+      font-size: 2rem;
+    }
+  
+    .login-header p {
+      font-size: 1rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .login-container {
+      padding-top: 5.5rem;
+      margin-top: 1.5rem;
+    }
+  }
+  
+  

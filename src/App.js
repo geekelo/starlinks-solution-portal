@@ -1,29 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from 'react-router-dom';
+import './styles/App.css';
+import SignUp from './pages/SignUp';
+import Login from './pages/Login';
+import ActivateCode from './pages/ActivateCode';
+import EmailConfirmation from './pages/EmailConfirmation';
+import Home from './pages/Home';
+import Dashboard from './pages/Dashboard';
+import Billing from './pages/Billing';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit
-          {' '}
-          <code>src/App.js</code>
-          {' '}
-          and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+const App = () => (
+  <Router>
+    <div className="app">
+      <Routes>
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/email-confirmation" element={<EmailConfirmation />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/billing" element={<Billing />} />
+        <Route path="/activate" element={<ActivateCode />} />
+        <Route path="/" element={<Navigate to="/signup" replace />} />
+      </Routes>
     </div>
-  );
-}
+  </Router>
+);
 
 export default App;
