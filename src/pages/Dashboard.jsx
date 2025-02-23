@@ -14,6 +14,9 @@ const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  const [isEditingAddress, setIsEditingAddress] = useState(false);
+  const [kitAddress, setKitAddress] = useState('3C38+6Q, Utako, Dakibiu 900108, Federal Capital Territory, Nigeria');
+
   const historyData = [
     {
       date: '9/9/2024',
@@ -58,6 +61,13 @@ const Dashboard = () => {
     return () => clearInterval(updateInterval);
   }, [graphData]);
 
+  const handleAddressSubmit = (e) => {
+    e.preventDefault();
+    // Here you would typically handle the API call to update the address
+    console.log('Updated Address:', kitAddress);
+    setIsEditingAddress(false);
+  };
+
   return (
     <>
       <Navbar />
@@ -78,7 +88,7 @@ const Dashboard = () => {
           <div className="left-panel">
             <div className="panel-header">
               <h2>ENT_International Community Schools</h2>
-              <button type="button" className="edit-button" aria-label="Edit">Edit</button>
+              <button type="button" className="edit-button" aria-label="Edit" onClick={() => setIsEditingAddress(true)}>Edit</button>
             </div>
             <div className="info-section">
               <h3>Service Plan</h3>
@@ -88,7 +98,7 @@ const Dashboard = () => {
               <p>1000 GB</p>
 
               <h3>Address</h3>
-              <p>3C38+6Q, Utako, Dakibiu 900108, Federal Capital Territory, Nigeria</p>
+              <p>{kitAddress}</p>
 
               <h3>IP Policy</h3>
               <p>Default</p>
@@ -276,6 +286,33 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
+
+        {isEditingAddress && (
+          <div className="modal-overlay">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h2>Edit Kit Address</h2>
+                <button type="button" className="close-button" onClick={() => setIsEditingAddress(false)}>×</button>
+              </div>
+              <form onSubmit={handleAddressSubmit}>
+                <div className="form-group">
+                  <label htmlFor="kitAddress">New Kit Address</label>
+                  <input
+                    type="text"
+                    id="kitAddress"
+                    value={kitAddress}
+                    onChange={(e) => setKitAddress(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="modal-actions">
+                  <button type="button" className="cancel-button" onClick={() => setIsEditingAddress(false)}>Cancel</button>
+                  <button type="submit" className="submit-button">Save</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

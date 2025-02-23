@@ -1,19 +1,40 @@
 .login-container {
     min-height: 100vh;
     display: flex;
+    background: linear-gradient(135deg, rgba(15, 36, 57, 0.95), rgba(15, 36, 57, 0.9)),
+                url('/public//backgroundpattern.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+  
+  .login-form-section {
+    width: 50%;
+    display: flex;
     justify-content: center;
     align-items: center;
     padding: 2rem;
-    padding-top: 5rem; /* Add padding for navbar */
+  }
+  
+  .login-image-section {
+    width: 50%;
+    background: url('../../public/starlink.png') no-repeat center;
+    background-size: contain;
+    min-height: 80vh;
+    position: fixed;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
   }
   
   .login-content {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-radius: 16px;
-    padding: 2rem;
     width: 100%;
     max-width: 400px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 16px;
+    padding: 2.5rem;
     backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   }
   
   .login-header {
@@ -39,6 +60,27 @@
     gap: 1.25rem;
   }
   
+  .form-group input {
+    width: 100%;
+    padding: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    transition: all 0.3s ease;
+  }
+  
+  .form-group input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: #00adef;
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+  
   .login-button {
     background-color: #00adef;
     color: white;
@@ -62,31 +104,47 @@
     transform: translateY(0);
   }
   
-  @media (max-width: 768px) {
-    .login-container {
-      padding: 1rem;
-      padding-top: 5rem;
-      margin-top: 1rem;
-    }
+  .forgot-password {
+    text-align: center;
+    margin-top: 1rem;
+  }
   
-    .login-content {
-      margin: 0;
-      padding: 1.5rem;
-    }
+  .forgot-password a {
+    color: #00adef;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: opacity 0.3s ease;
+  }
   
-    .login-header h1 {
-      font-size: 2rem;
-    }
+  .forgot-password a:hover {
+    opacity: 0.8;
+  }
   
-    .login-header p {
-      font-size: 1rem;
+  @media (max-width: 1024px) {
+    .login-image-section {
+      display: none;
+    }
+    
+    .login-form-section {
+      width: 100%;
     }
   }
   
   @media (max-width: 480px) {
-    .login-container {
-      padding-top: 5.5rem;
-      margin-top: 1.5rem;
+    .login-form-section {
+      padding: 1rem;
+    }
+    
+    .login-content {
+      padding: 1.5rem;
+    }
+    
+    .login-header h1 {
+      font-size: 2rem;
+    }
+    
+    .login-header p {
+      font-size: 1rem;
     }
   }
   
