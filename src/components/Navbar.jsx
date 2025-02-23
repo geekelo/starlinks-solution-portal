@@ -40,7 +40,9 @@ const Navbar = () => {
           <span className="notification-icon">🔔</span>
         </button>
         <div className="user-avatar">
-          <span>M</span>
+          <span><Link to="/profile" className={location.pathname === '/profile' ? 'active' : ''}>
+          M
+        </Link></span>
         </div>
       </div>
 
@@ -62,9 +64,15 @@ const Navbar = () => {
         className={`mobile-menu ${isMenuOpen ? 'active' : ''}`}
         aria-hidden={!isMenuOpen}
       >
-        <Link to="/home">Home</Link>
-        <Link to="/dashboard">Dashboard</Link>
-        <Link to="/billing">Billing</Link>
+        <Link to="/home" className={location.pathname === '/home' ? 'active' : ''}>
+          Home
+        </Link>
+        <Link to="/dashboard" className={location.pathname === '/dashboard' ? 'active' : ''}>
+          Dashboard
+        </Link>
+        <Link to="/billing" className={location.pathname === '/billing' ? 'active' : ''}>
+          Billing
+        </Link>
       </div>
     </nav>
   );

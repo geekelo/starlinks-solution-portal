@@ -1,14 +1,17 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
+import { createAxiosInstance } from '../config/axios';
 import '../styles/Modal.css';
 
 const StarlinkDetailsModal = ({ onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
-    fullAddress: '',
+    address: '',
     nin: '',
-    companyName: '',
-    companyRegNumber: '',
+    company_name: '',
+    company_number: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -17,9 +20,64 @@ const StarlinkDetailsModal = ({ onClose, onSubmit }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const mapStatus = (status) => {
+    const statusMap = {
+      pending: 'awaiting approval',
+      active: 'online',
+      inactive: 'offline',
+      deactivated: 'disconnected',
+      expiring: 'expiring soon'
+    };
+    return statusMap[status] || status;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData);
+    setIsSubmitting(true);
+
+    try {
+      const axiosInstance = createAxiosInstance();
+      const token = localStorage.getItem('token');
+      const userData = JSON.parse(localStorage.getItem('userData'));
+      const kitNumber = localStorage.getItem('tempKitNumber'); // Get the kit number stored from activation step
+
+      const { data } = await axiosInstance.post(
+        '/api/v1/starlink_kits',
+        {
+          starlink_kit: {
+            kit_number: kitNumber,
+            address: formData.address,
+            nin: formData.nin,
+            company_name: formData.company_name,
+            company_number: formData.company_number,
+            starlink_user_id: userData.id
+          }
+        },
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+
+      console.log('Starlink kit creation response:', data);
+
+      if (data.success) {
+        // Clear the temporary kit number
+        localStorage.removeItem('tempKitNumber');
+        toast.success('Starlink kit added successfully!');
+        onSubmit({
+          ...data.starlink_kit,
+          status: mapStatus(data.starlink_kit.status)
+        });
+        onClose(); // Close the modal after successful submission
+      }
+    } catch (error) {
+      console.error('Error creating starlink kit:', error);
+      toast.error(error.response?.data?.message || 'Failed to add Starlink kit. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -34,15 +92,15 @@ const StarlinkDetailsModal = ({ onClose, onSubmit }) => {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="fullAddress">Full Address</label>
+            <label htmlFor="address">Full Address</label>
             <input
               type="text"
-              id="fullAddress"
-              name="fullAddress"
-              value={formData.fullAddress}
+              id="address"
+              name="address"
+              value={formData.address}
               onChange={handleChange}
               required
-              aria-labelledby="fullAddress"
+              aria-labelledby="address"
             />
           </div>
 
@@ -60,26 +118,26 @@ const StarlinkDetailsModal = ({ onClose, onSubmit }) => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="companyName">Company Name (Optional)</label>
+            <label htmlFor="company_name">Company Name (Optional)</label>
             <input
               type="text"
-              id="companyName"
-              name="companyName"
-              value={formData.companyName}
+              id="company_name"
+              name="company_name"
+              value={formData.company_name}
               onChange={handleChange}
-              aria-labelledby="companyName"
+              aria-labelledby="company_name"
             />
           </div>
 
           <div className="form-group">
-            <label htmlFor="companyRegNumber">Company Registration Number (Optional)</label>
+            <label htmlFor="company_number">Company Registration Number (Optional)</label>
             <input
               type="text"
-              id="companyRegNumber"
-              name="companyRegNumber"
-              value={formData.companyRegNumber}
+              id="company_number"
+              name="company_number"
+              value={formData.company_number}
               onChange={handleChange}
-              aria-labelledby="companyRegNumber"
+              aria-labelledby="company_number"
             />
           </div>
 
@@ -87,8 +145,12 @@ const StarlinkDetailsModal = ({ onClose, onSubmit }) => {
             <button type="button" className="cancel-button" onClick={onClose}>
               Cancel
             </button>
-            <button type="submit" className="submit-button">
-              Add Starlink
+            <button 
+              type="submit" 
+              className="submit-button"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Adding...' : 'Add Starlink'}
             </button>
           </div>
         </form>

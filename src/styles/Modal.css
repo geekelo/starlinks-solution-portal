@@ -92,7 +92,7 @@
 
 .modal-actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 1rem;
   margin-top: 2rem;
 }
@@ -100,21 +100,23 @@
 .cancel-button,
 .submit-button {
   padding: 0.75rem 1.5rem;
-  border-radius: 4px;
-  font-size: 1rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
+  width: 120px;
+  text-align: center;
 }
 
 .cancel-button {
-  background: none;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 .submit-button {
-  background-color: #00adef;
+  background: #00adef;
   border: none;
   color: white;
 }
@@ -124,14 +126,24 @@
 }
 
 .submit-button:hover {
-  background-color: #0099d6;
+  background: #0099d6;
 }
 
-@media (max-width: 768px) {
-  .modal-content {
-    width: 95%;
-    padding: 1.5rem;
-    margin: 1rem;
+.submit-button:disabled {
+  background: #4a5568;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+@media (max-width: 480px) {
+  .modal-actions {
+    gap: 0.75rem;
+  }
+
+  .cancel-button,
+  .submit-button {
+    width: 110px;
+    padding: 0.75rem 1rem;
   }
 }
 
@@ -152,4 +164,201 @@
 
 .modal-content::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.radio-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: white;
+  cursor: pointer;
+  padding: 1rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.radio-label:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.radio-label.selected {
+  background: rgba(0, 173, 239, 0.1);
+  border-color: #00adef;
+}
+
+.radio-label input[type="radio"] {
+  appearance: none;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 50%;
+  margin: 0;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.radio-label input[type="radio"]:checked {
+  border-color: #00adef;
+  background: transparent;
+}
+
+.radio-label input[type="radio"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0.75rem;
+  height: 0.75rem;
+  background: #00adef;
+  border-radius: 50%;
+  animation: radioScale 0.2s ease;
+}
+
+@keyframes radioScale {
+  0% {
+    transform: translate(-50%, -50%) scale(0);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.payment-details {
+  margin: 2rem 0;
+}
+
+.info-group {
+  margin-bottom: 2rem;
+}
+
+.info-group label {
+  display: block;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+.info-group p {
+  color: white;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+.reference-number {
+  font-size: 2rem !important;
+  color: #00adef !important;
+  font-weight: 600;
+  margin-bottom: 1rem !important;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.reference-instruction {
+  background: rgba(0, 173, 239, 0.1);
+  border: 1px solid #00adef;
+  border-radius: 8px;
+  padding: 1rem;
+  color: white !important;
+  font-size: 0.95rem !important;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.reference-instruction::before {
+  content: '⚠️';
+  font-size: 1.2rem;
+}
+
+.bank-details,
+.online-payment {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+.bank-details h3,
+.online-payment h3 {
+  color: white;
+  font-size: 1.3rem;
+  margin: 0 0 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.bank-details h3::before {
+  content: '🏦';
+}
+
+.online-payment h3::before {
+  content: '💳';
+}
+
+.online-payment p {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.online-payment-button {
+  display: block;
+  background: linear-gradient(45deg, #00adef, #0077ff);
+  color: white;
+  text-decoration: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  text-align: center;
+  font-size: 1.1rem;
+}
+
+.online-payment-button:hover {
+  background: linear-gradient(45deg, #0077ff, #00adef);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 173, 239, 0.2);
+}
+
+.confirmation-instruction {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.confirm-button {
+  background: #00adef;
+  border: none;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.confirm-button:hover {
+  background: #0099d6;
+  transform: translateY(-1px);
+}
+
+.confirm-button:active {
+  transform: translateY(0);
 } 

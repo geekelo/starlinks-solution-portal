@@ -1,13 +1,57 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { toast } from 'react-toastify';
+import { createAxiosInstance } from '../config/axios';
 import '../styles/Modal.css';
 
 const ActivationModal = ({ onClose, onActivate }) => {
   const [activationCode, setActivationCode] = useState('');
+  const [isChecking, setIsChecking] = useState(false);
 
-  const handleSubmit = (e) => {
+  const checkKitNumber = async (kitNumber) => {
+    try {
+      const axiosInstance = createAxiosInstance();
+      const token = localStorage.getItem('token');
+      
+      const { data } = await axiosInstance.get(
+        `/api/v1/starlink_kits/check_kit_number?kit_number=${kitNumber}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+
+      console.log('Kit number check response:', data);
+      return data.exists;
+    } catch (error) {
+      console.error('Error checking kit number:', error);
+      throw error;
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onActivate(activationCode);
+    setIsChecking(true);
+
+    try {
+      const exists = await checkKitNumber(activationCode);
+      
+      if (exists) {
+        toast.error('This kit number is already registered.');
+      } else {
+        // Store the kit number temporarily
+        localStorage.setItem('tempKitNumber', activationCode);
+        onActivate({
+          kitNumber: activationCode,
+          status: 'pending'
+        });
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message || 'Failed to check kit number. Please try again.');
+    } finally {
+      setIsChecking(false);
+    }
   };
 
   return (
@@ -22,13 +66,13 @@ const ActivationModal = ({ onClose, onActivate }) => {
 
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="activationCode">Activation Code</label>
+            <label htmlFor="activationCode">Kit number</label>
             <input
               type="text"
               id="activationCode"
               value={activationCode}
               onChange={(e) => setActivationCode(e.target.value)}
-              placeholder="Enter your activation code"
+              placeholder="Enter your kit number"
               required
               aria-labelledby="activationCode"
             />
@@ -38,8 +82,12 @@ const ActivationModal = ({ onClose, onActivate }) => {
             <button type="button" className="cancel-button" onClick={onClose}>
               Cancel
             </button>
-            <button type="submit" className="submit-button">
-              Activate
+            <button 
+              type="submit" 
+              className="submit-button"
+              disabled={isChecking}
+            >
+              {isChecking ? 'Checking...' : 'Add'}
             </button>
           </div>
         </form>
