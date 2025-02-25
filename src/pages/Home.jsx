@@ -1,26 +1,26 @@
-import { useState, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import ActivationModal from '../components/ActivationModal';
-import StarlinkDetailsModal from '../components/StarlinkDetailsModal';
-import VerificationModal from '../components/VerificationModal';
-import FundAccountModal from '../components/FundAccountModal';
-import PaymentDetailsModal from '../components/PaymentDetailsModal';
-import '../styles/Home.css';
-import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { createAxiosInstance } from '../config/axios';
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import ActivationModal from "../components/ActivationModal";
+import StarlinkDetailsModal from "../components/StarlinkDetailsModal";
+import VerificationModal from "../components/VerificationModal";
+import FundAccountModal from "../components/FundAccountModal";
+import PaymentDetailsModal from "../components/PaymentDetailsModal";
+import "../styles/Home.css";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { createAxiosInstance } from "../config/axios";
+import Navbar from "../components/Navbar";
 
 const Home = () => {
-  const [currentAccount, setCurrentAccount] = useState('Maritime');
+  const [currentAccount, setCurrentAccount] = useState("Maritime");
   const [showActivationModal, setShowActivationModal] = useState(false);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [starlinks, setStarlinks] = useState([]);
   const [filteredStarlinks, setFilteredStarlinks] = useState([]);
 
   // Search and filter states
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
 
   // Verification states
   const [showEmailVerification, setShowEmailVerification] = useState(false);
@@ -28,7 +28,6 @@ const Home = () => {
   const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [tempActivationData, setTempActivationData] = useState(null);
-  const [userName, setUserName] = useState('John Doe');
 
   const [showFundAccountModal, setShowFundAccountModal] = useState(false);
   const [showPaymentDetailsModal, setShowPaymentDetailsModal] = useState(false);
@@ -37,22 +36,42 @@ const Home = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const token = params.get("token");
+
+    if (token) {
+      const confirmEmail = async () => {
+        try {
+          const axiosInstance = createAxiosInstance();
+          await axiosInstance.put(
+            `/api/v1/email_confirmations/confirm_user_email?token=${token}`
+          );
+          toast.success("Email confirmed successfully!");
+        } catch (error) {
+          toast.error("Failed to confirm email.");
+        }
+      };
+      confirmEmail();
+    }
+  }, [location]);
+
   const checkVerificationFlow = async () => {
     try {
       const axiosInstance = createAxiosInstance();
-      const userData = JSON.parse(localStorage.getItem('userData'));
-      const token = localStorage.getItem('token');
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      const token = localStorage.getItem("token");
 
       const { data } = await axiosInstance.get(
         `/api/v1/starlink_users/check_confirmation_status?id=${userData.id}`,
         {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
-      console.log('Confirmation status:', data);
+      console.log("Confirmation status:", data);
 
       // Check email verification status
       if (!data.email_verified) {
@@ -71,8 +90,8 @@ const Home = () => {
       // Set user data
       setUserData(userData);
     } catch (error) {
-      console.error('Error checking confirmation status:', error);
-      toast.error('Failed to check verification status');
+      console.error("Error checking confirmation status:", error);
+      toast.error("Failed to check verification status");
     } finally {
       setIsLoading(false);
     }
@@ -83,7 +102,26 @@ const Home = () => {
     const initializeHome = async () => {
       setIsLoading(true);
       await checkVerificationFlow();
+      try {
+        const axiosInstance = createAxiosInstance();
+        const token = localStorage.getItem("token");
+  
+        const walletResponse = await axiosInstance.get(
+          `/api/v1/starlink_user_wallet`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        localStorage.setItem('starlink_walletId', walletResponse.data.id);
+
+      } catch (error) {
+        console.error("Error sending verification email:", error);
+      }
+      
     };
+
     initializeHome();
   }, []);
 
@@ -91,23 +129,23 @@ const Home = () => {
   const handleEmailVerification = async () => {
     try {
       const axiosInstance = createAxiosInstance();
-      const userData = JSON.parse(localStorage.getItem('userData'));
-      const token = localStorage.getItem('token');
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      const token = localStorage.getItem("token");
 
       await axiosInstance.post(
         `/api/v1/email_confirmations?email=${userData.email}`,
         {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
-      toast.success('Verification email sent! Please check your inbox.');
+      toast.success("Verification email sent! Please check your inbox.");
       setShowEmailVerification(false);
     } catch (error) {
-      console.error('Error sending verification email:', error);
-      toast.error('Failed to send verification email. Please try again.');
+      console.error("Error sending verification email:", error);
+      toast.error("Failed to send verification email. Please try again.");
     }
   };
 
@@ -115,22 +153,22 @@ const Home = () => {
   const handleRequestWhatsAppCode = async () => {
     try {
       const axiosInstance = createAxiosInstance();
-      const userData = JSON.parse(localStorage.getItem('userData'));
-      const token = localStorage.getItem('token');
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      const token = localStorage.getItem("token");
 
       await axiosInstance.post(
         `/api/v1/whatsapp_confirmations?id=${userData.id}`,
         {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
-      toast.success('Verification code sent to your WhatsApp number!');
+      toast.success("Verification code sent to your WhatsApp number!");
     } catch (error) {
-      console.error('Error sending WhatsApp verification code:', error);
-      toast.error('Failed to send verification code. Please try again.');
+      console.error("Error sending WhatsApp verification code:", error);
+      toast.error("Failed to send verification code. Please try again.");
     }
   };
 
@@ -138,65 +176,72 @@ const Home = () => {
   const handlePhoneVerification = async (code) => {
     try {
       const axiosInstance = createAxiosInstance();
-      const userData = JSON.parse(localStorage.getItem('userData'));
-      const token = localStorage.getItem('token');
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      const token = localStorage.getItem("token");
 
       const { data } = await axiosInstance.put(
         `/api/v1/whatsapp_confirmations/confirm_user_whatsapp?code=${code}`,
         {
           headers: {
-            'Authorization': `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 
       if (data.success) {
-        toast.success('WhatsApp number verified successfully!');
+        toast.success("WhatsApp number verified successfully!");
         setShowPhoneVerification(false);
         // Update local user data
         const updatedUserData = { ...userData, whatsapp_verified: true };
-        localStorage.setItem('userData', JSON.stringify(updatedUserData));
+        localStorage.setItem("userData", JSON.stringify(updatedUserData));
         setUserData(updatedUserData);
         // Refresh the confirmation status
         await checkVerificationFlow();
       } else {
-        toast.error('Invalid verification code. Please try again.');
+        toast.error("Invalid verification code. Please try again.");
       }
     } catch (error) {
-      console.error('Error verifying WhatsApp number:', error);
-      toast.error('Failed to verify WhatsApp number. Please try again.');
+      console.error("Error verifying WhatsApp number:", error);
+      toast.error("Failed to verify WhatsApp number. Please try again.");
     }
   };
 
   const mapStatus = (status) => {
     const statusMap = {
-      pending: { text: 'awaiting approval', class: 'awaiting-approval' },
-      active: { text: 'online', class: 'online' },
-      inactive: { text: 'offline', class: 'offline' },
-      deactivated: { text: 'disconnected', class: 'disconnected' },
-      expiring: { text: 'expiring soon', class: 'expiring-soon' }
+      pending: { text: "awaiting approval", class: "awaiting-approval" },
+      active: { text: "online", class: "online" },
+      inactive: { text: "offline", class: "offline" },
+      deactivated: { text: "disconnected", class: "disconnected" },
+      expiring: { text: "expiring soon", class: "expiring-soon" },
     };
     return statusMap[status] || { text: status, class: status };
   };
 
   const shouldShowManageButton = (status) => {
-    return status !== 'pending';
+    return status !== "pending";
   };
 
   useEffect(() => {
     const fetchKits = async () => {
-      const userData = JSON.parse(localStorage.getItem('userData'));
+      const userData = JSON.parse(localStorage.getItem("userData"));
       if (!userData?.id) return;
 
       const axiosInstance = createAxiosInstance();
       try {
-        const { data } = await axiosInstance.get(`/api/v1/starlink_kits?user_id=${userData.id}`);
-        console.log('Fetched Kits:', data);
+        const token = localStorage.getItem("token");
+        const { data } = await axiosInstance.get(
+          `/api/v1/starlink_kits`,{
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          }
+        );
+        console.log("Fetched Kits:", data);
         setStarlinks(data);
         setFilteredStarlinks(data);
       } catch (error) {
-        console.error('Error fetching kits:', error);
-        toast.error('Failed to fetch kits. Please try again.');
+        console.error("Error fetching kits:", error);
+        toast.error("Failed to fetch kits. Please try again.");
       }
     };
 
@@ -207,16 +252,20 @@ const Home = () => {
     let filtered = starlinks;
 
     // Apply status filter
-    if (statusFilter !== 'all') {
-      filtered = filtered.filter(item => mapStatus(item.status).class === statusFilter);
+    if (statusFilter !== "all") {
+      filtered = filtered.filter(
+        (item) => mapStatus(item.status).class === statusFilter
+      );
     }
 
     // Apply search query to both kit number and service line number
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(item => 
-        (item.kit_number && item.kit_number.toLowerCase().includes(query)) ||
-        (item.service_line_number && item.service_line_number.toLowerCase().includes(query))
+      filtered = filtered.filter(
+        (item) =>
+          (item.kit_number && item.kit_number.toLowerCase().includes(query)) ||
+          (item.service_line_number &&
+            item.service_line_number.toLowerCase().includes(query))
       );
     }
 
@@ -225,7 +274,7 @@ const Home = () => {
 
   const handlePhoneSubmit = (phoneNumber) => {
     // In a real app, this would send the verification code
-    console.log('Sending verification code to:', phoneNumber);
+    console.log("Sending verification code to:", phoneNumber);
     userData.whatsapp_number = phoneNumber;
   };
 
@@ -234,42 +283,68 @@ const Home = () => {
   };
 
   const handleActivationSubmit = (data) => {
-    console.log('Activation code:', data);
+    console.log("Activation code:", data);
     setShowActivationModal(false);
     setShowDetailsModal(true);
     // Store the activation data temporarily
     setTempActivationData(data);
   };
 
-  const handleDetailsSubmit = (details) => {
+  const handleDetailsSubmit = async (details) => {
     const newStarlink = {
       ...details,
       ...tempActivationData,
     };
+    console.log("New Starlink added:", newStarlink); // Log new starlink data
     setStarlinks((prevStarlinks) => [...prevStarlinks, newStarlink]);
     setFilteredStarlinks((prevFiltered) => [...prevFiltered, newStarlink]);
     setShowDetailsModal(false);
-    // Refresh the kits list after adding a new one
-    const fetchKits = async () => {
-      const userData = JSON.parse(localStorage.getItem('userData'));
-      if (!userData?.id) return;
-
-      const axiosInstance = createAxiosInstance();
-      try {
-        const { data } = await axiosInstance.get(`/api/v1/starlink_kits?user_id=${userData.id}`);
-        setStarlinks(data);
-        setFilteredStarlinks(data);
-      } catch (error) {
-        console.error('Error fetching kits:', error);
-      }
-    };
-    fetchKits();
+    
+    // Immediately fetch updated kit data
+    await fetchKits();
+    console.log("Fetched updated kits after adding new starlink"); // Log after fetching
   };
+
+  // Move fetchKits to its own function at component level
+  const fetchKits = async () => {
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    if (!userData?.id) return;
+
+    const axiosInstance = createAxiosInstance();
+    try {
+      const token = localStorage.getItem("token");
+      console.log(token)
+        const { data } = await axiosInstance.get(
+          `/api/v1/starlink_kits`,
+          {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          }
+          
+        );
+      setStarlinks(data);
+      setFilteredStarlinks(data);
+    } catch (error) {
+      toast.error('Failed to fetch kits. Please try again.');
+    }
+  };
+
+  useEffect(() => {
+    fetchKits();
+  }, []);
 
   const handleFundAccountSubmit = (details) => {
     setPaymentDetails(details);
     setShowFundAccountModal(false);
     setShowPaymentDetailsModal(true);
+  };
+
+  const handleKitClick = (kit_number, kitId) => {
+    console.log("Navigating to kit:", { kit_number, kitId });
+    navigate(`/dashboard/${kitId}`, {
+      state: { kit_number },
+    });
   };
 
   if (isLoading) {
@@ -305,20 +380,21 @@ const Home = () => {
         <div className="welcome-section">
           <div className="welcome-header">
             <h1>
-              Welcome back, {userName}! <span className="wave-emoji">👋</span>
+              Welcome back, {userData.name}!{" "}
+              <span className="wave-emoji">👋</span>
             </h1>
-            <div className="welcome-actions">
-              <Link to="/profile" className="view-profile-button">
-                View Profile
-              </Link>
-              <button 
-                type="button" 
-                className="fund-account-link"
-                onClick={() => setShowFundAccountModal(true)}
-              >
-                Fund Account
-              </button>
-            </div>
+          </div>
+          <div className="welcome-actions">
+            <Link to="/profile" className="view-profile-button">
+              View Profile
+            </Link>
+            <button
+              type="button"
+              className="fund-account-link"
+              onClick={() => setShowFundAccountModal(true)}
+            >
+              Fund Account
+            </button>
           </div>
         </div>
 
@@ -336,6 +412,7 @@ const Home = () => {
                 />
                 <span className="search-icon">🔍</span>
               </div>
+
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value)}
@@ -344,7 +421,9 @@ const Home = () => {
                 <option value="all">All Status</option>
                 <option value="online">Online</option>
                 <option value="offline">Offline</option>
-                <option value="pending">Pending</option>
+                <option value="awaiting-approval">Awaiting Approval</option>
+                <option value="disconnected">Disconnected</option>
+                <option value="expiring-soon">Expiring Soon</option>
               </select>
             </div>
           </div>
@@ -356,36 +435,54 @@ const Home = () => {
               </div>
             ) : (
               <div className="starlinks-table">
-                <div className="table-header">
-                  <div className="header-cell">Kit Number</div>
-                  <div className="header-cell">Service Line No.</div>
-                  <div className="header-cell">Status</div>
-                  <div className="header-cell">Actions</div>
-                </div>
-                {filteredStarlinks.map((starlink) => (
-                  <div key={starlink.id} className="table-row">
-                    <div className="table-cell">{starlink.kit_number}</div>
-                    <div className="table-cell">{starlink.service_line_number || 'N/A'}</div>
-                    <div className="table-cell">
-                      <span className={`status-badge ${mapStatus(starlink.status).class}`}> 
-                        {mapStatus(starlink.status).text.charAt(0).toUpperCase() + mapStatus(starlink.status).text.slice(1)}
-                      </span>
-                    </div>
-                    <div className="table-cell">
-                      {shouldShowManageButton(starlink.status) && (
-                        <button type="button" className="manage-button">
-                          Manage
-                        </button>
-                      )}
-                    </div>
-                  </div>
-                ))}
+                <thead className="table-header">
+                  <tr>
+                    <th className="header-cell">Kit Number</th>
+                    <th className="header-cell">Service Line No.</th>
+                    <th className="header-cell">Status</th>
+                    <th className="header-cell">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredStarlinks.map((starlink) => (
+                    <tr
+                      key={starlink.kit_number}
+                      onClick={() =>
+                        handleKitClick(starlink.kit_number, starlink.id)
+                      }
+                      className="table-row"
+                    >
+                      <td>{starlink.kit_number || "N/A"}</td>
+                      <td>{starlink.service_line_number || "N/A"}</td>
+                      <td>
+                        <span
+                          className={`status-badge ${
+                            mapStatus(starlink.status).class
+                          }`}
+                        >
+                          {mapStatus(starlink.status).text}
+                        </span>
+                      </td>
+                      <td>
+                        {shouldShowManageButton(starlink.status) && (
+                          <button type="button" className="manage-button">
+                            Manage
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
               </div>
             )}
           </div>
 
           <div className="add-starlink-section">
-            <button type="button" className="add-starlink-button" onClick={handleAddStarlink}>
+            <button
+              type="button"
+              className="add-starlink-button"
+              onClick={handleAddStarlink}
+            >
               + Add New Kit
             </button>
           </div>
@@ -395,7 +492,7 @@ const Home = () => {
       {showActivationModal && (
         <ActivationModal
           onClose={() => {
-            localStorage.removeItem('tempKitNumber');
+            localStorage.removeItem("tempKitNumber");
             setShowActivationModal(false);
           }}
           onActivate={handleActivationSubmit}
@@ -405,7 +502,7 @@ const Home = () => {
       {showDetailsModal && (
         <StarlinkDetailsModal
           onClose={() => {
-            localStorage.removeItem('tempKitNumber');
+            localStorage.removeItem("tempKitNumber");
             setShowDetailsModal(false);
           }}
           onSubmit={handleDetailsSubmit}

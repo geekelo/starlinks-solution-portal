@@ -2,11 +2,12 @@ import PropTypes from 'prop-types';
 import '../styles/Modal.css';
 import { createAxiosInstance } from '../config/axios';
 import { toast } from 'react-toastify';
+import { useEffect } from 'react';
 
 const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
   const { referenceNumber, method } = paymentDetails;
   const reference = localStorage.getItem('walletId');
-
+  const fundingId = localStorage.getItem('fundingId');
   const bankDetails = {
     bankName: 'First Bank',
     accountNumber: '0123456789',
@@ -16,28 +17,39 @@ const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
   const onlinePaymentUrl = 'https://payment-gateway.example.com';
 
   const handleSubmit = async () => {
-    const walletId = localStorage.getItem('starlink_walletId');
-    const userData = JSON.parse(localStorage.getItem('userData'));
-    const payload = {
-      starlink_wallet_funding: {
-        starlink_user_wallet_id: walletId,
-        amount: paymentDetails.amount,
-        payment_method: paymentDetails.method,
-        starlink_user_id: userData.id
-      }
-    };
-
     try {
       const axiosInstance = createAxiosInstance();
-      const response = await axiosInstance.post(`/api/v1/starlink_wallet_fundings?starlink_user_id=${userData.id}`, payload);
-      console.log('Funding Response:', response.data);
-      toast.success('Wallet funded successfully!');
-      onClose(); // Close the modal after successful funding
+      const token = localStorage.getItem('token');
+      const payload = {
+        starlink_wallet_funding: {
+          paid: "yes"
+        }
+      };
+      
+      const response = await axiosInstance.put(`/api/v1/starlink_wallet_fundings/confirm_request?id=${fundingId}`,
+         payload,
+         {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+        );
+      console.log('Confirmation Response:', response.data);
+      toast.success('Payment confirmed successfully!');
+      onClose(); 
     } catch (error) {
-      console.error('Error funding wallet:', error);
-      toast.error('Failed to fund wallet. Please try again.');
+      console.error('Error confirming payment:', error);
+      toast.error('Failed to confirm payment. Please try again.');
     }
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose(); 
+    }, 15000); 
+
+    return () => clearTimeout(timer); 
+  }, [onClose]);
 
   return (
     <div className="modal-overlay">

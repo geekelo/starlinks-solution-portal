@@ -3,7 +3,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createAxiosInstance } from '../config/axios';
-import Navbar from '../components/Navbar';
 import '../styles/Login.css';
 
 const Login = () => {
@@ -60,7 +59,6 @@ const Login = () => {
 
   return (
     <>
-      <Navbar />
       <div className="login-container">
         <div className="login-form-section">
           <div className="login-content">
