@@ -26,7 +26,7 @@ const App = () => (
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/home" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/dashboard/:kitId" element={<Dashboard />} />
         <Route path="/billing" element={<Billing />} />
         <Route path="/activate" element={<ActivateCode />} />
         <Route path="/profile" element={<Profile />} />

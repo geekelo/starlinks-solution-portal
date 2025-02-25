@@ -5,48 +5,8 @@
   background-color: #0f2439;
 }
 
-.account-section {
-  margin-bottom: 2rem;
-}
-
-.account-section label {
-  display: block;
-  color: white;
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
-}
-
-.account-select {
-  background-color: #0a192f;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-  color: white;
-  padding: 0.75rem;
-  width: 200px;
-  max-width: 200px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 0.7rem center;
-  background-size: 1em;
-  padding-right: 2.5rem;
-}
-
-.account-select:focus {
-  outline: none;
-  border-color: #00adef;
-}
-
-.account-select option {
-  background-color: #0a192f;
-  color: white;
-}
-
 .starlinks-section {
-  background-color: #0a192f;
+  background-color: #1a2c42;
   border-radius: 8px;
   padding: 1.5rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -77,12 +37,21 @@
   max-width: 300px;
 }
 
+.search-icon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1.2rem;
+}
+
 .search-input {
   width: 100%;
-  padding: 0.75rem 2.5rem 0.75rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 1px solid #2a3b52;
   border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: #1a2c42;
   color: white;
   font-size: 0.9rem;
   transition: all 0.3s ease;
@@ -91,170 +60,122 @@
 .search-input:focus {
   outline: none;
   border-color: #00adef;
-  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .search-input::placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
 
-.search-icon {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: rgba(255, 255, 255, 0.5);
-  pointer-events: none;
-}
-
 .status-filter {
   padding: 0.75rem 2rem 0.75rem 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid #2a3b52;
   border-radius: 8px;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: #1a2c42;
   color: white;
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
+  min-width: 140px;
   appearance: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
   background-repeat: no-repeat;
   background-position: right 0.7rem center;
   background-size: 1em;
-  min-width: 140px;
 }
 
 .status-filter:focus {
   outline: none;
   border-color: #00adef;
-  background-color: rgba(255, 255, 255, 0.1);
 }
 
-.status-badge {
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  font-weight: 500;
-  text-transform: capitalize;
-  display: inline-block;
-}
-
-.status-badge.online {
-  background-color: rgba(34, 197, 94, 0.2);
-  color: rgb(34, 197, 94);
-}
-
-.status-badge.offline {
-  background-color: rgba(239, 68, 68, 0.2);
-  color: rgb(239, 68, 68);
-}
-
-.status-badge.awaiting-approval {
-  background-color: rgba(245, 158, 11, 0.2);
-  color: rgb(245, 158, 11);
-}
-
-.status-badge.disconnected {
-  background-color: rgba(107, 114, 128, 0.2);
-  color: rgb(107, 114, 128);
-}
-
-.status-badge.expiring-soon {
-  background-color: rgba(249, 115, 22, 0.2);
-  color: rgb(249, 115, 22);
-}
-
-.download-button {
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.search-button:hover,
-.download-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.starlinks-content {
-  min-height: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.no-starlinks {
-  text-align: center;
-}
-
-.no-starlinks p {
-  color: rgba(255, 255, 255, 0.6);
-  margin-bottom: 1.5rem;
-}
-
-.add-starlink-button {
-  background-color: #00adef;
+.status-filter option {
+  background-color: #1a2c42;
   color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.add-starlink-button:hover {
-  background-color: #0099d6;
+  padding: 8px;
 }
 
 /* Table Styles */
 .starlinks-table {
   width: 100%;
-  border-radius: 4px;
-  overflow: hidden;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .table-header {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 1rem;
-  padding: 1rem;
-  background-color: rgba(255, 255, 255, 0.05);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: transparent;
+  font-weight: bold;
 }
 
 .header-cell {
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 0.9rem;
-  font-weight: 500;
+  padding: 20px 25px;
+  text-align: left;
+  color: #94a3b8;
+  font-size: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .table-row {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 1rem;
-  padding: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  align-items: center;
-}
-
-.table-cell {
-  color: white;
-  font-size: 0.9rem;
-}
-
-.manage-button {
-  background-color: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 0.9rem;
+  transition: background-color 0.3s;
 }
 
-.manage-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.table-row:hover {
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
+.table-row td {
+  padding: 20px 25px;
+  color: white;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Column width distribution */
+@media (min-width: 1024px) {
+  .starlinks-table {
+    max-width: none;
+    margin: 0 auto;
+  }
+
+  .header-cell:first-child,
+  .table-row td:first-child {
+    padding-left: 40px;
+  }
+
+  .header-cell:last-child,
+  .table-row td:last-child {
+    padding-right: 40px;
+  }
+
+  .table-row td:nth-child(1) {
+    width: 25%;
+  }
+
+  .table-row td:nth-child(2) {
+    width: 25%;
+  }
+
+  .table-row td:nth-child(3) {
+    width: 25%;
+  }
+
+  .table-row td:nth-child(4) {
+    width: 25%;
+    text-align: right;
+  }
+
+  .manage-button {
+    padding: 8px 24px;
+    font-size: 0.875rem;
+  }
+
+  .add-starlink-section {
+    text-align: right;
+  }
+}
+
+/* Keep existing responsive styles for mobile */
 @media (max-width: 768px) {
   .home-container {
     padding: 1rem;
@@ -282,126 +203,101 @@
     width: 100%;
   }
 
-  .account-select {
-    width: 100%;
-    max-width: 200px;
+  .starlinks-table {
+    display: block;
+    overflow-x: auto;
   }
 
   .table-header,
   .table-row {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
+    min-width: 600px;
   }
 
-  .header-cell:not(:first-child),
-  .table-cell:not(:first-child) {
-    display: none;
-  }
-
-  .table-row {
-    position: relative;
-    padding-right: 4rem;
-  }
-
-  .table-cell:last-child {
-    display: block;
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
+  .welcome-actions {
+    justify-content: flex-start;
   }
 }
 
-@media (max-width: 480px) {
-  .home-container {
-    padding-top: 5.5rem;
-  }
-
-  .starlinks-section {
-    padding: 1rem;
-  }
+/* Status Badge Styles */
+.status-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: inline-block;
+  text-transform: capitalize;
 }
 
+.status-badge.online,
+.status-badge.active {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.status-badge.offline,
+.status-badge.inactive {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.status-badge.awaiting-approval {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.status-badge.disconnected {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.status-badge.expiring-soon {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+.manage-button {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  background-color: #243752;
+  color: white;
+  border: 1px solid #2a3b52;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.manage-button:hover {
+  background-color: #2d4258;
+}
+
+/* Welcome Section Styles */
 .welcome-section {
-  margin-bottom: 2rem;
-}
-
-.welcome-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 0;
+  margin-bottom: 2rem;
+  padding: 1rem;
+}
+
+.welcome-header {
+  margin-bottom: 0;
 }
 
 .welcome-header h1 {
+  margin: 0;
   color: white;
   font-size: 1.8rem;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.wave-emoji {
-  font-size: 1.5rem;
-  animation: wave 2s infinite;
-  transform-origin: 70% 70%;
-  display: inline-block;
-}
-
-@keyframes wave {
-  0% { transform: rotate(0deg); }
-  10% { transform: rotate(14deg); }
-  20% { transform: rotate(-8deg); }
-  30% { transform: rotate(14deg); }
-  40% { transform: rotate(-4deg); }
-  50% { transform: rotate(10deg); }
-  60% { transform: rotate(0deg); }
-  100% { transform: rotate(0deg); }
 }
 
 .welcome-actions {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   align-items: center;
 }
 
-.view-profile-button {
-  background: none;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.view-profile-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-}
-
-.fund-account-link {
-  background-color: #00adef;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  font-size: 1rem;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  border: none;
-  cursor: pointer;
-}
-
-.fund-account-link:hover {
-  background-color: #0099d6;
-  transform: translateY(-1px);
-}
-
+/* Add Starlink Section */
 .add-starlink-section {
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 2rem 0;
   text-align: center;
 }
 
@@ -410,46 +306,60 @@
   color: white;
   border: none;
   border-radius: 8px;
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
-  font-weight: 500;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
   cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.add-starlink-button:hover {
-  background-color: #0099d6;
-  transform: translateY(-1px);
-}
-
-.loading-container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-top: 64px;
-  background-color: #0f2439;
-}
-
-.loading-spinner {
-  color: #00adef;
-  font-size: 1.2rem;
-  display: flex;
+  transition: all 0.2s;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.loading-spinner::after {
-  content: '';
-  width: 20px;
-  height: 20px;
-  border: 2px solid #00adef;
-  border-top: 2px solid transparent;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .welcome-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .welcome-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+
+  .welcome-actions .view-profile-button,
+  .welcome-actions .fund-account-link {
+    width: 100%;
+    text-align: center;
+  }
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-} 
+.welcome-actions .view-profile-button,
+.welcome-actions .fund-account-link {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  background-color: #00adef;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.welcome-actions .view-profile-button:hover,
+.welcome-actions .fund-account-link:hover {
+  background-color: #0099d6;
+}
+
+.add-starlink-button:hover {
+  background-color: #0099d6;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  color: #e0e0e0;
+}
+

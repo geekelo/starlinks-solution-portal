@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import '../styles/Modal.css';
+import { createAxiosInstance } from '../config/axios';
+import { toast } from 'react-toastify';
 
 const FundAccountModal = ({ onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -19,14 +21,40 @@ const FundAccountModal = ({ onClose, onSubmit }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Simulate API call response
-    const mockApiResponse = {
-      referenceNumber: `REF${Math.random().toString(36).substr(2, 9).toUpperCase()}`,
-      method: formData.paymentMethod,
-      amount: formData.amount
+    const token = localStorage.getItem('token');
+    const walletId = localStorage.getItem('starlink_walletId');
+    const userData = JSON.parse(localStorage.getItem('userData'));
+    const payload = {
+      starlink_wallet_funding: {
+        starlink_user_wallet_id: walletId,
+        amount: formData.amount,
+        payment_method: formData.paymentMethod,
+        starlink_user_id: userData.id
+      }
     };
 
-    onSubmit(mockApiResponse);
+    try {
+      const axiosInstance = createAxiosInstance();
+      const response = await axiosInstance.post(`/api/v1/starlink_wallet_fundings`, payload,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log('Funding Response:', response.data);
+      toast.success('Wallet funded successfully!');
+      onSubmit({
+        referenceNumber: response.data.referenceNumber,
+        method: formData.paymentMethod,
+        amount: formData.amount
+      });
+      onClose(); // Close the modal after successful funding
+      localStorage.setItem('fundingId', response.data.funding.id);
+    } catch (error) {
+      console.error('Error funding wallet:', error);
+      toast.error('Failed to fund wallet. Please try again.');
+    }
   };
 
   return (
