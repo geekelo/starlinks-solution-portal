@@ -3,14 +3,18 @@
   padding-top: 5rem;
   min-height: 100vh;
   background-color: #0f2439;
+  color: #ffffff;
 }
 
 .page-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-bottom: 1.5rem;
-  padding: 0.5rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: #243752;
+  border-radius: 8px;
+
 }
 
 .header-navigation {
@@ -35,7 +39,7 @@
 
 .page-header h1 {
   color: white;
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 500;
 }
 
@@ -43,8 +47,8 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
   padding: 0.75rem 1.5rem;
   border-radius: 4px;
@@ -54,14 +58,14 @@
 }
 
 .settings-button:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 .dashboard-content {
   display: grid;
-  grid-template-columns: 500px 1fr;
-  gap: 1.5rem;
-  margin-bottom: 1.5rem;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
 }
 
 .panel-header {
@@ -73,22 +77,24 @@
 
 .panel-header h2 {
   color: white;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 500;
 }
 
 .edit-button {
   background: none;
-  border: none;
+  border: 1px solid #00adef;
   color: #00adef;
   cursor: pointer;
   padding: 0.5rem 1rem;
-  font-size: 1rem;
-  transition: color 0.3s ease;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+  border-radius: 4px;
 }
 
 .edit-button:hover {
-  color: #0099d6;
+  background-color: #00adef;
+  color: white;
 }
 
 .left-panel {
@@ -96,14 +102,13 @@
   border-radius: 8px;
   padding: 2rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  height: 100%;
 }
 
 .info-section h3 {
   color: rgba(255, 255, 255, 0.7);
   font-size: 1rem;
   font-weight: normal;
-  margin: 1.5rem 0 0.75rem 0;
+  margin: 1.5rem 0 0.5rem 0;
 }
 
 .info-section h3:first-child {
@@ -113,15 +118,14 @@
 .info-section p {
   color: white;
   font-size: 1.1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
   line-height: 1.4;
 }
 
 .center-panel {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  height: 100%;
+  gap: 2rem;
 }
 
 .usage-section {
@@ -129,14 +133,25 @@
   border-radius: 8px;
   padding: 2rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  height: 100%;
+}
+
+.upcoming-update-notice {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.upcoming-update-notice p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.9rem;
 }
 
 .usage-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .usage-titles {
@@ -167,7 +182,7 @@
 }
 
 .period-select {
-  background-color: transparent;
+  background-color: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 4px;
   color: white;
@@ -201,7 +216,6 @@
   max-width: 700px;
   margin: 0 auto;
   position: relative;
-  margin-bottom: 100px;
 }
 
 .y-axis {
@@ -217,41 +231,34 @@
   margin-top: 10px;
 }
 
-.y-axis span:last-child {
-  display: none;
-}
-
 .graph-content {
   position: relative;
   flex-grow: 1;
   height: 100%;
   display: flex;
   align-items: flex-end;
-  background-color: #0a192f;
+  background-color: rgba(255, 255, 255, 0.02);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   padding: 10px 0;
 }
 
 .graph-content::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
     linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 100% 25%;
+  background-size: 20% 25%;
   pointer-events: none;
 }
 
 .graph-line {
   position: relative;
-  width: 2px;
+  width: 100%;
   height: 100%;
-  background-color: transparent;
-  margin: 0 auto;
 }
 
 .data-point {
@@ -259,16 +266,25 @@
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 2px;
+  width: 4px;
   background-color: #00adef;
-  border-radius: 0;
+  border-radius: 2px 2px 0 0;
   cursor: pointer;
   transition: height 0.3s ease-in-out;
 }
 
-.data-point:hover {
-  width: 2px;
-  background-color: #00adef;
+.data-point:hover::after {
+  content: attr(data-value);
+  position: absolute;
+  top: -25px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 173, 239, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  white-space: nowrap;
 }
 
 .x-axis {
@@ -294,7 +310,7 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.6);
   font-size: 0.9rem;
 }
 
@@ -317,23 +333,34 @@
   border-radius: 8px;
   padding: 2rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 2rem;
+}
+
+.account-history-header {
+  margin-bottom: 1.5rem;
+}
+
+.account-history-header h2 {
+  color: white;
+  font-size: 1.4rem;
+  font-weight: 500;
 }
 
 .info-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 3rem;
+  gap: 2rem;
 }
 
 .info-item {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
 }
 
 .info-label {
   color: rgba(255, 255, 255, 0.7);
-  font-size: 1rem;
+  font-size: 0.9rem;
 }
 
 .info-value {
@@ -342,41 +369,45 @@
   font-family: monospace;
 }
 
-.account-history {
+.renewal-history-section {
   background-color: #0a192f;
   border-radius: 8px;
   padding: 2rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  margin-bottom: 1.5rem;
 }
 
-.account-history-header {
+.card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
-.account-history-header h2 {
+.card-header h2 {
   color: white;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-weight: 500;
 }
 
-.year-filter {
-  background-color: transparent;
+.status-filter {
+  background-color: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 4px;
   color: white;
   padding: 0.75rem;
-  font-size: 1rem;
+  font-size: 0.9rem;
   cursor: pointer;
-  min-width: 120px;
+  min-width: 150px;
+}
+
+.table-container {
+  overflow-x: auto;
 }
 
 .history-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 .history-table th,
@@ -390,62 +421,62 @@
 .history-table th {
   font-weight: 500;
   color: white;
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
-.history-table th:last-child,
-.history-table td:last-child {
-  text-align: center;
-  width: 80px;
-}
-
-.history-table td {
-  font-size: 0.9rem;
-  white-space: nowrap;
-}
-
-.status-cell {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+.history-table tr:hover {
+  background-color: rgba(255, 255, 255, 0.02);
 }
 
 .status-badge {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: 1rem;
-  font-size: 0.8rem;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
   font-weight: 500;
+  display: inline-block;
+  text-transform: capitalize;
 }
 
-.status-badge.overdue {
-  background-color: rgba(239, 68, 68, 0.2);
+.status-badge.online,
+.status-badge.active {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.status-badge.offline,
+.status-badge.inactive {
+  background-color: rgba(239, 68, 68, 0.15);
   color: #ef4444;
 }
 
-.status-badge.paid {
+.status-badge.unconfirmed {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+}
+
+.status-badge.processing {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+}
+
+.status-badge.successful {
   background-color: rgba(34, 197, 94, 0.2);
   color: #22c55e;
 }
 
-.download-icon {
-  display: inline-block;
-  color: rgba(255, 255, 255, 0.5);
-  cursor: pointer;
-  transition: color 0.3s ease;
-  font-size: 1.2rem;
-  background: none;
-  border: none;
-  padding: 0.25rem;
-  text-decoration: none;
+.status-badge.declined {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
 }
 
-.download-icon::before {
-  content: "↓";
-  display: inline-block;
+.status-badge.expired {
+  background-color: rgba(107, 114, 128, 0.2);
+  color: #6b7280;
 }
 
-.download-icon:hover {
-  color: white;
+.status-badge.expiring-soon {
+  background-color: rgba(249, 115, 22, 0.2);
+  color: #f97316;
 }
 
 .table-footer {
@@ -461,6 +492,16 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+}
+
+.rows-select {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: white;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
 }
 
 .pagination {
@@ -482,10 +523,81 @@
   color: white;
 }
 
-@media (max-width: 1400px) {
-  .dashboard-content {
-    grid-template-columns: 450px 1fr;
-  }
+.pagination-arrow:disabled {
+  color: rgba(255, 255, 255, 0.3);
+  cursor: not-allowed;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #1a2c42;
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 90%;
+}
+
+.modal-content h2 {
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.modal-content p {
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 1.5rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+.fund-button {
+  background-color: #00adef;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.cancel-button {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.download-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+  background-color: #0056b3;
 }
 
 @media (max-width: 1200px) {
@@ -494,11 +606,7 @@
   }
 
   .info-row {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  .usage-graph {
-    height: 350px;
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -506,6 +614,12 @@
   .dashboard-container {
     padding: 1rem;
     padding-top: 5rem;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
   }
 
   .usage-header {
@@ -520,11 +634,16 @@
 
   .info-row {
     grid-template-columns: 1fr;
-    gap: 2rem;
   }
 
   .usage-graph {
     height: 300px;
+  }
+
+  .table-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
   }
 }
 
@@ -534,10 +653,116 @@
   }
 
   .page-header h1 {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
   }
 
   .usage-graph {
     height: 250px;
   }
-} 
+
+  .modal-content {
+    padding: 1.5rem;
+  }
+}
+
+.tabs {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.tab {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  border-bottom: 2px solid transparent;
+  transition: all 0.3s ease;
+  color: white;
+}
+
+.tab.active {
+  border-bottom: 2px solid #007bff;
+  color: #007bff;
+}
+
+.download-btn {
+  padding: 0.25rem 0.5rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.download-btn:hover {
+  background-color: #0056b3;
+}
+
+.table-header {
+  font-weight: 500;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.table-cell {
+  padding: 1rem;
+  text-align: left;
+  color: rgba(255, 255, 255, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Remove the general td styling from the history-table */
+.history-table th,
+.history-table td {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Add specific styles */
+.history-table .table-header {
+  font-weight: 500;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  text-align: left;
+}
+
+.history-table .table-cell {
+  padding: 1rem;
+  text-align: left;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Status badge cell - remove padding */
+.history-table td:has(.status-badge) {
+  padding: 0;
+}
+
+/* Status badge styling */
+.status-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: inline-block;
+  text-transform: capitalize;
+  margin: 0.5rem 0;
+}
+
+.status-badge.online {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.status-badge.offline {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+
+

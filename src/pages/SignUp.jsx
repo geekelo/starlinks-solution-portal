@@ -3,7 +3,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createAxiosInstance } from '../config/axios';
-import Navbar from '../components/Navbar';
 import '../styles/SignUp.css';
 
 const SignUp = () => {
@@ -77,22 +76,22 @@ const SignUp = () => {
       // Log the signup response data
       console.log('Signup Response Data:', data);
 
-      // Create wallet for the user
-      try {
-        const walletResponse = await axiosInstance.post('/api/v1/starlink_user_wallets', {
-          starlink_user_id: data.id
-        });
+      // // Create wallet for the user
+      // try {
+      //   const walletResponse = await axiosInstance.post('/api/v1/starlink_user_wallets', {
+      //     starlink_user_id: data.id
+      //   });
 
-        // Log the wallet response
-        console.log('Wallet Response:', walletResponse);
+      //   // Log the wallet response
+      //   console.log('Wallet Response:', walletResponse);
 
-        // Save wallet ID in local storage
-        localStorage.setItem('walletId', walletResponse.data.wallet_id);
-        localStorage.setItem('starlink_walletId', walletResponse.data.id);
-      } catch (walletError) {
-        console.error('Error creating wallet:', walletError);
-        toast.error('Failed to create wallet. Please try again.');
-      }
+      //   // Save wallet ID in local storage
+      //   localStorage.setItem('walletId', walletResponse.data.wallet_id);
+      //   localStorage.setItem('starlink_walletId', walletResponse.data.id);
+      // } catch (walletError) {
+      //   console.error('Error creating wallet:', walletError);
+      //   toast.error('Failed to create wallet. Please try again.');
+      // }
 
       toast.success('Sign up successful!.');
       setTimeout(() => {
@@ -120,7 +119,6 @@ const SignUp = () => {
 
   return (
   <>
-    <Navbar />
     <div className="signup-container">
         <div className="signup-form-section">
       <div className="signup-content">

@@ -175,6 +175,27 @@
   color: rgba(255, 255, 255, 0.6);
 }
 
+.status-cell {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.confirm-btn {
+  padding: 0.25rem 0.75rem;
+  background-color: #00adef;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background-color 0.3s ease;
+}
+
+.confirm-btn:hover {
+  background-color: #0099d6;
+}
+
 @media (max-width: 768px) {
   .billing-container {
     padding: 1rem;

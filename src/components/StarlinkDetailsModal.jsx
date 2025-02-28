@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-import { createAxiosInstance } from '../config/axios';
 import '../styles/Modal.css';
 
 const StarlinkDetailsModal = ({ onClose, onSubmit }) => {
@@ -20,66 +19,21 @@ const StarlinkDetailsModal = ({ onClose, onSubmit }) => {
     });
   };
 
-  const mapStatus = (status) => {
-    const statusMap = {
-      pending: 'awaiting approval',
-      active: 'online',
-      inactive: 'offline',
-      deactivated: 'disconnected',
-      expiring: 'expiring soon'
-    };
-    return statusMap[status] || status;
-  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    console.log("Submitting form with data:", formData); // Log form data
-
-    try {
-      const axiosInstance = createAxiosInstance();
-      const token = localStorage.getItem('token');
-      const userData = JSON.parse(localStorage.getItem('userData'));
-      const kitNumber = localStorage.getItem('tempKitNumber');
-
-      const response = await axiosInstance.post(
-        '/api/v1/starlink_kits',
-        {
-          starlink_kit: {
-            kit_number: kitNumber,
-            address: formData.address,
-            nin: formData.nin,
-            company_name: formData.company_name,
-            company_number: formData.company_number,
-            starlink_user_id: userData.id
-          }
-        },
-        {
-          headers: {
-            'Authorization': `Bearer ${token}`
-          }
-        }
-      );
-
-      console.log('Starlink kit creation response:', response); // Log full response
-
-      if (response.data.success) { // Check success from the full response
-        localStorage.removeItem('tempKitNumber');
-        toast.success('Starlink kit added successfully!');
-        onSubmit({
-          ...response.data.starlink_kit,
-          status: mapStatus(response.data.starlink_kit.status)
-        });
-        console.log("Closing modal after successful submission"); // Log before closing
-        onClose(); // Close the modal after successful submission
-      }
-    } catch (error) {
-      console.error('Error creating starlink kit:', error);
-      toast.error(error.response?.data?.message || 'Failed to add Starlink kit. Please try again.');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  e.preventDefault();
+  setIsSubmitting(true);
+  
+  try {
+    // Simply pass the form data to the parent component
+    onSubmit(formData);
+    // The modal will be closed by the parent component
+  } catch (error) {
+    console.error('Error in form submission:', error);
+    toast.error('Failed to process form. Please try again.');
+    setIsSubmitting(false);
+  }
+};
 
   return (
     <div className="modal-overlay">

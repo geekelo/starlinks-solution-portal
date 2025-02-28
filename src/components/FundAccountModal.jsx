@@ -1,14 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import '../styles/Modal.css';
 import { createAxiosInstance } from '../config/axios';
 import { toast } from 'react-toastify';
 
-const FundAccountModal = ({ onClose, onSubmit }) => {
+const FundAccountModal = ({ onClose, onSubmit, defaultAmount }) => {
   const [formData, setFormData] = useState({
-    amount: '',
+    amount: defaultAmount || '',
     paymentMethod: 'offline' // default to offline
   });
+
+  useEffect(() => {
+    // Update amount when defaultAmount changes
+    if (defaultAmount) {
+      setFormData(prev => ({
+        ...prev,
+        amount: defaultAmount
+      }));
+    }
+  }, [defaultAmount]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,13 +33,12 @@ const FundAccountModal = ({ onClose, onSubmit }) => {
     
     const token = localStorage.getItem('token');
     const walletId = localStorage.getItem('starlink_walletId');
-    const userData = JSON.parse(localStorage.getItem('userData'));
+  
     const payload = {
       starlink_wallet_funding: {
         starlink_user_wallet_id: walletId,
         amount: formData.amount,
         payment_method: formData.paymentMethod,
-        starlink_user_id: userData.id
       }
     };
 
@@ -87,10 +96,11 @@ const FundAccountModal = ({ onClose, onSubmit }) => {
                   type="radio"
                   name="paymentMethod"
                   value="offline"
+                  className="payment-mode"
                   checked={formData.paymentMethod === 'offline'}
                   onChange={handleChange}
                 />
-                <span>
+                <span className="payment-mode">
                   🏦 Offline Payment (Bank Transfer)
                 </span>
               </label>
@@ -113,7 +123,8 @@ const FundAccountModal = ({ onClose, onSubmit }) => {
 
 FundAccountModal.propTypes = {
   onClose: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired
+  onSubmit: PropTypes.func.isRequired,
+  defaultAmount: PropTypes.string
 };
 
 export default FundAccountModal; 

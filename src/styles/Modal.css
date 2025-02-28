@@ -173,8 +173,15 @@
   margin-top: 1rem;
 }
 
+.payment-mode{
+ text-align: center;
+ align-items: center;
+ justify-content: center;
+}
+
 .radio-label {
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 1rem;
   color: white;
@@ -198,8 +205,8 @@
 
 .radio-label input[type="radio"] {
   appearance: none;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 0.5rem;
+  height: 0.5rem;
   border: 2px solid rgba(255, 255, 255, 0.4);
   border-radius: 50%;
   margin: 0;
