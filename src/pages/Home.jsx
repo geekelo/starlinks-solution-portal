@@ -507,9 +507,6 @@ const Home = () => {
                       <tr
                         key={starlink.id}
                         className="table-row"
-                        onClick={() =>
-                          handleKitClick(starlink.kit_number, starlink.id)
-                        }
                       >
                         <td>{starlink.kit_number || "N/A"}</td>
                         <td>{starlink.service_line_number || "N/A"}</td>
