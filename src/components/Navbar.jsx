@@ -17,8 +17,8 @@ const Navbar = () => {
 
   return (
     <nav className="navbar" role="navigation" aria-label="Main navigation">
-      <Link to="/" className="logo" aria-label="Starlink Home">
-        STARLINK
+      <Link to="/" className="logo-container" aria-label="Starlink Home">
+      <img src="/starlink-logo.png" alt="Logo" className="logo" />
       </Link>
 
       <div className="nav-center">

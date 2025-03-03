@@ -15,7 +15,6 @@ const ResetPassword = () => {
       setError('Passwords do not match');
       return;
     }
-    // Here you would typically handle the password reset
     console.log('Password reset successful');
     navigate('/login');
   };

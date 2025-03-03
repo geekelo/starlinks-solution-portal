@@ -10,10 +10,9 @@ const ForgotPassword = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you would typically handle sending the reset email
     console.log('Reset email sent to:', email);
     setIsSubmitted(true);
-    // Simulate email sent and redirect after 3 seconds
+
     setTimeout(() => {
       navigate('/reset-password');
     }, 3000);

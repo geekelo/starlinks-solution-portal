@@ -39,11 +39,9 @@ const Login = () => {
         }
       });
 
-      // Save response data to localStorage instead of sessionStorage
       localStorage.setItem('userData', JSON.stringify(data.user));
       localStorage.setItem('token', data.token);
       
-      // Log the response data
       console.log('Login Response:', data);
 
       toast.success('Login successful!');
@@ -98,6 +96,11 @@ const Login = () => {
 
               <div className="forgot-password">
                 <Link to="/forgot-password">Forgot Password?</Link>
+              </div>
+              <div className="login-link">
+                Don't have an account?
+                {' '}
+                <Link to="/signup">Sign up</Link>
               </div>
             </form>
           </div>

@@ -16,7 +16,7 @@ Link {
   height: 64px;
 }
 
-.logo {
+.logo-container {
   color: white;
   font-weight: 700;
   font-size: 1.2rem;
@@ -24,6 +24,12 @@ Link {
   font-family: sans-serif;
   letter-spacing: 1px;
 }
+
+.logo {
+  width: 200px;
+  margin-left: 10px;
+}
+
 
 .nav-center {
   position: absolute;

@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../components/Navbar';
 import { createAxiosInstance } from '../config/axios';
 import '../styles/Profile.css';
@@ -26,10 +27,9 @@ const Profile = () => {
       const axiosInstance = createAxiosInstance();
       const token = localStorage.getItem('token');
       const response = await axiosInstance.put(
-        `/api/v1/starlink_users/email_change_request?id=${userData.id}`,
+        `/api/v1/starlink_users/email_change_request`,
         {
           starlink_user_profile: {
-            id: userData.id,
             profile_param: email
           }
         },
@@ -61,7 +61,6 @@ const Profile = () => {
         `/api/v1/starlink_users/phone_number_change_request`,
         {
           starlink_user_profile: {
-            id: userData.id,
             profile_param: phone
           }
         },
@@ -93,7 +92,6 @@ const Profile = () => {
         `/api/v1/starlink_users/whatsapp_number_change_request`,
         {
           starlink_user_profile: {
-            id: userData.id,
             profile_param: whatsApp
           }
         },
@@ -244,6 +242,18 @@ const Profile = () => {
           </div>
         </div>
       )}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </>
   );
 };
