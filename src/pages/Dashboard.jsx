@@ -412,6 +412,7 @@ const Dashboard = () => {
                     <th className="table-header">Month</th>
                     <th className="table-header">Year</th>
                     <th className="table-header">Download</th>
+                    <th className="table-header">Duration</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -458,6 +459,7 @@ const Dashboard = () => {
                             </svg>
                           </button>
                         </td>
+                        <td className="table-cell">{item.start_date || `Start Date`}- {item.end_date || `End Date`}</td>
                       </tr>
                     ))}
                   {renewalHistory.length === 0 && (
