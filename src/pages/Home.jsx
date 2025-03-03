@@ -11,6 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createAxiosInstance } from "../config/axios";
 import Navbar from "../components/Navbar";
+import WhatsAppButton from '../components/WhatsAppButton';
 
 const Home = () => {
   const [showActivationModal, setShowActivationModal] = useState(false);
@@ -626,6 +627,8 @@ const Home = () => {
           </div>
         </div>
       )}
+
+      <WhatsAppButton />
 
       <ToastContainer
         position="top-right"

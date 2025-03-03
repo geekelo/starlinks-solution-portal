@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import '../styles/ResetPassword.css';
+import WhatsAppButton from '../components/WhatsAppButton';
 
 const ResetPassword = () => {
   const [password, setPassword] = useState('');
@@ -62,6 +63,7 @@ const ResetPassword = () => {
           </form>
         </div>
       </div>
+      <WhatsAppButton />
     </>
   );
 };

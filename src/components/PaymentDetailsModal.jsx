@@ -3,18 +3,28 @@ import '../styles/Modal.css';
 import { createAxiosInstance } from '../config/axios';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
+import React from 'react';
 
 const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
   const { referenceNumber, method } = paymentDetails;
   const reference = localStorage.getItem('walletId');
   const fundingId = localStorage.getItem('fundingId');
   const bankDetails = {
-    bankName: 'First Bank',
-    accountNumber: '0123456789',
-    accountName: 'Starlinks Solutions Ltd',
+    bankName: 'Kuda Microfinance Bank',
+    accountNumber: '3000865987',
+    accountName: 'Starlink Installation Solutions',
   };
 
   const onlinePaymentUrl = 'https://payment-gateway.example.com';
+
+  const copyToClipboard = (text) => {
+    navigator.clipboard.writeText(text).then(() => {
+      toast.success('Account number copied to clipboard!');
+    }).catch((err) => {
+      console.error('Failed to copy: ', err);
+      toast.error('Failed to copy account number.');
+    });
+  };
 
   const handleSubmit = async () => {
     try {
@@ -76,6 +86,9 @@ const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
               <div className="info-group">
                 <label>Account Number</label>
                 <p>{bankDetails.accountNumber}</p>
+                <button onClick={() => copyToClipboard(bankDetails.accountNumber)} className="copy-button">
+                  Copy
+                </button>
               </div>
               <div className="info-group">
                 <label>Account Name</label>

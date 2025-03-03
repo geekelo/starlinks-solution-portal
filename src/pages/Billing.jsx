@@ -8,6 +8,7 @@ import FundAccountModal from "../components/FundAccountModal"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { FaEye } from "react-icons/fa";
+import WhatsAppButton from '../components/WhatsAppButton';
 
 
 const Billing = () => {
@@ -280,6 +281,7 @@ const Billing = () => {
         pauseOnHover
         theme="dark"
       />
+      <WhatsAppButton />
     </>
   )
 }

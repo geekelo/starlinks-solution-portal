@@ -15,8 +15,8 @@
   background-color: #0a192f;
   border-radius: 8px;
   padding: 2rem;
-  width: 95%;
-  max-width: 700px;
+  width: 90%;
+  max-width: 900px;
   max-height: 90vh;
   overflow-y: auto;
   position: relative;
@@ -378,4 +378,19 @@
 
 .confirm-button:active {
   transform: translateY(0);
+}
+
+.copy-button {
+  background-color: #00adef; /* Button color */
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 0.5rem; /* Space above the button */
+  transition: background-color 0.3s;
+}
+
+.copy-button:hover {
+  background-color: #007bb5; /* Darker shade on hover */
 } 
