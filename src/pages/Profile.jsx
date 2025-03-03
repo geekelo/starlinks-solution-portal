@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import Navbar from '../components/Navbar';
 import { createAxiosInstance } from '../config/axios';
 import '../styles/Profile.css';
+import WhatsAppButton from '../components/WhatsAppButton';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -254,6 +255,7 @@ const Profile = () => {
         pauseOnHover
         theme="dark"
       />
+      <WhatsAppButton />
     </>
   );
 };

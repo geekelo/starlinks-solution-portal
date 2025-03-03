@@ -1,14 +1,19 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { createAxiosInstance } from "../config/axios";
 import Navbar from "../components/Navbar";
 import "../styles/Dashboard.css";
+import FundAccountModal from "../components/FundAccountModal";
+import { Link } from "react-router-dom";
+import { FaLink } from "react-icons/fa";
+import WhatsAppButton from '../components/WhatsAppButton';
 
 const Dashboard = () => {
   const { kitId } = useParams();
+  const navigate = useNavigate();
   const [kitData, setKitData] = useState(null);
   const [newAddress, setNewAddress] = useState("");
 
@@ -28,6 +33,12 @@ const Dashboard = () => {
   const [selectedStatus, setSelectedStatus] = useState("all");
 
   const [activeTab, setActiveTab] = useState('invoices');
+
+  const [expirationDate, setExpirationDate] = useState(new Date());
+  const [currentDate] = useState(new Date());
+  const [isRenewButtonEnabled, setIsRenewButtonEnabled] = useState(false);
+
+  const [showFundAccountModal, setShowFundAccountModal] = useState(false);
 
   const mapStatus = (apiStatus) => {
     const statusMap = {
@@ -68,6 +79,11 @@ const Dashboard = () => {
       });
       
       setRenewalHistory(response.data || []);
+      
+      if (response.data.length > 0) {
+        const lastRenewal = response.data[response.data.length - 1];
+        setExpirationDate(new Date(lastRenewal.deadline));
+      }
     } catch (error) {
       console.error("Error fetching renewal history:", error);
       toast.error("Failed to fetch renewal history.");
@@ -110,6 +126,12 @@ const Dashboard = () => {
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedStatus, rowsPerPage]);
+
+  useEffect(() => {
+    // Check if the expiration date is within 7 days from the current date
+    const daysUntilExpiration = (expirationDate - currentDate) / (1000 * 60 * 60 * 24);
+    setIsRenewButtonEnabled(daysUntilExpiration <= 7);
+  }, [expirationDate, currentDate]);
 
   const handleAddressChange = async (e) => {
     e.preventDefault();
@@ -175,10 +197,39 @@ const Dashboard = () => {
     }
   };
 
+  const handleRenew = async () => {
+    const axiosInstance = createAxiosInstance();
+    const token = localStorage.getItem("token");
+
+    try {
+      const response = await axiosInstance.post(
+        `/api/v1/starlink_activates/${kitId}/activate_kit`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      toast.success("Renewal successful!");
+      // Handle any additional logic after successful renewal
+
+    } catch (error) {
+      console.error("Error renewing kit:", error);
+      if (error.response.data.amount_due) {
+        setShowFundAccountModal(true); // Show the fund account modal
+      } else {
+        toast.error("Failed to renew kit. Please try again.");
+      }
+    }
+  };
+
   return (
     <>
       <Navbar />
       <div className="dashboard-container">
+        <button onClick={() => navigate(-1)} className="back-button">Back</button>
         <div className="page-header">
           <div className="header-navigation">
             <h1>{kitData?.company_name || "Loading..."}</h1>
@@ -204,8 +255,6 @@ const Dashboard = () => {
               <h3>Kit Number</h3>
               <p>{kitData?.kit_number || "Loading..."}</p>
 
-              <h3>NIN</h3>
-              <p>{kitData?.nin || "Loading..."}</p>
 
               <h3>Company Number</h3>
               <p>{kitData?.company_number || "N/A"}</p>
@@ -300,28 +349,35 @@ const Dashboard = () => {
 
 
         <div className="starlink-info-footer">
-        <div className="account-history-header">
-        <h2>KIt Details</h2></div>
+          <div className="account-history-header">
+            <h2>Kit Subscription Details</h2>
+          </div>
           <div className="info-row">
             <div className="info-item">
               <div className="info-label">Billing period</div>
               <div className="info-value">
-                Your billing period is January 18 - February 17. Payment due
-                January 18.
+                Your current subscription expires <span className="expiration-date">{expirationDate.toLocaleDateString()}</span>
               </div>
             </div>
             <div className="info-item">
-              <div className="info-label">Your wallet Id</div>
-              <div className="info-value">9876543212134</div>
-            </div>
-            <div className="info-item">
-              <div className="info-label">Kit Number</div>
+              <div className="info-label">Status</div>
               <div className="info-value">
-                {kitData?.kit_number || "Loading..."}
+                <span className="status-badge offline">{mapStatus(kitData?.status) || "Loading..."}</span>
+                <button
+                  className="renew-button"
+                  disabled={!isRenewButtonEnabled}
+                  onClick={isRenewButtonEnabled ? handleRenew : null}
+                >
+                  {kitData?.status === "deactivated" ? "Reactivate" : "Renew"}
+                </button>
+                <div className="warning-message">
+                  The renew button is enabled only when there are 7 days left until the billing period.
+                </div>
               </div>
             </div>
           </div>
         </div>
+        
         <div className="renewal-history-section">
             <div className="card-header">
               <h2>Renewal History</h2>
@@ -342,6 +398,12 @@ const Dashboard = () => {
             </div>
 
             <div className="table-container">
+            <div className="warning-text">
+          Please ensure you have sufficient wallet balance before renewing your kit to avoid any interruptions. 
+          <Link to="/billing" className="billing-link">
+            Fund your wallet <FaLink style={{ marginLeft: '4px' }} />
+          </Link>
+        </div>
               <table className="history-table">
                 <thead>
                   <tr>
@@ -492,6 +554,13 @@ const Dashboard = () => {
           </div>
         )}
       </div>
+
+      {showFundAccountModal && (
+        <FundAccountModal
+          onClose={() => setShowFundAccountModal(false)}
+        />
+      )}
+      <WhatsAppButton />
     </>
   );
 };

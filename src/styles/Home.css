@@ -206,11 +206,34 @@
   .starlinks-table {
     display: block;
     overflow-x: auto;
+    margin: 0;
   }
 
-  .table-header,
+  .header-cell,
+  .table-row td {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .header-cell {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
   .table-row {
-    min-width: 600px;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .table-row td {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border: none;
+  }
+
+  .table-row td:not(:last-child) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .welcome-actions {

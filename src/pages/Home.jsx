@@ -11,6 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createAxiosInstance } from "../config/axios";
 import Navbar from "../components/Navbar";
+import WhatsAppButton from '../components/WhatsAppButton';
 
 const Home = () => {
   const [showActivationModal, setShowActivationModal] = useState(false);
@@ -216,7 +217,7 @@ const Home = () => {
       pending: { text: "awaiting approval", class: "awaiting-approval" },
       active: { text: "online", class: "online" },
       accepted: { text: "approved", class: "online" },
-      inactive: { text: "offline", class: "offline" },
+      inactive: { text: "expired", class: "offline" },
       deactivated: { text: "disconnected", class: "disconnected" },
       expiring: { text: "expiring soon", class: "expiring-soon" },
     };
@@ -487,68 +488,60 @@ const Home = () => {
           </div>
 
           <div className="starlinks-content">
-            {filteredStarlinks?.length === 0 ? (
-              <div className="no-starlinks">
-                <p>No Starlinks found</p>
-              </div>
-            ) : (
-              <div className="starlinks-table">
-                <thead className="table-header">
+            <div className="table-container">
+              <table className="history-table">
+                <thead>
                   <tr>
-                    <th className="header-cell">Kit Number</th>
-                    <th className="header-cell">Service Line No.</th>
-                    <th className="header-cell">Status</th>
-                    <th className="header-cell">Actions</th>
+                    <th className="table-header">Kit Number</th>
+                    <th className="table-header">Service Line No.</th>
+                    <th className="table-header">Status</th>
+                    <th className="table-header">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredStarlinks.length > 0 ? (
-                    filteredStarlinks.map((starlink) => (
-                      <tr
-                        key={starlink.id}
-                        className="table-row"
-                      >
-                        <td>{starlink.kit_number || "N/A"}</td>
-                        <td>{starlink.service_line_number || "N/A"}</td>
-                        <td>
-                          <span
-                            className={`status-badge ${
-                              mapStatus(starlink.status).class
-                            }`}
+                  {filteredStarlinks.map((starlink) => (
+                    <tr key={starlink.id}>
+                      <td className="table-cell">{starlink.kit_number || "N/A"}</td>
+                      <td className="table-cell">{starlink.service_line_number || "N/A"}</td>
+                      <td className="table-cell">
+                        <span className={`status-badge ${mapStatus(starlink.status).class}`}>
+                          {mapStatus(starlink.status).text}
+                        </span>
+                      </td>
+                      <td className="table-cell">
+                        {starlink.status === "accepted" ? (
+                          <button
+                            type="button"
+                            className="manage-button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleActivateKit(starlink.id);
+                            }}
                           >
-                            {mapStatus(starlink.status).text}
-                          </span>
-                        </td>
-                        <td>
-                          {starlink.status === "accepted" ? (
-                            <button
-                              type="button"
-                              className="activate-button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleActivateKit(starlink.id);
-                              }}
-                            >
-                              Activate
-                            </button>
-                          ) : shouldShowManageButton(starlink.status) ? (
-                            <button type="button" className="manage-button">
-                              Manage
-                            </button>
-                          ) : null}
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
+                            Activate
+                          </button>
+                        ) : shouldShowManageButton(starlink.status) ? (
+                          <button
+                            type="button"
+                            className="manage-button"
+                            onClick={() => handleKitClick(starlink.kit_number, starlink.id)}
+                          >
+                            Manage
+                          </button>
+                        ) : null}
+                      </td>
+                    </tr>
+                  ))}
+                  {filteredStarlinks.length === 0 && (
                     <tr>
-                      <td colSpan="4" style={{ textAlign: "center" }}>
+                      <td colSpan={4} className="table-cell no-data">
                         No Starlinks found
                       </td>
                     </tr>
                   )}
                 </tbody>
-              </div>
-            )}
+              </table>
+            </div>
           </div>
 
           <div className="add-starlink-section">
@@ -634,6 +627,8 @@ const Home = () => {
           </div>
         </div>
       )}
+
+      <WhatsAppButton />
 
       <ToastContainer
         position="top-right"

@@ -7,6 +7,8 @@ import { createAxiosInstance } from "../config/axios"
 import FundAccountModal from "../components/FundAccountModal"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { FaEye } from "react-icons/fa";
+import WhatsAppButton from '../components/WhatsAppButton';
 
 
 const Billing = () => {
@@ -135,12 +137,16 @@ const Billing = () => {
               <div className="card-header">
                 <h2>Balance</h2>
                 <button type="button" className="pay-button" onClick={() => setShowFundAccountModal(true)}>
-                  Fund Account
+                  Fund Wallet
                 </button>
               </div>
               <div className="amount-display">
                 <span className="currency">NGN</span>
                 <span className="amount">{walletData?.balance || "0.00"}</span>
+              </div>
+              <div className="warning-message">
+                <FaEye style={{ marginRight: '4px' }} />
+                Always keep your wallet funded with at least NGN 120,000
               </div>
             </div>
 
@@ -275,6 +281,7 @@ const Billing = () => {
         pauseOnHover
         theme="dark"
       />
+      <WhatsAppButton />
     </>
   )
 }

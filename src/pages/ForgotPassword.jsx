@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import '../styles/ForgotPassword.css';
+import WhatsAppButton from '../components/WhatsAppButton';
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState('');
@@ -55,6 +56,7 @@ const ForgotPassword = () => {
           )}
         </div>
       </div>
+      <WhatsAppButton />
     </>
   );
 };

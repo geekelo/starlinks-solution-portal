@@ -4,6 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createAxiosInstance } from '../config/axios';
 import '../styles/Login.css';
+import WhatsAppButton from '../components/WhatsAppButton';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -107,6 +108,7 @@ const Login = () => {
         </div>
         <div className="login-image-section" />
       </div>
+      <WhatsAppButton />
       <ToastContainer
         position="top-right"
         autoClose={5000}
