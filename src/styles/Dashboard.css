@@ -120,6 +120,12 @@
   font-size: 1.1rem;
   margin-bottom: 1rem;
   line-height: 1.4;
+  text-transform: capitalize;
+}
+
+.info-section h2,
+.info-section h3 {
+  text-transform: capitalize;
 }
 
 .center-panel {
@@ -334,6 +340,10 @@
   padding: 2rem;
   border: 1px solid rgba(255, 255, 255, 0.1);
   margin-bottom: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .account-history-header {
@@ -347,15 +357,23 @@
 }
 
 .info-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
 }
 
 .info-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  flex: 1;
+  margin-right: 1rem;
+  position: relative;
+  background-color: #1a2c42;
+  border-radius: 8px;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info-item:last-child {
+  margin-right: 0;
 }
 
 .info-label {
@@ -367,6 +385,50 @@
   color: white;
   font-size: 1.1rem;
   font-family: monospace;
+}
+
+.renew-button {
+  position: absolute;
+  top: 10px;
+  right: 7px;
+  background-color: #00adef;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: not-allowed;
+  opacity: 0.5;
+  transition: background-color 0.3s ease;
+}
+
+.renew-button:enabled {
+  cursor: pointer;
+  opacity: 1;
+}
+
+.expiration-date {
+  color: #ef4444;
+  font-weight: bold;
+}
+
+.warning-message {
+  color: #f59e0b;
+  font-size: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.status-badge {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  display: inline-block;
+  text-transform: capitalize;
+}
+
+.status-badge.offline {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
 }
 
 .renewal-history-section {
@@ -406,26 +468,22 @@
 
 .history-table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
+  border-collapse: collapse;
 }
 
-.history-table th,
-.history-table td {
+.table-header {
+  font-weight: 500;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.05);
+  padding: 1rem;
+  text-align: left;
+}
+
+.table-cell {
   padding: 1rem;
   text-align: left;
   color: rgba(255, 255, 255, 0.7);
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.history-table th {
-  font-weight: 500;
-  color: white;
-  background-color: rgba(255, 255, 255, 0.05);
-}
-
-.history-table tr:hover {
-  background-color: rgba(255, 255, 255, 0.02);
 }
 
 .status-badge {
@@ -435,16 +493,15 @@
   font-weight: 500;
   display: inline-block;
   text-transform: capitalize;
+  margin: 0.5rem 0;
 }
 
-.status-badge.online,
-.status-badge.active {
+.status-badge.online {
   background-color: rgba(16, 185, 129, 0.15);
   color: #10b981;
 }
 
-.status-badge.offline,
-.status-badge.inactive {
+.status-badge.offline {
   background-color: rgba(239, 68, 68, 0.15);
   color: #ef4444;
 }
@@ -706,22 +763,6 @@
   background-color: #0056b3;
 }
 
-.table-header {
-  font-weight: 500;
-  color: white;
-  background-color: rgba(255, 255, 255, 0.05);
-  padding: 1rem;
-  text-align: left;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.table-cell {
-  padding: 1rem;
-  text-align: left;
-  color: rgba(255, 255, 255, 0.7);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
 /* Remove the general td styling from the history-table */
 .history-table th,
 .history-table td {
@@ -767,6 +808,31 @@
 .status-badge.offline {
   background-color: rgba(239, 68, 68, 0.15);
   color: #ef4444;
+}
+
+.back-button {
+  background-color: #00adef;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  position: sticky;
+  top: 65px;
+  z-index: 1000;
+}
+
+.warning-text {
+  color: #f59e0b;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.billing-link {
+  color: #00adef;
+  text-decoration: none;
+  margin-left: 0.5rem;
 }
 
 

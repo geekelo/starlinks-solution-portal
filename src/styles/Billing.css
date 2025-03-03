@@ -200,6 +200,14 @@
   background-color: #0099d6;
 }
 
+.warning-message {
+  color: #f59e0b;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
 @media (max-width: 768px) {
   .billing-container {
     padding: 1rem;
