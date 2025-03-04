@@ -12,7 +12,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { createAxiosInstance } from "../config/axios";
 import Navbar from "../components/Navbar";
 import WhatsAppButton from '../components/WhatsAppButton';
-import { FaLink } from 'react-icons/fa';
 
 const Home = () => {
   const [showActivationModal, setShowActivationModal] = useState(false);
@@ -38,8 +37,7 @@ const Home = () => {
   const [showInsufficientFundsModal, setShowInsufficientFundsModal] = useState(false);
   const [errorDetails, setErrorDetails] = useState({ error: '', amountDue: '' });
 
-  const [walletBalance, setWalletBalance] = useState(0);
-
+  const location = useLocation();
   const navigate = useNavigate();
 
   const [shouldRefetch, setShouldRefetch] = useState(false);
@@ -47,7 +45,29 @@ const Home = () => {
   useEffect(() => {
     const initializeHome = async () => {
       setIsLoading(true);
+      const params = new URLSearchParams(location.search);
+      const emailToken = params.get("token");
 
+      if (emailToken) {
+        try {
+          const axiosInstance = createAxiosInstance();
+          const token = localStorage.getItem("token");
+          await axiosInstance.put(
+            `/api/v1/email_confirmations/confirm_user_email?token=${emailToken}`,
+            {},
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          toast.success("Email confirmed successfully!");
+          // Skip the email verification modal since we just confirmed it
+          setShowEmailVerification(false);
+        } catch (error) {
+          toast.error("Failed to confirm email.");
+        }
+      }
       await checkVerificationFlow();
 
       try {
@@ -71,7 +91,7 @@ const Home = () => {
     };
 
     initializeHome();
-  }, []);
+  }, [location.search]);
 
   const checkVerificationFlow = async () => {
     try {
@@ -90,20 +110,15 @@ const Home = () => {
 
       console.log("Confirmation status:", data);
 
-      // this property to true
-
       // Check email verification status
       if (!data.email_verified) {
         setShowEmailVerification(true);
         setShowPhoneVerification(false);
-      }
-      //  else if (!data.whatsapp_verified) {
-      //   // If email is verified but WhatsApp isn't
-      //   setShowEmailVerification(false);
-      //   setShowPhoneVerification(true);
-      // } 
-      
-      else {
+      } else if (!data.whatsapp_verified) {
+        // If email is verified but WhatsApp isn't
+        setShowEmailVerification(false);
+        setShowPhoneVerification(true);
+      } else {
         // Both are verified
         setShowEmailVerification(false);
         setShowPhoneVerification(false);
@@ -118,7 +133,6 @@ const Home = () => {
   };
 
   const handleEmailVerification = async () => {
-    console.log("Requesting email verification...");
     try {
       const axiosInstance = createAxiosInstance();
       const token = localStorage.getItem("token");
@@ -133,32 +147,11 @@ const Home = () => {
         }
       );
 
-      toast.success("OTP sent to your email!");
+      toast.success("Verification email sent! Please check your inbox.");
+      setShowEmailVerification(true);
     } catch (error) {
-      toast.error("Failed to send OTP.");
-    }
-  };
-
-  const handleEmailCodeVerification = async (code) => {
-    console.log("Verifying email code:", code);
-    try {
-      const axiosInstance = createAxiosInstance();
-      const token = localStorage.getItem("token");
-
-      const { data } = await axiosInstance.put(
-        `/api/v1/email_confirmations/confirm_user_email?code=${String(code)}`,
-        {}, 
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-        toast.success("Email verified successfully!");
-        setShowEmailVerification(false);
-
-    } catch (error) {
-      toast.error("Failed to verify code. Please try again.");
+      console.error("Error sending verification email:", error);
+      toast.error("Failed to send verification email. Please try again.");
     }
   };
 
@@ -178,9 +171,9 @@ const Home = () => {
         }
       );
 
-      toast.success("Verification code sent phone number via SMS!");
+      toast.success("Verification code sent to your WhatsApp number!");
     } catch (error) {
-      console.error("Error sending  verification code:", error);
+      console.error("Error sending WhatsApp verification code:", error);
       toast.error("Failed to send verification code. Please try again.");
     }
   };
@@ -413,29 +406,6 @@ const Home = () => {
     }
   }, [shouldRefetch]);
 
-  useEffect(() => {
-    const fetchWalletBalance = async () => {
-      try {
-        const axiosInstance = createAxiosInstance();
-        const token = localStorage.getItem("token");
-
-        const walletResponse = await axiosInstance.get(
-          `/api/v1/starlink_user_wallet`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setWalletBalance(walletResponse.data.balance);
-      } catch (error) {
-        console.error("Error fetching wallet balance:", error);
-      }
-    };
-
-    fetchWalletBalance();
-  }, []);
-
   if (isLoading) {
     return (
       <>
@@ -455,46 +425,35 @@ const Home = () => {
           type="email"
           email={userData?.email}
           onVerify={handleEmailVerification}
-          handleEmailCodeVerification={handleEmailCodeVerification}
         />
       )}
-     {/* In Home.jsx, update the VerificationModal for phone verification like this: */}
-{showPhoneVerification && (
-  <VerificationModal
-    type="phone"
-    phone={userData?.phone_number}
-    onVerify={() => {}} // Provide an empty function if not used directly
-    handleRequestWhatsAppCode={handleRequestWhatsAppCode} // Pass the function as a prop
-    handlePhoneVerification={handlePhoneVerification}
-    onRequestCode={handleRequestWhatsAppCode} // Add this for the resend functionality
-  />
-)}
+      {showPhoneVerification && (
+        <VerificationModal
+          type="phone"
+          phone={userData?.whatsapp_number}
+          onVerify={handlePhoneVerification}
+          onRequestCode={handleRequestWhatsAppCode}
+        />
+      )}
       <div className="home-container">
         <div className="welcome-section">
           <div className="welcome-header">
             <h1>
-              Welcome back, {userData?.name}! {" "}
+              Welcome back, {userData?.name}!{" "}
               <span className="wave-emoji">👋</span>
             </h1>
           </div>
           <div className="welcome-actions">
-          <button
-              type="button"
-              className="fund-account-link"
-              onClick={handleAddStarlink}
-            >
-              + Add New Kit
-            </button>
+            <Link to="/profile" className="view-profile-button">
+              View Profile
+            </Link>
             <button
               type="button"
               className="fund-account-link"
               onClick={() => setShowFundAccountModal(true)}
             >
-              Fund Wallet
+              Fund Account
             </button>
-          </div>
-          <div className="wallet-balance">
-            <h3 className="balance-text">Wallet Balance: NGN {Number(walletBalance).toLocaleString()}</h3>
           </div>
         </div>
 
@@ -529,60 +488,70 @@ const Home = () => {
           </div>
 
           <div className="starlinks-content">
-            <div className="starlinks-table">
-              <div className="table-header">
-                <div className="header-cell">Kit Number</div>
-                <div className="header-cell">Service Line No.</div>
-                <div className="header-cell">Status</div>
-                <div className="header-cell">Actions</div>
-              </div>
-              {filteredStarlinks.length > 0 ? (
-                filteredStarlinks.map((starlink) => (
-                  <div key={starlink.id} className="starlink-card">
-                    <div className="starlink-item">
-                      <span className="label mobile-label">Kit Number:</span>
-                      <span className="value">{starlink.kit_number || "N/A"}</span>
-                    </div>
-                    <div className="starlink-item">
-                      <span className="label mobile-label">Service Line No.:</span>
-                      <span className="value">{starlink.service_line_number || "N/A"}</span>
-                    </div>
-                    <div className="starlink-item">
-                      <span className="label mobile-label">Status:</span>
-                      <span className={`status-badge ${mapStatus(starlink.status).class}`}>
-                        {mapStatus(starlink.status).text}
-                      </span>
-                    </div>
-                    <div className="starlink-item">
-                      <span className="label mobile-label">Actions:</span>
-                      {starlink.status === "accepted" ? (
-                        <button
-                          type="button"
-                          className="activate-button"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleActivateKit(starlink.id);
-                          }}
-                        >
-                          Activate
-                        </button>
-                      ) : shouldShowManageButton(starlink.status) ? (
-                        <button type="button" className="manage-button"
-                         onClick={(e) =>{
-                           handleKitClick(starlink.kit_number, starlink.id)
-                         }}>
-                          Manage
-                        </button>
-                      ) : null}
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="no-data">
-                  No Starlinks found
-                </div>
-              )}
+            <div className="table-container">
+              <table className="history-table">
+                <thead>
+                  <tr>
+                    <th className="table-header">Kit Number</th>
+                    <th className="table-header">Service Line No.</th>
+                    <th className="table-header">Status</th>
+                    <th className="table-header">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredStarlinks.map((starlink) => (
+                    <tr key={starlink.id}>
+                      <td className="table-cell">{starlink.kit_number || "N/A"}</td>
+                      <td className="table-cell">{starlink.service_line_number || "N/A"}</td>
+                      <td className="table-cell">
+                        <span className={`status-badge ${mapStatus(starlink.status).class}`}>
+                          {mapStatus(starlink.status).text}
+                        </span>
+                      </td>
+                      <td className="table-cell">
+                        {starlink.status === "accepted" ? (
+                          <button
+                            type="button"
+                            className="manage-button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleActivateKit(starlink.id);
+                            }}
+                          >
+                            Activate
+                          </button>
+                        ) : shouldShowManageButton(starlink.status) ? (
+                          <button
+                            type="button"
+                            className="manage-button"
+                            onClick={() => handleKitClick(starlink.kit_number, starlink.id)}
+                          >
+                            Manage
+                          </button>
+                        ) : null}
+                      </td>
+                    </tr>
+                  ))}
+                  {filteredStarlinks.length === 0 && (
+                    <tr>
+                      <td colSpan={4} className="table-cell no-data">
+                        No Starlinks found
+                      </td>
+                    </tr>
+                  )}
+                </tbody>
+              </table>
             </div>
+          </div>
+
+          <div className="add-starlink-section">
+            <button
+              type="button"
+              className="add-starlink-button"
+              onClick={handleAddStarlink}
+            >
+              + Add New Kit
+            </button>
           </div>
         </div>
       </div>

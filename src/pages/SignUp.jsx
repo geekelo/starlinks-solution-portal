@@ -56,41 +56,19 @@ const SignUp = () => {
       return;
     }
 
-    // Check if WhatsApp number starts with 0 and remove it
-    const whatsappNumber = formData.starlink_user.whatsappNumber.startsWith('0') 
-      ? formData.starlink_user.whatsappNumber.slice(1) 
-      : formData.starlink_user.whatsappNumber;
-
-    // Check if Phone number starts with 0 and remove it
-    const phoneNumber = formData.starlink_user.phoneNumber.startsWith('0') 
-      ? formData.starlink_user.phoneNumber.slice(1) 
-      : formData.starlink_user.phoneNumber;
-
     try {
       const axiosInstance = createAxiosInstance();
       const fullName = `${formData.starlink_user.firstName} ${formData.starlink_user.middleName} ${formData.starlink_user.lastName}`.trim();
-      const formattedWhatsappNumber = `${formData.starlink_user.whatsappCountryCode}${whatsappNumber}`;
-      const formattedPhoneNumber = `${formData.starlink_user.countryCode}${phoneNumber}`;
-
-      // Log the data being sent
-      console.log('Data being sent:', {
-        starlink_user: {
-          email: formData.starlink_user.email,
-          password: formData.starlink_user.password,
-          phone_number: formattedPhoneNumber,
-          name: fullName,
-          whatsapp_number: formattedWhatsappNumber,
-          confirm_password: formData.starlink_user.confirm_password,
-        }
-      });
+      const whatsappNumber = `${formData.starlink_user.whatsappCountryCode}${formData.starlink_user.whatsappNumber}`;
+      const phoneNumber = `${formData.starlink_user.countryCode}${formData.starlink_user.phoneNumber}`;
 
       const { data } = await axiosInstance.post('/api/v1/signup', {
         starlink_user: {
           email: formData.starlink_user.email,
           password: formData.starlink_user.password,
-          phone_number: formattedPhoneNumber,
+          phone_number: phoneNumber,
           name: fullName,
-          whatsapp_number: formattedWhatsappNumber,
+          whatsapp_number: whatsappNumber,
           confirm_password: formData.starlink_user.confirm_password,
         }
       });
@@ -152,78 +130,72 @@ const SignUp = () => {
             <form className="signup-form" onSubmit={handleSubmit}>
           <div className="name-fields">
             <div className="form-group">
-              <label htmlFor="firstName">First Name</label>
-              <input
-                type="text"
-                id="firstName"
-                name="firstName"
-                value={formData.starlink_user.firstName}
-                onChange={handleChange}
-                placeholder="First Name"
-                required
-              />
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    value={formData.starlink_user.firstName}
+                    onChange={handleChange}
+                    placeholder="First Name"
+                    required
+                  />
             </div>
 
             <div className="form-group">
-              <label htmlFor="middleName">Middle Name</label>
-              <input
-                type="text"
-                id="middleName"
-                name="middleName"
-                value={formData.starlink_user.middleName}
-                onChange={handleChange}
-                placeholder="Middle Name"
-              />
+                  <input
+                    type="text"
+                    id="middleName"
+                    name="middleName"
+                    value={formData.starlink_user.middleName}
+                    onChange={handleChange}
+                    placeholder="Middle Name"
+                  />
             </div>
 
             <div className="form-group">
-              <label htmlFor="lastName">Last Name</label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                value={formData.starlink_user.lastName}
-                onChange={handleChange}
-                placeholder="Last Name"
-                required
-              />
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    value={formData.starlink_user.lastName}
+                    onChange={handleChange}
+                    placeholder="Last Name"
+                    required
+                  />
             </div>
           </div>
 
           <div className="form-group">
-            <label htmlFor="email">Email Address</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.starlink_user.email}
-              onChange={handleChange}
-              placeholder="Email Address"
-              required
-            />
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.starlink_user.email}
+                  onChange={handleChange}
+                  placeholder="Email Address"
+                  required
+                />
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.starlink_user.password}
-              onChange={handleChange}
-              placeholder="Password"
-              required
-            />
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.starlink_user.password}
+                  onChange={handleChange}
+                  placeholder="Password"
+                  required
+                />
           </div>
 
           <div className="form-group">
-            <label htmlFor="confirmPassword">Confirm Password</label>
             <input
               type="password"
-              id="confirmPassword"
+                  id="confirmPassword"
               name="confirm_password"
-              value={formData.starlink_user.confirm_password}
-              onChange={handleChange}
+                  value={formData.starlink_user.confirm_password}
+                  onChange={handleChange}
               placeholder="Confirm Password"
               required
             />

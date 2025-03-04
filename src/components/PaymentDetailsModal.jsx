@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import '../styles/Modal.css';
 import { createAxiosInstance } from '../config/axios';
 import { toast } from 'react-toastify';
+import { useEffect } from 'react';
 import React from 'react';
 
 const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
@@ -51,6 +52,14 @@ const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
       toast.error('Failed to confirm payment. Please try again.');
     }
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose(); 
+    }, 15000); 
+
+    return () => clearTimeout(timer); 
+  }, [onClose]);
 
   return (
     <div className="modal-overlay">
