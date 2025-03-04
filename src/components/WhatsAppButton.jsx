@@ -1,6 +1,6 @@
 import React from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
-import './WhatsAppButton.css'; // Create a CSS file for styling
+import '../styles/WhatsAppButton.css'; // Create a CSS file for styling
 
 const WhatsAppButton = () => {
   const phoneNumber = '+2348028595303';
