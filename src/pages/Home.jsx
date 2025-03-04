@@ -219,7 +219,7 @@ const Home = () => {
 
   const mapStatus = (status) => {
     const statusMap = {
-      pending: { text: "awaiting approval", class: "awaiting-approval" },
+      pending: { text: "awaiting approval", class: "approved" },
       active: { text: "online", class: "online" },
       accepted: { text: "approved", class: "online" },
       inactive: { text: "expired", class: "offline" },
@@ -356,7 +356,6 @@ const Home = () => {
         nin: details.nin,
         company_name: details.company_name,
         company_number: details.company_number,
-        status: 'accepted',
       };
       
       
