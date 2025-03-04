@@ -52,14 +52,13 @@ const Billing = () => {
           headers: { Authorization: `Bearer ${token}` },
         })
         setFundingHistory(fundingResponse.data)
-        console.log(fundingResponse)
 
         // Fetch wallet data
         const walletResponse = await axiosInstance.get(`/api/v1/starlink_user_wallet`, {
           headers: { Authorization: `Bearer ${token}` },
         })
         setWalletData(walletResponse.data)
-        console.log(walletResponse)
+
       } catch (error) {
         console.error("Error fetching data:", error)
         toast.error("Failed to fetch billing data")
@@ -77,7 +76,6 @@ const Billing = () => {
   const paginatedHistory = filteredHistory?.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage)
 
   const handleFundAccountSubmit = (details) => {
-    console.log("Fund account details:", details)
     setShowFundAccountModal(false)
   }
 

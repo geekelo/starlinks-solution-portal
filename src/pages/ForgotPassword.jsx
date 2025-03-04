@@ -11,7 +11,7 @@ const ForgotPassword = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('Reset email sent to:', email);
+
     setIsSubmitted(true);
 
     setTimeout(() => {

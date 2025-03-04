@@ -88,8 +88,6 @@ const Home = () => {
         }
       );
 
-      console.log("Confirmation status:", data);
-
       // this property to true
 
       // Check email verification status
@@ -113,12 +111,12 @@ const Home = () => {
       setUserData(userData);
     } catch (error) {
       console.error("Error checking confirmation status:", error);
-      toast.error("Failed to check verification status");
+      // toast.error("Failed to check verification status");
     }
   };
 
   const handleEmailVerification = async () => {
-    console.log("Requesting email verification...");
+
     try {
       const axiosInstance = createAxiosInstance();
       const token = localStorage.getItem("token");
@@ -140,7 +138,7 @@ const Home = () => {
   };
 
   const handleEmailCodeVerification = async (code) => {
-    console.log("Verifying email code:", code);
+  
     try {
       const axiosInstance = createAxiosInstance();
       const token = localStorage.getItem("token");
@@ -273,7 +271,7 @@ const Home = () => {
   };
 
   const fetchKits = async () => {
-    console.log("Fetching kits...");
+
     const userData = JSON.parse(localStorage.getItem("userData"));
     if (!userData?.id) return;
 
@@ -286,14 +284,12 @@ const Home = () => {
         },
       });
 
-      console.log("Fetched Kits:", data);
-
       // Ensure data is always an array
       setStarlinks(Array.isArray(data) ? data : []);
       setFilteredStarlinks(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Error fetching kits:", error);
-      toast.error("Failed to fetch kits. Please try again.");
+      // toast.error("Failed to fetch kits. Please try again.");
       setStarlinks([]); // Set empty array on error
       setFilteredStarlinks([]);
     }
@@ -331,7 +327,7 @@ const Home = () => {
   };
 
   const handleActivationSubmit = (data) => {
-    console.log("Activation code:", data);
+
     setShowActivationModal(false);
     setShowDetailsModal(true);
     // Store the activation data temporarily
@@ -346,9 +342,6 @@ const Home = () => {
       const axiosInstance = createAxiosInstance();
       const token = localStorage.getItem("token");
       const kitNumber = localStorage.getItem('tempKitNumber');
-      
-      console.log("Temp activation data:", tempActivationData);
-      console.log("Details data:", details);
       
       // Make sure we have the activation data
       if (!tempActivationData) {
@@ -365,7 +358,6 @@ const Home = () => {
         company_number: details.company_number,
       };
       
-      console.log("Submitting combined data:", submissionData);
       
       // Clear temp data immediately
       const activationDataCopy = {...tempActivationData};
@@ -380,7 +372,6 @@ const Home = () => {
         }
       );
       
-      console.log("API response:", response);
       toast.success("Starlink kit added successfully!");
       setTempActivationData(null);
       await fetchKits();
@@ -398,7 +389,6 @@ const Home = () => {
   };
 
   const handleKitClick = (kit_number, kitId) => {
-    console.log("Navigating to kit:", { kit_number, kitId });
     navigate(`/dashboard/${kitId}`, {
       state: { kit_number },
     });

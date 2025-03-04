@@ -72,17 +72,6 @@ const SignUp = () => {
       const formattedWhatsappNumber = `${formData.starlink_user.whatsappCountryCode}${whatsappNumber}`;
       const formattedPhoneNumber = `${formData.starlink_user.countryCode}${phoneNumber}`;
 
-      // Log the data being sent
-      console.log('Data being sent:', {
-        starlink_user: {
-          email: formData.starlink_user.email,
-          password: formData.starlink_user.password,
-          phone_number: formattedPhoneNumber,
-          name: fullName,
-          whatsapp_number: formattedWhatsappNumber,
-          confirm_password: formData.starlink_user.confirm_password,
-        }
-      });
 
       const { data } = await axiosInstance.post('/api/v1/signup', {
         starlink_user: {
@@ -95,9 +84,6 @@ const SignUp = () => {
         }
       });
 
-      // Log the signup response data
-      console.log('Signup Response Data:', data);
-
       // // Create wallet for the user
       // try {
       //   const walletResponse = await axiosInstance.post('/api/v1/starlink_user_wallets', {
@@ -105,7 +91,6 @@ const SignUp = () => {
       //   });
 
       //   // Log the wallet response
-      //   console.log('Wallet Response:', walletResponse);
 
       //   // Save wallet ID in local storage
       //   localStorage.setItem('walletId', walletResponse.data.wallet_id);

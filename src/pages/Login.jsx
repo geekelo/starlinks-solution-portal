@@ -42,8 +42,6 @@ const Login = () => {
 
       localStorage.setItem('userData', JSON.stringify(data.user));
       localStorage.setItem('token', data.token);
-      
-      console.log('Login Response:', data);
 
       toast.success('Login successful!');
       setTimeout(() => {

@@ -22,7 +22,6 @@ const ActivationModal = ({ onClose, onActivate }) => {
         }
       );
 
-      console.log('Kit number check response:', data);
       return data.exists;
     } catch (error) {
       console.error('Error checking kit number:', error);

@@ -51,7 +51,7 @@ const FundAccountModal = ({ onClose, onSubmit, defaultAmount }) => {
           },
         }
       );
-      console.log('Funding Response:', response.data);
+
       toast.success('Wallet funded successfully!');
       onSubmit({
         referenceNumber: response.data.referenceNumber,

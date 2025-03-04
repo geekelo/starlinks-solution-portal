@@ -9,7 +9,6 @@ const EmailConfirmation = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('OTP submitted:', otp);
     // Add logic to verify the OTP here
     // For example, call an API to verify the OTP
     // If successful, navigate to the login page
@@ -18,7 +17,6 @@ const EmailConfirmation = () => {
 
   const handleResendOtp = async () => {
     // Logic to resend the OTP
-    console.log('Resending OTP...');
     // Call the API to resend the OTP
   };
 

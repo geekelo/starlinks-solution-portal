@@ -43,7 +43,7 @@ const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
           },
         }
         );
-      console.log('Confirmation Response:', response.data);
+     
       toast.success('Payment confirmed successfully!');
       onClose(); 
     } catch (error) {
