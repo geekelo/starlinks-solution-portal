@@ -490,7 +490,7 @@ const Home = () => {
 
         <div className="starlinks-section">
           <div className="starlinks-header">
-            <h2>Starlinks</h2>
+            <h2>Added Kit(s)</h2>
             <div className="starlinks-actions">
               <div className="search-container">
                 <input

@@ -69,10 +69,6 @@ const Billing = () => {
   }, [])
 
   // Filter and paginate the history
-  // const filteredHistory = fundingHistory?.filter(
-  //   (item) => selectedStatus === "all" || item.status === reverseMapStatus(selectedStatus),
-  // )
-
   const filteredHistory = Array.isArray(fundingHistory)
   ? fundingHistory.filter((item) => selectedStatus === "all" || item.status === reverseMapStatus(selectedStatus))
   : [];
