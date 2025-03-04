@@ -70,11 +70,11 @@ const Billing = () => {
   }, [])
 
   // Filter and paginate the history
-  const filteredHistory = fundingHistory.filter(
+  const filteredHistory = fundingHistory?.filter(
     (item) => selectedStatus === "all" || item.status === reverseMapStatus(selectedStatus),
   )
 
-  const paginatedHistory = filteredHistory.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage)
+  const paginatedHistory = filteredHistory?.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage)
 
   const handleFundAccountSubmit = (details) => {
     console.log("Fund account details:", details)
