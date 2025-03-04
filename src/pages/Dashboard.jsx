@@ -1,44 +1,44 @@
-"use client"
+"use client";
 
-import { useState, useEffect, useCallback } from "react"
-import { useParams, useNavigate } from "react-router-dom"
-import { toast } from "react-toastify"
-import { createAxiosInstance } from "../config/axios"
-import Navbar from "../components/Navbar"
-import "../styles/Dashboard.css"
-import FundAccountModal from "../components/FundAccountModal"
-import { Link } from "react-router-dom"
-import { FaLink } from "react-icons/fa"
-import WhatsAppButton from "../components/WhatsAppButton"
+import { useState, useEffect, useCallback } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { createAxiosInstance } from "../config/axios";
+import Navbar from "../components/Navbar";
+import "../styles/Dashboard.css";
+import FundAccountModal from "../components/FundAccountModal";
+import { Link } from "react-router-dom";
+import { FaLink } from "react-icons/fa";
+import WhatsAppButton from '../components/WhatsAppButton';
 
 const Dashboard = () => {
-  const { kitId } = useParams()
-  const navigate = useNavigate()
-  const [kitData, setKitData] = useState(null)
-  const [newAddress, setNewAddress] = useState("")
+  const { kitId } = useParams();
+  const navigate = useNavigate();
+  const [kitData, setKitData] = useState(null);
+  const [newAddress, setNewAddress] = useState("");
 
-  const [selectedPeriod, setSelectedPeriod] = useState("Feb - Mar")
+  const [selectedPeriod, setSelectedPeriod] = useState("Feb - Mar");
   const [graphData, setGraphData] = useState({
     date: "17 Feb",
     priorityUsage: 7.99,
     throttledUsage: 0,
-  })
+  });
 
-  const [currentPage, setCurrentPage] = useState(1)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const [isEditingAddress, setIsEditingAddress] = useState(false)
+  const [isEditingAddress, setIsEditingAddress] = useState(false);
 
-  const [renewalHistory, setRenewalHistory] = useState([])
-  const [selectedStatus, setSelectedStatus] = useState("all")
+  const [renewalHistory, setRenewalHistory] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState("all");
 
-  const [activeTab, setActiveTab] = useState("invoices")
+  const [activeTab, setActiveTab] = useState('invoices');
 
-  const [expirationDate, setExpirationDate] = useState(new Date())
-  const [currentDate] = useState(new Date())
-  const [isRenewButtonEnabled, setIsRenewButtonEnabled] = useState(false)
+  const [expirationDate, setExpirationDate] = useState(new Date());
+  const [currentDate] = useState(new Date());
+  const [isRenewButtonEnabled, setIsRenewButtonEnabled] = useState(false);
 
-  const [showFundAccountModal, setShowFundAccountModal] = useState(false)
+  const [showFundAccountModal, setShowFundAccountModal] = useState(false);
 
   const mapStatus = (apiStatus) => {
     const statusMap = {
@@ -50,87 +50,93 @@ const Dashboard = () => {
       unapproved: "declined",
       invoice: "invoice",
       receipt: "receipt",
-    }
-    return statusMap[apiStatus] || apiStatus
-  }
+    };
+    return statusMap[apiStatus] || apiStatus;
+  };
 
   const fetchKitDetails = useCallback(async () => {
-    const axiosInstance = createAxiosInstance()
-    const token = localStorage.getItem("token")
+    const axiosInstance = createAxiosInstance();
+    const token = localStorage.getItem("token");
     try {
       const response = await axiosInstance.get(`/api/v1/starlink_kits/${kitId}`, {
         headers: { Authorization: `Bearer ${token}` },
-      })
-
-      setKitData(response.data.kit)
-      setNewAddress(response.data.kit.address)
+      });
+      
+      setKitData(response.data.kit);
+      setNewAddress(response.data.kit.address);
     } catch (error) {
-      console.error("Error fetching kit details:", error)
-      toast.error("Failed to fetch kit details.")
+      console.error("Error fetching kit details:", error);
+      toast.error("Failed to fetch kit details.");
     }
-  }, [kitId])
+  }, [kitId]);
 
   const fetchRenewalHistory = useCallback(async () => {
-    const axiosInstance = createAxiosInstance()
-    const token = localStorage.getItem("token")
+    const axiosInstance = createAxiosInstance();
+    const token = localStorage.getItem("token");
     try {
       const response = await axiosInstance.get(`/api/v1/starlink_kit_renewals/user_kit_renewals?kit_id=${kitId}`, {
         headers: { Authorization: `Bearer ${token}` },
-      })
-
-      setRenewalHistory(response.data || [])
-
+      });
+      
+      setRenewalHistory(response.data || []);
+      
       if (response.data.length > 0) {
-        const lastRenewal = response.data[response.data.length - 1]
-        setExpirationDate(new Date(lastRenewal.deadline))
+        const lastRenewal = response.data[response.data.length - 1];
+        setExpirationDate(new Date(lastRenewal.deadline));
       }
     } catch (error) {
-      console.error("Error fetching renewal history:", error)
-      toast.error("Failed to fetch renewal history.")
+      console.error("Error fetching renewal history:", error);
+      toast.error("Failed to fetch renewal history.");
     }
-  }, [kitId])
+  }, [kitId]);
 
   useEffect(() => {
     if (kitId) {
-      fetchKitDetails()
+      fetchKitDetails();
     }
-  }, [kitId, fetchKitDetails])
+  }, [kitId, fetchKitDetails]);
 
   useEffect(() => {
     if (kitId) {
-      fetchRenewalHistory()
+      fetchRenewalHistory();
     }
-  }, [kitId, fetchRenewalHistory])
+  }, [kitId, fetchRenewalHistory]);
 
   useEffect(() => {
     // Simulating real-time data updates
     const updateInterval = setInterval(() => {
-      const newPriorityUsage = Math.min(8, Math.max(0, graphData.priorityUsage + (Math.random() - 0.5) * 0.5))
-      const newThrottledUsage = Math.min(8, Math.max(0, graphData.throttledUsage + (Math.random() - 0.5) * 0.2))
+      const newPriorityUsage = Math.min(
+        8,
+        Math.max(0, graphData.priorityUsage + (Math.random() - 0.5) * 0.5)
+      );
+      const newThrottledUsage = Math.min(
+        8,
+        Math.max(0, graphData.throttledUsage + (Math.random() - 0.5) * 0.2)
+      );
       setGraphData({
         date: graphData.date,
         priorityUsage: Number(newPriorityUsage.toFixed(2)),
         throttledUsage: Number(newThrottledUsage.toFixed(2)),
-      })
-    }, 5000) // Updates every 5 seconds
+      });
+    }, 5000); // Updates every 5 seconds
 
-    return () => clearInterval(updateInterval)
-  }, [graphData])
+    return () => clearInterval(updateInterval);
+  }, [graphData]);
 
   useEffect(() => {
-    setCurrentPage(1)
-  }, [])
+    setCurrentPage(1);
+  }, [selectedStatus, rowsPerPage]);
 
   useEffect(() => {
     // Check if the expiration date is within 7 days from the current date
-    const daysUntilExpiration = (expirationDate - currentDate) / (1000 * 60 * 60 * 24)
-    setIsRenewButtonEnabled(daysUntilExpiration <= 7)
-  }, [expirationDate, currentDate])
+    const daysUntilExpiration = (expirationDate - currentDate) / (1000 * 60 * 60 * 24);
+    setIsRenewButtonEnabled(daysUntilExpiration <= 7);
+  }, [expirationDate, currentDate]);
 
   const handleAddressChange = async (e) => {
-    e.preventDefault()
-    const token = localStorage.getItem("token")
-    const axiosInstance = createAxiosInstance()
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+    const axiosInstance = createAxiosInstance();
     try {
       await axiosInstance.put(
         `/api/v1/starlink_kits/kit_address_change_request?id=${kitId}`,
@@ -143,53 +149,57 @@ const Dashboard = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        },
-      )
-      toast.success("Address updated successfully!")
-      fetchKitDetails() // Refresh the kit data
-      setIsEditingAddress(false) // Close the modal
+        }
+      );
+      toast.success("Address updated successfully!");
+      fetchKitDetails(); // Refresh the kit data
+      setIsEditingAddress(false); // Close the modal
     } catch (error) {
-      console.error("Error updating address:", error)
-      toast.error("Failed to update address.")
+      console.error("Error updating address:", error);
+      toast.error("Failed to update address.");
     }
-  }
+  };
 
   const handleDownloadPDF = async (renewalId) => {
     try {
-      const axiosInstance = createAxiosInstance()
-      const token = localStorage.getItem("token")
-
-      const response = await axiosInstance.get(`/api/v1/starlink_kit_renewals/${renewalId}/download_pdf`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        responseType: "blob", // Important for handling PDF data
-      })
+      const axiosInstance = createAxiosInstance();
+      const token = localStorage.getItem("token");
+      
+      const response = await axiosInstance.get(
+        `/api/v1/starlink_kit_renewals/${renewalId}/download_pdf`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          responseType: 'blob' // Important for handling PDF data
+        }
+      );
 
       // Create a blob from the PDF data
-      const blob = new Blob([response.data], { type: "application/pdf" })
-      const url = window.URL.createObjectURL(blob)
-
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+      
       // Create a temporary link and trigger download
-      const link = document.createElement("a")
-      link.href = url
-      link.setAttribute("download", `renewal-${renewalId}.pdf`)
-      document.body.appendChild(link)
-      link.click()
-
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `renewal-${renewalId}.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      
       // Cleanup
-      link.remove()
-      window.URL.revokeObjectURL(url)
-      toast.success("PDF downloaded successfully!")
+      link.remove();
+      window.URL.revokeObjectURL(url);
+      toast.success("PDF downloaded successfully!");
+      
     } catch (error) {
-      console.error("Error downloading PDF:", error)
-      toast.error("Failed to download PDF. Please try again.")
+      console.error("Error downloading PDF:", error);
+      toast.error("Failed to download PDF. Please try again.");
     }
-  }
+  };
 
   const handleRenew = async () => {
-    const axiosInstance = createAxiosInstance()
-    const token = localStorage.getItem("token")
+    const axiosInstance = createAxiosInstance();
+    const token = localStorage.getItem("token");
 
     try {
       const response = await axiosInstance.post(
@@ -199,28 +209,27 @@ const Dashboard = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        },
-      )
+        }
+      );
 
-      toast.success("Renewal successful!")
+      toast.success("Renewal successful!");
       // Handle any additional logic after successful renewal
+
     } catch (error) {
-      console.error("Error renewing kit:", error)
+      console.error("Error renewing kit:", error);
       if (error.response.data.amount_due) {
-        setShowFundAccountModal(true) // Show the fund account modal
+        setShowFundAccountModal(true); // Show the fund account modal
       } else {
-        toast.error("Failed to renew kit. Please try again.")
+        toast.error("Failed to renew kit. Please try again.");
       }
     }
-  }
+  };
 
   return (
     <>
       <Navbar />
       <div className="dashboard-container">
-        <button onClick={() => navigate(-1)} className="back-button">
-          Back
-        </button>
+        <button onClick={() => navigate(-1)} className="back-button">Back</button>
         <div className="page-header">
           <div className="header-navigation">
             <h1>{kitData?.company_name || "Loading..."}</h1>
@@ -231,7 +240,12 @@ const Dashboard = () => {
           <div className="left-panel">
             <div className="panel-header">
               <h2>{kitData?.company_name || "Loading..."}</h2>
-              <button type="button" className="edit-button" aria-label="Edit" onClick={() => setIsEditingAddress(true)}>
+              <button
+                type="button"
+                className="edit-button"
+                aria-label="Edit"
+                onClick={() => setIsEditingAddress(true)}
+              >
                 Edit
               </button>
             </div>
@@ -240,6 +254,7 @@ const Dashboard = () => {
               <p>{kitData?.address || "Loading..."}</p>
               <h3>Kit Number</h3>
               <p>{kitData?.kit_number || "Loading..."}</p>
+
 
               <h3>Company Number</h3>
               <p>{kitData?.company_number || "N/A"}</p>
@@ -255,7 +270,10 @@ const Dashboard = () => {
           <div className="center-panel">
             <div className="usage-section">
               <div className="upcoming-update-notice">
-                <p>Upcoming Update: Real-time usage graph will be implemented soon.</p>
+                <p>
+                  Upcoming Update: Real-time usage graph will be implemented
+                  soon.
+                </p>
               </div>
               <div className="usage-header">
                 <div className="usage-titles">
@@ -272,7 +290,9 @@ const Dashboard = () => {
                     <h2>
                       Total Throttled Usage:
                       <div className="usage-value">
-                        <span className="value">{graphData.throttledUsage}</span>
+                        <span className="value">
+                          {graphData.throttledUsage}
+                        </span>
                         <span className="unit">GB</span>
                       </div>
                     </h2>
@@ -288,7 +308,11 @@ const Dashboard = () => {
                     <option value="Feb - Mar">Feb - Mar</option>
                     <option value="Jan - Feb">Jan - Feb</option>
                   </select>
-                  <button type="button" className="download-button" aria-label="Download Data">
+                  <button
+                    type="button"
+                    className="download-button"
+                    aria-label="Download Data"
+                  >
                     Download
                   </button>
                 </div>
@@ -316,11 +340,13 @@ const Dashboard = () => {
                     />
                   </div>
                   <div className="x-axis">{graphData.date}</div>
+
                 </div>
               </div>
             </div>
           </div>
-        </div>
+          </div>
+
 
         <div className="starlink-info-footer">
           <div className="account-history-header">
@@ -330,8 +356,7 @@ const Dashboard = () => {
             <div className="info-item">
               <div className="info-label">Billing period</div>
               <div className="info-value">
-                Your current subscription expires{" "}
-                <span className="expiration-date">{expirationDate.toLocaleDateString()}</span>
+                Your current subscription expires <span className="expiration-date">{expirationDate.toLocaleDateString()}</span>
               </div>
             </div>
             <div className="info-item">
@@ -352,146 +377,154 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-
+        
         <div className="renewal-history-section">
-          <div className="card-header">
-            <h2>Renewal History</h2>
-            <div className="tabs">
-              <button
-                className={`tab ${activeTab === "invoices" ? "active" : ""}`}
-                onClick={() => setActiveTab("invoices")}
-              >
-                Next Payment
-              </button>
-              <button
-                className={`tab ${activeTab === "receipts" ? "active" : ""}`}
-                onClick={() => setActiveTab("receipts")}
-              >
-                Receipts
-              </button>
+            <div className="card-header">
+              <h2>Renewal History</h2>
+              <div className="tabs">
+                <button 
+                  className={`tab ${activeTab === 'invoices' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('invoices')}
+                >
+                  Next Payment
+                </button>
+                <button 
+                  className={`tab ${activeTab === 'receipts' ? 'active' : ''}`}
+                  onClick={() => setActiveTab('receipts')}
+                >
+                  Receipts
+                </button>
+              </div>
             </div>
-          </div>
 
-          <div className="table-container">
+            <div className="table-container">
             <div className="warning-text">
-              Please ensure you have sufficient wallet balance before renewing your kit to avoid any interruptions.
-              <Link to="/billing" className="billing-link">
-                Fund your wallet <FaLink style={{ marginLeft: "4px" }} />
-              </Link>
-            </div>
-
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Amount</th>
-                  <th>{activeTab === "receipts" ? "Date of Renewal" : "Deadline"}</th>
-                  <th>Month</th>
-                  <th>Year</th>
-                  <th>Download</th>
-                  <th>Duration</th>
-                </tr>
-              </thead>
-              <tbody>
-                {renewalHistory
-                  .filter((item) => {
-                    if (activeTab === "invoices") {
-                      return item.status === "invoice"
-                    } else {
-                      return item.status === "receipt"
-                    }
-                  })
-                  .slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage)
-                  .map((item) => (
-                    <tr key={item.id}>
-                      <td>
-                        <div className="mobile-label">Amount:</div>
-                        NGN {Number(item.amount).toLocaleString()}
-                      </td>
-                      <td>
-                        <div className="mobile-label">{activeTab === "receipts" ? "Date of Renewal" : "Deadline"}:</div>
-                        <span className={`status-badge ${activeTab === "receipts" ? "online" : "offline"}`}>
-                          {new Date(item.created_at).toLocaleDateString()}
-                        </span>
-                      </td>
-                      <td>
-                        <div className="mobile-label">Month:</div>
-                        {new Date(item.created_at).toLocaleString("default", { month: "long" })}
-                      </td>
-                      <td>
-                        <div className="mobile-label">Year:</div>
-                        {new Date(item.created_at).getFullYear()}
-                      </td>
-                      <td>
-                        <div className="mobile-label">Download:</div>
-                        <button className="action-button" onClick={() => handleDownloadPDF(item.id)}>
-                          Download PDF
-                        </button>
-                      </td>
-                      <td>
-                        <div className="mobile-label">Duration:</div>
-                        {item.start_date || "Start Date"} - {item.end_date || "End Date"}
+          Please ensure you have sufficient wallet balance before renewing your kit to avoid any interruptions. 
+          <Link to="/billing" className="billing-link">
+            Fund your wallet <FaLink style={{ marginLeft: '4px' }} />
+          </Link>
+        </div>
+              <table className="history-table">
+                <thead>
+                  <tr>
+                    <th className="table-header">Amount</th>
+                    <th className="table-header">{activeTab === 'receipts' ? 'Date of Renewal' : 'Deadline'}</th>
+                    <th className="table-header">Month</th>
+                    <th className="table-header">Year</th>
+                    <th className="table-header">Download</th>
+                    <th className="table-header">Duration</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {renewalHistory
+                    .filter(item => {
+                      if (activeTab === 'invoices') {
+                        return item.status === 'invoice';
+                      } else {
+                        return item.status === 'receipt';
+                      }
+                    })
+                    .slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage)
+                    .map((item) => (
+                      <tr key={item.id}>
+                        <td className="table-cell">NGN {Number(item.amount).toLocaleString()}</td>
+                        <td>
+                          <span className={`status-badge ${activeTab === 'receipts' ? 'online' : 'offline'}`}>
+                            {new Date(item.created_at).toLocaleDateString()}
+                          </span>
+                        </td>
+                        <td className="table-cell">{new Date(item.created_at).toLocaleString('default', { month: 'long' })}</td>
+                        <td className="table-cell">{new Date(item.created_at).getFullYear()}</td>
+                        <td className="table-cell">
+                          <button
+                            className="download-btn"
+                            onClick={() => handleDownloadPDF(item.id)}
+                          >
+                            <span>Download PDF</span>
+                            <svg 
+                              xmlns="http://www.w3.org/2000/svg" 
+                              width="16" 
+                              height="16" 
+                              viewBox="0 0 24 24" 
+                              fill="none" 
+                              stroke="currentColor" 
+                              strokeWidth="2" 
+                              strokeLinecap="round" 
+                              strokeLinejoin="round"
+                              style={{ marginLeft: '8px' }}
+                            >
+                              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                              <polyline points="7 10 12 15 17 10" />
+                              <line x1="12" y1="15" x2="12" y2="3" />
+                            </svg>
+                          </button>
+                        </td>
+                        <td className="table-cell">{item.start_date || `Start Date`}- {item.end_date || `End Date`}</td>
+                      </tr>
+                    ))}
+                  {renewalHistory.length === 0 && (
+                    <tr>
+                      <td colSpan={5} className="table-cell no-data">
+                        No {activeTab} found
                       </td>
                     </tr>
-                  ))}
-                {renewalHistory.length === 0 && (
-                  <tr>
-                    <td colSpan={6} className="no-data">
-                      No {activeTab} found
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
+                  )}
+                </tbody>
+              </table>
+            </div>
 
-          <div className="table-footer">
-            <div className="rows-per-page">
-              Rows per page:
-              <select
-                value={rowsPerPage}
-                onChange={(e) => setRowsPerPage(Number(e.target.value))}
-                className="rows-select"
-              >
-                <option value="10">10</option>
-                <option value="20">20</option>
-                <option value="50">50</option>
-              </select>
-            </div>
-            <div className="pagination">
-              <span>
-                {renewalHistory.length > 0
-                  ? `${(currentPage - 1) * rowsPerPage + 1} - ${Math.min(
-                      currentPage * rowsPerPage,
-                      renewalHistory.length,
-                    )} of ${renewalHistory.length}`
-                  : "0 of 0"}
-              </span>
-              <button
-                type="button"
-                className="pagination-arrow"
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage((prev) => prev - 1)}
-              >
-                ‹
-              </button>
-              <button
-                type="button"
-                className="pagination-arrow"
-                disabled={currentPage * rowsPerPage >= renewalHistory.length}
-                onClick={() => setCurrentPage((prev) => prev + 1)}
-              >
-                ›
-              </button>
-            </div>
-          </div>
-        </div>
+            <div className="table-footer">
+              <div className="rows-per-page">
+                Rows per page:
+                <select
+                  value={rowsPerPage}
+                  onChange={(e) => setRowsPerPage(Number(e.target.value))}
+                  className="rows-select"
+                >
+                  <option value="10">10</option>
+                  <option value="20">20</option>
+                  <option value="50">50</option>
+                </select>
+              </div>
+              <div className="pagination">
+                <span>
+                  {renewalHistory.length > 0
+                    ? `${(currentPage - 1) * rowsPerPage + 1} - ${Math.min(
+                        currentPage * rowsPerPage,
+                        renewalHistory.length,
+                      )} of ${renewalHistory.length}`
+                    : "0 of 0"}
+                </span>
+                <button
+                  type="button"
+                  className="pagination-arrow"
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((prev) => prev - 1)}
+                >
+                  ‹
+                </button>
+                <button
+                  type="button"
+                  className="pagination-arrow"
+                  disabled={currentPage * rowsPerPage >= renewalHistory.length}
+                  onClick={() => setCurrentPage((prev) => prev + 1)}
+                >
+                  ›
+                </button>
+              </div>
+              </div>
+             </div> 
 
         {isEditingAddress && (
           <div className="modal-overlay">
             <div className="modal-content">
               <div className="modal-header">
                 <h2>Edit Kit Address</h2>
-                <button type="button" className="close-button" onClick={() => setIsEditingAddress(false)}>
+                <button
+                  type="button"
+                  className="close-button"
+                  onClick={() => setIsEditingAddress(false)}
+                >
                   ×
                 </button>
               </div>
@@ -507,7 +540,11 @@ const Dashboard = () => {
                   />
                 </div>
                 <div className="modal-actions">
-                  <button type="button" className="cancel-button" onClick={() => setIsEditingAddress(false)}>
+                  <button
+                    type="button"
+                    className="cancel-button"
+                    onClick={() => setIsEditingAddress(false)}
+                  >
                     Cancel
                   </button>
                   <button type="submit" className="submit-button">
@@ -520,11 +557,14 @@ const Dashboard = () => {
         )}
       </div>
 
-      {showFundAccountModal && <FundAccountModal onClose={() => setShowFundAccountModal(false)} />}
+      {showFundAccountModal && (
+        <FundAccountModal
+          onClose={() => setShowFundAccountModal(false)}
+        />
+      )}
       <WhatsAppButton />
     </>
-  )
-}
+  );
+};
 
-export default Dashboard
-
+export default Dashboard;

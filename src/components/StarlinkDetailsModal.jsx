@@ -84,6 +84,19 @@ const StarlinkDetailsModal = ({ onClose, onSubmit }) => {
             />
           </div>
 
+
+          <div className="form-group">
+            <label htmlFor="company_number">Company Registration Number (Optional)</label>
+            <input
+              type="text"
+              id="company_number"
+              name="company_number"
+              value={formData.company_number}
+              onChange={handleChange}
+              aria-labelledby="company_number"
+            />
+          </div>
+
           <div className="modal-actions">
             <button type="button" className="cancel-button" onClick={onClose}>
               Cancel

@@ -134,65 +134,8 @@
 /* Column width distribution */
 @media (min-width: 1024px) {
   .starlinks-table {
-    display: table;
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  .table-header {
-    display: table-header-group;
-    background-color: #1a2c42;
-  }
-
-  .header-cell {
-    display: table-cell;
-    padding: 15px;
-    font-weight: bold;
-    color: #e0e0e0;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-  }
-
-  .starlink-card {
-    display: table-row;
-  }
-
-  .starlink-item {
-    display: table-cell;
-    padding: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    vertical-align: middle;
-  }
-
-  .starlink-item .label {
-    font-weight: bold;
-    color: #e0e0e0;
-  }
-
-  .starlink-item .value {
-    color: white;
-  }
-
-  .status-badge {
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-  }
-
-  .manage-button {
-    padding: 0.5rem 1rem;
-    background-color: #00adef;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-
-  .manage-button:hover {
-    background-color: #0099d6;
-  }
-
-  .add-starlink-section {
-    text-align: center;
-    margin-top: 20px;
+    max-width: none;
+    margin: 0 auto;
   }
 
   .header-cell:first-child,
@@ -227,31 +170,8 @@
     font-size: 0.875rem;
   }
 
-  .mobile-label {
-    display: none; /* Hide labels on larger screens */
-  }
-}
-
-/* Mobile view adjustments */
-@media (max-width: 1023px) {
-  .starlinks-table {
-    display: block; /* Use block layout for mobile */
-  }
-
-  .starlink-card {
-    display: block; /* Display each starlink as a block */
-    margin-bottom: 20px; /* Add spacing between items */
-    border: 1px solid rgba(255, 255, 255, 0.1); /* Add border for separation */
-    padding: 15px; /* Add padding for better spacing */
-  }
-
-  .starlink-item {
-    display: block; /* Display items as block */
-    margin-bottom: 10px; /* Add spacing between items */
-  }
-
-  .header-cell {
-    display: none; /* Hide header cells on mobile */
+  .add-starlink-section {
+    text-align: right;
   }
 }
 
@@ -284,45 +204,36 @@
   }
 
   .starlinks-table {
+    display: block;
+    overflow-x: auto;
+    margin: 0;
+  }
+
+  .header-cell,
+  .table-row td {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .header-cell {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .table-row {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .starlink-card {
-    color: white;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin-bottom: 1rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    font-size: 1.1rem;
-  }
-
-  .starlink-item {
+  .table-row td {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 0.5rem;
+    padding: 10px;
+    border: none;
   }
 
-  .label {
-    font-weight: bold;
-    color: white
-  }
-
-  .value {
-    color: white;
-  }
-
-  .status-badge {
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-  }
-
-  .no-data {
-    text-align: center;
-    padding: 1rem;
-    color: #999;
+  .table-row td:not(:last-child) {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .welcome-actions {
@@ -403,7 +314,7 @@
 
 .welcome-actions {
   display: flex;
-  gap: 1rem;
+  gap: 1.5rem;
   align-items: center;
 }
 
@@ -557,45 +468,5 @@ body {
 
 .cancel-btn:hover {
   background-color: rgba(255, 255, 255, 0.1);
-}
-
-.welcome-actions {
-  display: flex;
-  gap: 1rem;
-}
-
-.fund-account-link,
-.fund-wallet-button {
-  background-color: #00adef;
-  color: white;
-  border: none;
-  padding: 0.75rem 1.5rem;
-  border-radius: 4px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  display: flex;
-  align-items: center;
-}
-
-.fund-wallet-button {
-  background-color: #007bb5;
-}
-
-.fund-account-link:hover,
-.fund-wallet-button:hover {
-  background-color: #0099d6;
-}
-
-.balance-text {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #00adef;
-  margin-top: 1rem;
-  padding: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.05);
-  text-align: center;
 }
 
