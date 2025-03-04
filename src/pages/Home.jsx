@@ -356,6 +356,7 @@ const Home = () => {
         nin: details.nin,
         company_name: details.company_name,
         company_number: details.company_number,
+        status: 'accepted',
       };
       
       
