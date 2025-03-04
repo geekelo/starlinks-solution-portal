@@ -131,7 +131,7 @@ const Billing = () => {
               <div className="card-header">
                 <h2>Balance</h2>
                 <button type="button" className="pay-button" onClick={() => setShowFundAccountModal(true)}>
-                  Fund Wallet
+                  + Fund Wallet
                 </button>
               </div>
               <div className="amount-display">

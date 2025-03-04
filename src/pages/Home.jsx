@@ -480,7 +480,7 @@ const Home = () => {
               className="fund-account-link"
               onClick={() => setShowFundAccountModal(true)}
             >
-              Fund Wallet
+              + Fund Wallet
             </button>
           </div>
           <div className="wallet-balance">
