@@ -463,9 +463,17 @@ const Home = () => {
         <div className="welcome-section">
           <div className="welcome-header">
             <h1>
-              Welcome back, {userData?.name}! {" "}
+              Welcome back
               <span className="wave-emoji">👋</span>
             </h1>
+            <p>{userData?.name}</p>
+
+
+            <div className="wallet-balance">
+              <h3 className="balance-text">Wallet Balance: 
+                <br/>
+                NGN {Number(walletBalance).toLocaleString()}</h3>
+            </div>
           </div>
           <div className="welcome-actions">
           <button
@@ -482,9 +490,6 @@ const Home = () => {
             >
               + Fund Wallet
             </button>
-          </div>
-          <div className="wallet-balance">
-            <h3 className="balance-text">Wallet Balance: NGN {Number(walletBalance).toLocaleString()}</h3>
           </div>
         </div>
 
