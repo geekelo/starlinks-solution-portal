@@ -1,15 +1,12 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import Navbar from "../components/Navbar"
 import "../styles/Billing.css"
 import { createAxiosInstance } from "../config/axios"
 import FundAccountModal from "../components/FundAccountModal"
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { FaEye } from "react-icons/fa";
-import WhatsAppButton from '../components/WhatsAppButton';
-
+import { ToastContainer, toast } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import { FaInfoCircle } from "react-icons/fa"
+import WhatsAppButton from "../components/WhatsAppButton"
 
 const Billing = () => {
   const [selectedStatus, setSelectedStatus] = useState("all")
@@ -91,36 +88,35 @@ const Billing = () => {
 
   const handleConfirmPayment = async (fundingId) => {
     try {
-      const axiosInstance = createAxiosInstance();
-      const token = localStorage.getItem("token");
-      
+      const axiosInstance = createAxiosInstance()
+      const token = localStorage.getItem("token")
+
       await axiosInstance.put(
         `/api/v1/starlink_wallet_fundings/confirm_request?id=${fundingId}`,
         {
           starlink_wallet_funding: {
-            paid: "yes"
-          }
+            paid: "yes",
+          },
         },
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
-      );
+        },
+      )
 
-      toast.success("Payment confirmed successfully!");
-      
+      toast.success("Payment confirmed successfully!")
+
       // Refresh the funding history
       const fundingResponse = await axiosInstance.get(`/api/v1/starlink_wallet_fundings`, {
         headers: { Authorization: `Bearer ${token}` },
-      });
-      setFundingHistory(fundingResponse.data);
-      
+      })
+      setFundingHistory(fundingResponse.data)
     } catch (error) {
-      console.error("Error confirming payment:", error);
-      toast.error("Failed to confirm payment. Please try again.");
+      console.error("Error confirming payment:", error)
+      toast.error("Failed to confirm payment. Please try again.")
     }
-  };
+  }
 
   return (
     <>
@@ -145,7 +141,7 @@ const Billing = () => {
                 <span className="amount">{walletData?.balance || "0.00"}</span>
               </div>
               <div className="warning-message">
-                <FaEye style={{ marginRight: '4px' }} />
+                <FaInfoCircle style={{ marginRight: "4px" }} />
                 Always keep your wallet funded with at least NGN 120,000
               </div>
             </div>
@@ -178,7 +174,7 @@ const Billing = () => {
               </div>
 
               <div className="table-container">
-                <table className="history-table">
+                <table className="table">
                   <thead>
                     <tr>
                       <th>Date</th>
@@ -190,21 +186,28 @@ const Billing = () => {
                   <tbody>
                     {paginatedHistory.map((item) => (
                       <tr key={item.id}>
-                        <td>{new Date(item.created_at).toLocaleDateString()}</td>
-                        <td>{item.reference}</td>
-                        <td>NGN {Number(item.amount).toLocaleString()}</td>
-                        <td className="status-cell">
-                          <span className={`status-badge ${mapStatus(item.status)}`}>
-                            {mapStatus(item.status)}
-                          </span>
-                          {item.status === 'pending' && mapStatus(item.status) === 'unconfirmed' && (
-                            <button
-                              className="confirm-btn"
-                              onClick={() => handleConfirmPayment(item.id)}
-                            >
-                              Confirm
-                            </button>
-                          )}
+                        <td>
+                          <div className="mobile-label">Date:</div>
+                          {new Date(item.created_at).toLocaleDateString()}
+                        </td>
+                        <td>
+                          <div className="mobile-label">Reference:</div>
+                          {item.reference}
+                        </td>
+                        <td>
+                          <div className="mobile-label">Amount:</div>
+                          NGN {Number(item.amount).toLocaleString()}
+                        </td>
+                        <td>
+                          <div className="mobile-label">Status:</div>
+                          <div className="status-cell">
+                            <span className={`status-badge ${mapStatus(item.status)}`}>{mapStatus(item.status)}</span>
+                            {item.status === "pending" && mapStatus(item.status) === "unconfirmed" && (
+                              <button className="action-button" onClick={() => handleConfirmPayment(item.id)}>
+                                Confirm
+                              </button>
+                            )}
+                          </div>
                         </td>
                       </tr>
                     ))}
