@@ -476,19 +476,20 @@ const Home = () => {
             </div>
           </div>
           <div className="welcome-actions">
-          <button
-              type="button"
-              className="fund-account-link"
-              onClick={handleAddStarlink}
-            >
-              + Add New Kit
-            </button>
+
             <button
               type="button"
               className="fund-account-link"
               onClick={() => setShowFundAccountModal(true)}
             >
               + Fund Wallet
+            </button>
+            <button
+              type="button"
+              className="fund-account-link"
+              onClick={handleAddStarlink}
+            >
+              + Add New Kit
             </button>
           </div>
         </div>
