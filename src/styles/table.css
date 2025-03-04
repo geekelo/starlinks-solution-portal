@@ -1,0 +1,120 @@
+/* Common table styles to be imported by both Billing.css and Dashboard.css */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    background: #0f2439;
+    border-radius: 8px;
+  }
+  
+  .table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: white;
+  }
+  
+  .table th {
+    text-align: left;
+    padding: 1rem 1.5rem;
+    color: #94a3b8;
+    font-weight: 500;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .table tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .table tr:hover {
+    background: rgba(255, 255, 255, 0.05);
+  }
+  
+  .mobile-label {
+    display: none;
+    color: #94a3b8;
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+  }
+  
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.4rem 0.8rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+  }
+  
+  .status-badge.online {
+    background-color: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+  }
+  
+  .status-badge.offline {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+  }
+  
+  .status-badge.awaiting {
+    background-color: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+  }
+  
+  .action-button {
+    background-color: #1e3a8a;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.2s;
+  }
+  
+  .action-button:hover {
+    background-color: #1e40af;
+  }
+  
+  @media (max-width: 768px) {
+    .table thead {
+      display: none;
+    }
+  
+    .table,
+    .table tbody,
+    .table tr,
+    .table td {
+      display: block;
+      width: 100%;
+    }
+  
+    .table tr {
+      margin-bottom: 1rem;
+      background: #1a2c42;
+      border-radius: 8px;
+      padding: 1rem;
+    }
+  
+    .table td {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 0;
+      border: none;
+    }
+  
+    .mobile-label {
+      display: block;
+    }
+  
+    .table tr:hover {
+      background: #1a2c42;
+    }
+  }
+  
+  
