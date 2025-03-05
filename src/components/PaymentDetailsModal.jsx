@@ -6,8 +6,9 @@ import React from 'react';
 
 const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
   const { referenceNumber, method } = paymentDetails;
-  const reference = localStorage.getItem('walletId');
+  const reference = localStorage.getItem('reference');
   const fundingId = localStorage.getItem('fundingId');
+  const amount = localStorage.getItem('PaymentAmount');
   const bankDetails = {
     bankName: 'Kuda Microfinance Bank',
     accountNumber: '3000865987',
@@ -44,7 +45,7 @@ const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
         }
         );
      
-      toast.success('Payment confirmed successfully!');
+      toast.success('Thanks for confirming, your wallet would be credited when payment is received!');
       onClose(); 
     } catch (error) {
       console.error('Error confirming payment:', error);
@@ -73,6 +74,10 @@ const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
               <div className="info-group">
                 <label>Bank Name</label>
                 <p>{bankDetails.bankName}</p>
+              </div>
+              <div className="info-group">
+                <label>Amount</label>
+                <p>{amount}</p>
               </div>
               <div className="info-group">
                 <label>Account Number</label>

@@ -219,7 +219,7 @@ const Home = () => {
 
   const mapStatus = (status) => {
     const statusMap = {
-      pending: { text: "awaiting approval", class: "awaiting-approval" },
+      pending: { text: "awaiting approval", class: "approved" },
       active: { text: "online", class: "online" },
       accepted: { text: "approved", class: "online" },
       inactive: { text: "expired", class: "offline" },
@@ -476,19 +476,20 @@ const Home = () => {
             </div>
           </div>
           <div className="welcome-actions">
-          <button
-              type="button"
-              className="fund-account-link"
-              onClick={handleAddStarlink}
-            >
-              + Add New Kit
-            </button>
+
             <button
               type="button"
               className="fund-account-link"
               onClick={() => setShowFundAccountModal(true)}
             >
               + Fund Wallet
+            </button>
+            <button
+              type="button"
+              className="fund-account-link"
+              onClick={handleAddStarlink}
+            >
+              + Add New Kit
             </button>
           </div>
         </div>

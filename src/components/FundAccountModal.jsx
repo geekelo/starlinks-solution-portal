@@ -33,6 +33,7 @@ const FundAccountModal = ({ onClose, onSubmit, defaultAmount }) => {
     
     const token = localStorage.getItem('token');
     const walletId = localStorage.getItem('starlink_walletId');
+    localStorage.setItem('PaymentAmount', formData.amount);
   
     const payload = {
       starlink_wallet_funding: {
@@ -52,7 +53,7 @@ const FundAccountModal = ({ onClose, onSubmit, defaultAmount }) => {
         }
       );
 
-      toast.success('Wallet funded successfully!');
+      toast.success('Funding process  started. Please proceed to make payment.');
       onSubmit({
         referenceNumber: response.data.referenceNumber,
         method: formData.paymentMethod,
@@ -60,6 +61,8 @@ const FundAccountModal = ({ onClose, onSubmit, defaultAmount }) => {
       });
       onClose(); // Close the modal after successful funding
       localStorage.setItem('fundingId', response.data.funding.id);
+      localStorage.setItem('reference', response.data.funding.reference);
+      console.log(response.data.funding.reference)
     } catch (error) {
       console.error('Error funding wallet:', error);
       toast.error('Failed to fund wallet. Please try again.');
