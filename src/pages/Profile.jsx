@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import { createAxiosInstance } from '../config/axios';
 import '../styles/Profile.css';
 import WhatsAppButton from '../components/WhatsAppButton';
+import BackButton from '../components/BackButton';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -117,6 +118,7 @@ const Profile = () => {
 
   return (
     <>
+      <BackButton />
       <Navbar />
       <div className="profile-container">
         <div className="profile-header">
