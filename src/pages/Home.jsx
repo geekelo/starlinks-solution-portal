@@ -219,7 +219,7 @@ const Home = () => {
 
   const mapStatus = (status) => {
     const statusMap = {
-      pending: { text: "awaiting approval", class: "approved" },
+      pending: { text: "approved", class: "approved" },
       active: { text: "online", class: "online" },
       accepted: { text: "approved", class: "online" },
       inactive: { text: "expired", class: "offline" },
@@ -551,7 +551,7 @@ const Home = () => {
                     </div>
                     <div className="starlink-item">
                       <span className="label mobile-label">Actions:</span>
-                      {starlink.status === "accepted" ? (
+                      {starlink.status === "accepted" || "pending" ? (
                         <button
                           type="button"
                           className="activate-button"
