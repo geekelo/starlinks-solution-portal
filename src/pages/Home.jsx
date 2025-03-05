@@ -219,7 +219,7 @@ const Home = () => {
 
   const mapStatus = (status) => {
     const statusMap = {
-      pending: { text: "approved", class: "approved" },
+      pending: { text: "approved", class: "online" },
       active: { text: "online", class: "online" },
       accepted: { text: "approved", class: "online" },
       inactive: { text: "expired", class: "offline" },
