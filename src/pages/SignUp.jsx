@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createAxiosInstance } from '../config/axios';
@@ -22,6 +22,14 @@ const SignUp = () => {
     }
   });
   const [loading, setLoading] = useState(false);
+
+  // Check if user is already logged in
+  const isLoggedIn = !!localStorage.getItem('token');
+
+  // If logged in, redirect to home
+  if (isLoggedIn) {
+    return <Navigate to="/home" replace />;
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -72,8 +80,8 @@ const SignUp = () => {
       const formattedWhatsappNumber = `${formData.starlink_user.whatsappCountryCode}${whatsappNumber}`;
       const formattedPhoneNumber = `${formData.starlink_user.countryCode}${phoneNumber}`;
 
-
-      const { data } = await axiosInstance.post('/api/v1/signup', {
+      // Signup
+      await axiosInstance.post('/api/v1/signup', {
         starlink_user: {
           email: formData.starlink_user.email,
           password: formData.starlink_user.password,
@@ -84,26 +92,22 @@ const SignUp = () => {
         }
       });
 
-      // // Create wallet for the user
-      // try {
-      //   const walletResponse = await axiosInstance.post('/api/v1/starlink_user_wallets', {
-      //     starlink_user_id: data.id
-      //   });
+      // Immediately login after successful signup
+      const { data } = await axiosInstance.post('/api/v1/login', {
+        starlink_user: {
+          email: formData.starlink_user.email,
+          password: formData.starlink_user.password
+        }
+      });
 
-      //   // Log the wallet response
+      // Store user data and token
+      localStorage.setItem('userData', JSON.stringify(data.user));
+      localStorage.setItem('token', data.token);
 
-      //   // Save wallet ID in local storage
-      //   localStorage.setItem('walletId', walletResponse.data.wallet_id);
-      //   localStorage.setItem('starlink_walletId', walletResponse.data.id);
-      // } catch (walletError) {
-      //   console.error('Error creating wallet:', walletError);
-      //   toast.error('Failed to create wallet. Please try again.');
-      // }
-
-      toast.success('Sign up successful!.');
+      toast.success('Sign up and login successful!');
       setTimeout(() => {
-        navigate('/login');
-      }, 2000);
+        navigate('/home');
+      }, 1000);
     } catch (error) {
       toast.error(error.response?.data?.message || 'Failed to sign up. Please try again.');
     } finally {
@@ -125,94 +129,94 @@ const SignUp = () => {
   ];
 
   return (
-  <>
-    <div className="signup-container">
+    <>
+      <div className="signup-container">
         <div className="signup-form-section">
-      <div className="signup-content">
-        <div className="signup-header">
-          <h1>Sign Up</h1>
-          <p>Create your Starlink account</p>
-        </div>
+          <div className="signup-content">
+            <div className="signup-header">
+              <h1>Sign Up</h1>
+              <p>Create your Starlink account</p>
+            </div>
 
             <form className="signup-form" onSubmit={handleSubmit}>
-          <div className="name-fields">
-            <div className="form-group">
-              <label htmlFor="firstName">First Name</label>
-              <input
-                type="text"
-                id="firstName"
-                name="firstName"
-                value={formData.starlink_user.firstName}
-                onChange={handleChange}
-                placeholder="First Name"
-                required
-              />
-            </div>
+              <div className="name-fields">
+                <div className="form-group">
+                  <label htmlFor="firstName">First Name</label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    value={formData.starlink_user.firstName}
+                    onChange={handleChange}
+                    placeholder="First Name"
+                    required
+                  />
+                </div>
 
-            <div className="form-group">
-              <label htmlFor="middleName">Middle Name</label>
-              <input
-                type="text"
-                id="middleName"
-                name="middleName"
-                value={formData.starlink_user.middleName}
-                onChange={handleChange}
-                placeholder="Middle Name"
-              />
-            </div>
+                <div className="form-group">
+                  <label htmlFor="middleName">Middle Name</label>
+                  <input
+                    type="text"
+                    id="middleName"
+                    name="middleName"
+                    value={formData.starlink_user.middleName}
+                    onChange={handleChange}
+                    placeholder="Middle Name"
+                  />
+                </div>
 
-            <div className="form-group">
-              <label htmlFor="lastName">Last Name</label>
-              <input
-                type="text"
-                id="lastName"
-                name="lastName"
-                value={formData.starlink_user.lastName}
-                onChange={handleChange}
-                placeholder="Last Name"
-                required
-              />
-            </div>
-          </div>
+                <div className="form-group">
+                  <label htmlFor="lastName">Last Name</label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    value={formData.starlink_user.lastName}
+                    onChange={handleChange}
+                    placeholder="Last Name"
+                    required
+                  />
+                </div>
+              </div>
 
-          <div className="form-group">
-            <label htmlFor="email">Email Address</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.starlink_user.email}
-              onChange={handleChange}
-              placeholder="Email Address"
-              required
-            />
-          </div>
+              <div className="form-group">
+                <label htmlFor="email">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.starlink_user.email}
+                  onChange={handleChange}
+                  placeholder="Email Address"
+                  required
+                />
+              </div>
 
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.starlink_user.password}
-              onChange={handleChange}
-              placeholder="Password"
-              required
-            />
-          </div>
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <input
+                  type="password"
+                  id="password"
+                  name="password"
+                  value={formData.starlink_user.password}
+                  onChange={handleChange}
+                  placeholder="Password"
+                  required
+                />
+              </div>
 
-          <div className="form-group">
-            <label htmlFor="confirmPassword">Confirm Password</label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirm_password"
-              value={formData.starlink_user.confirm_password}
-              onChange={handleChange}
-              placeholder="Confirm Password"
-              required
-            />
-          </div>
+              <div className="form-group">
+                <label htmlFor="confirmPassword">Confirm Password</label>
+                <input
+                  type="password"
+                  id="confirmPassword"
+                  name="confirm_password"
+                  value={formData.starlink_user.confirm_password}
+                  onChange={handleChange}
+                  placeholder="Confirm Password"
+                  required
+                />
+              </div>
 
               <div className="form-group phone-input-group">
                 <select
@@ -236,7 +240,7 @@ const SignUp = () => {
                   placeholder="WhatsApp Number"
                   required
                 />
-          </div>
+              </div>
 
               <div className="form-group phone-input-group">
                 <select
@@ -260,20 +264,20 @@ const SignUp = () => {
                   placeholder="Phone Number"
                   required
                 />
-          </div>
+              </div>
 
               <button type="submit" className="signup-button" disabled={loading}>
                 {loading ? 'Signing Up...' : 'Sign Up'}
-          </button>
+              </button>
 
               <div className="login-link">
                 Already have an account?
                 {' '}
                 <Link to="/login">Login</Link>
               </div>
-        </form>
-      </div>
-    </div>
+            </form>
+          </div>
+        </div>
         <div className="signup-image-section" />
       </div>
       <ToastContainer
@@ -288,8 +292,8 @@ const SignUp = () => {
         pauseOnHover
         theme="dark"
       />
-  </>
-);
+    </>
+  );
 };
 
 export default SignUp;

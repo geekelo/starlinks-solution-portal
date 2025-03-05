@@ -13,6 +13,7 @@ import { createAxiosInstance } from "../config/axios";
 import Navbar from "../components/Navbar";
 import WhatsAppButton from '../components/WhatsAppButton';
 import { FaLink } from 'react-icons/fa';
+import BackButton from '../components/BackButton';
 
 const Home = () => {
   const [showActivationModal, setShowActivationModal] = useState(false);
@@ -229,9 +230,9 @@ const Home = () => {
     return statusMap[status] || { text: status, class: status };
   };
 
-  const shouldShowManageButton = (status) => {
-    return status !== "pending";
-  };
+  // const shouldShowManageButton = (status) => {
+  //   return status === "accepted" || status === "pending";
+  // };
 
   const handleActivateKit = async (kitId) => {
     try {
@@ -429,6 +430,7 @@ const Home = () => {
   if (isLoading) {
     return (
       <>
+        <BackButton />
         <Navbar />
         <div className="loading-container">
           <div className="loading-spinner">Loading...</div>
@@ -439,6 +441,7 @@ const Home = () => {
 
   return (
     <>
+      <BackButton />
       <Navbar />
       {showEmailVerification && (
         <VerificationModal
@@ -551,7 +554,7 @@ const Home = () => {
                     </div>
                     <div className="starlink-item">
                       <span className="label mobile-label">Actions:</span>
-                      {starlink.status === "accepted" || "pending" ? (
+                      {starlink.status === "pending" ? (
                         <button
                           type="button"
                           className="activate-button"
@@ -562,14 +565,14 @@ const Home = () => {
                         >
                           Activate
                         </button>
-                      ) : shouldShowManageButton(starlink.status) ? (
+                      ) :  (
                         <button type="button" className="manage-button"
                          onClick={(e) =>{
                            handleKitClick(starlink.kit_number, starlink.id)
                          }}>
                           Manage
                         </button>
-                      ) : null}
+                      ) }
                     </div>
                   </div>
                 ))

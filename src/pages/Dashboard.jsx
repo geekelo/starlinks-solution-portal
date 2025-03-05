@@ -10,6 +10,7 @@ import FundAccountModal from "../components/FundAccountModal"
 import { Link } from "react-router-dom"
 import { FaLink } from "react-icons/fa"
 import WhatsAppButton from "../components/WhatsAppButton"
+import BackButton from '../components/BackButton'
 
 const Dashboard = () => {
   const { kitId } = useParams()
@@ -216,6 +217,7 @@ const Dashboard = () => {
 
   return (
     <>
+      <BackButton />
       <Navbar />
       <div className="dashboard-container">
         <button onClick={() => navigate(-1)} className="back-button">

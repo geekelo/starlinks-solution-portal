@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { FaInfoCircle } from "react-icons/fa"
 import WhatsAppButton from "../components/WhatsAppButton"
+import BackButton from '../components/BackButton'
 
 const Billing = () => {
   const [selectedStatus, setSelectedStatus] = useState("all")
@@ -118,6 +119,7 @@ const Billing = () => {
 
   return (
     <>
+      <BackButton />
       <Navbar />
       <div className="billing-container">
         <div className="billing-header">
@@ -136,7 +138,9 @@ const Billing = () => {
               </div>
               <div className="amount-display">
                 <span className="currency">NGN</span>
-                <span className="amount">{walletData?.balance || "0.00"}</span>
+                <span className="amount">
+                  {walletData?.balance ? Number(walletData.balance).toLocaleString() : "0.00"}
+                </span>
               </div>
               <div className="warning-message">
                 <p><FaInfoCircle style={{ width: "10px" }} />&nbsp;

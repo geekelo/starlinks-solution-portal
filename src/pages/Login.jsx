@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, Navigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { createAxiosInstance } from '../config/axios';
@@ -15,6 +15,14 @@ const Login = () => {
     }
   });
   const [loading, setLoading] = useState(false);
+
+  // Check if user is already logged in
+  const isLoggedIn = !!localStorage.getItem('token');
+
+  // If logged in, redirect to home
+  if (isLoggedIn) {
+    return <Navigate to="/home" replace />;
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;
