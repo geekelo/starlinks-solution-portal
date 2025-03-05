@@ -122,7 +122,7 @@ const Billing = () => {
       <div className="billing-container">
         <div className="billing-header">
           <h1>Billing</h1>
-          <p>Manage your invoices and payments.</p>
+          <p>Fund and Manage your Wallet.</p>
         </div>
 
         <div className="billing-content">
@@ -139,13 +139,13 @@ const Billing = () => {
                 <span className="amount">{walletData?.balance || "0.00"}</span>
               </div>
               <div className="warning-message">
-                <FaInfoCircle style={{ marginRight: "4px" }} />
-                Always keep your wallet funded with at least NGN 120,000
+                <p><FaInfoCircle style={{ width: "10px" }} />&nbsp;
+                Always keep your wallet funded with at least NGN 120,000</p>
               </div>
             </div>
 
             <div className="billing-card">
-              <div className="card-header">
+              <div className="card-header ">
                 <h2>Wallet ID</h2>
               </div>
               <div className="amount-display">
@@ -154,7 +154,7 @@ const Billing = () => {
             </div>
 
             <div className="billing-card full-width">
-              <div className="card-header">
+              <div className="billing-history">
                 <h2>Transaction History</h2>
                 <select
                   value={selectedStatus}

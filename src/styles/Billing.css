@@ -54,14 +54,14 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-.card-header {
+.card-header, .billing-history {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1.75rem;
 }
 
-.card-header h2 {
+.card-header, .billing-history h2 {
   color: rgba(255, 255, 255, 0.7);
   font-size: 1.1rem;
   font-weight: normal;
@@ -295,6 +295,11 @@
     flex-direction: row;
     align-items: center;
   }
+  .billing-history {
+    flex-direction: row;
+    align-items: center;
+  }
+
 
   .amount-display {
     flex-direction: row;
@@ -355,6 +360,9 @@
     align-items: flex-start;
     gap: 1rem;
   }
+  .billing-history {
+    flex-direction: column;
+  }
 }
 
 @media (max-width: 480px) {
@@ -367,8 +375,12 @@
     font-size: 1.75rem;
   }
 
-  .card-header {
+  .billing-history {
     padding: 1rem;
+  }
+
+  .billing-history {
+    flex-direction: column;
   }
 
   .status-filter {

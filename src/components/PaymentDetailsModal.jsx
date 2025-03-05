@@ -45,7 +45,7 @@ const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
         }
         );
      
-      toast.success('Payment confirmed successfully!');
+      toast.success('Thanks for confirming, your wallet would be credited when payment is received!');
       onClose(); 
     } catch (error) {
       console.error('Error confirming payment:', error);
