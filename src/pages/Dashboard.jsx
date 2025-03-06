@@ -217,12 +217,8 @@ const Dashboard = () => {
 
   return (
     <>
-      <BackButton />
       <Navbar />
       <div className="dashboard-container">
-        <button onClick={() => navigate(-1)} className="back-button">
-          Back
-        </button>
         <div className="page-header">
           <div className="header-navigation">
             <h1>{kitData?.company_name || "Loading..."}</h1>

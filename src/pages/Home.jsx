@@ -11,7 +11,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { createAxiosInstance } from "../config/axios";
 import Navbar from "../components/Navbar";
 import WhatsAppButton from '../components/WhatsAppButton';
-import BackButton from '../components/BackButton';
 
 const Home = () => {
   const [showActivationModal, setShowActivationModal] = useState(false);
@@ -428,7 +427,6 @@ const Home = () => {
   if (isLoading) {
     return (
       <>
-        <BackButton />
         <Navbar />
         <div className="loading-container">
           <div className="loading-spinner">Loading...</div>
@@ -439,7 +437,6 @@ const Home = () => {
 
   return (
     <>
-      <BackButton />
       <Navbar />
       {showEmailVerification && (
         <VerificationModal
