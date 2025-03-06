@@ -141,6 +141,7 @@
 @media (max-width: 480px) {
   .modal-actions {
     gap: 0.75rem;
+    flex-direction: column;
   }
 
   .cancel-button,
