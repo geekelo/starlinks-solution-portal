@@ -7,7 +7,6 @@ import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { FaInfoCircle } from "react-icons/fa"
 import WhatsAppButton from "../components/WhatsAppButton"
-import BackButton from '../components/BackButton'
 
 const Billing = () => {
   const [selectedStatus, setSelectedStatus] = useState("all")
@@ -119,7 +118,6 @@ const Billing = () => {
 
   return (
     <>
-      <BackButton />
       <Navbar />
       <div className="billing-container">
         <div className="billing-header">
