@@ -1,59 +1,103 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
 import '../styles/ForgotPassword.css';
 import WhatsAppButton from '../components/WhatsAppButton';
+import { createAxiosInstance } from '../config/axios'
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {  AiOutlineLoading3Quarters } from 'react-icons/ai';
+
+const api = createAxiosInstance();
 
 const ForgotPassword = () => {
+  const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
-    setIsSubmitted(true);
+    try {
+      const response = await api.post('/api/v1/password_resets', {
+        email: email
+      });
 
-    setTimeout(() => {
-      navigate('/reset-password');
-    }, 3000);
+      console.log('Forgot password response:', response.data);
+      toast.success('Reset link has been sent to your email!');
+
+      // Wait for the success message to be shown before redirecting
+      setTimeout(() => {
+        navigate('/login');
+      }, 3000);
+    } catch (error) {
+      console.error('Forgot password error:', error);
+      let errorMessage = 'Failed to send reset link. Please try again.';
+
+      if (error.response?.data?.error) {
+        errorMessage = error.response.data.error;
+      }
+
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <>
-      <Navbar />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <div className="forgot-password-container">
         <div className="forgot-password-content">
           <div className="forgot-password-header">
-            <h1>Reset Password</h1>
-            <p>Enter your email to receive a password reset link</p>
+            <h1>Forgot Password?</h1>
+            <p>Enter your email address and we&apos;ll send you a link to reset your password.</p>
           </div>
 
-          {!isSubmitted ? (
-            <form className="forgot-password-form" onSubmit={handleSubmit}>
-              <div className="form-group">
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email address"
-                  required
-                />
-              </div>
-
-              <button type="submit" className="reset-button">
-                Send Reset Link
-              </button>
-            </form>
-          ) : (
-            <div className="success-message">
-              <p>
-                If an account exists for {email}, you will receive a password reset link shortly.
-              </p>
+          <form onSubmit={handleSubmit} className="forgot-password-form">
+            <div className="form-group">
+              <label htmlFor="email">
+                Email Address
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email address"
+                required
+                disabled={loading}
+              />
             </div>
-          )}
+
+            <button 
+              type="submit" 
+              className="reset-button" 
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <AiOutlineLoading3Quarters className="fa-spin" />
+                  Sending Reset Link...
+                </>
+              ) : (
+                'Send Reset Link'
+              )}
+            </button>
+
+            
+          </form>
         </div>
       </div>
       <WhatsAppButton />
