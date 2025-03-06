@@ -111,10 +111,10 @@ const FundAccountModal = ({ onClose, onSubmit, defaultAmount }) => {
           </div>
 
           <div className="modal-actions">
-            <button type="button" className="cancel-button" onClick={onClose}>
+            <button type="button" className="modal-cancel-button" onClick={onClose}>
               Cancel
             </button>
-            <button type="submit" className="submit-button">
+            <button type="submit" className="modal-submit-button">
               Proceed
             </button>
           </div>

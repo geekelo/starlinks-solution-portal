@@ -78,12 +78,12 @@ const ActivationModal = ({ onClose, onActivate }) => {
           </div>
 
           <div className="modal-actions">
-            <button type="button" className="cancel-button" onClick={onClose}>
+            <button type="button" className="modal-cancel-button" onClick={onClose}>
               Cancel
             </button>
             <button 
               type="submit" 
-              className="submit-button"
+              className="modal-submit-button"
               disabled={isChecking}
             >
               {isChecking ? 'Checking...' : 'Add'}

@@ -94,12 +94,13 @@
   display: flex;
   justify-content: center;
   gap: 1rem;
-  flex-direction: column;
+  flex-direction: row;
+ 
   margin-top: 2rem;
 }
 
-.cancel-button,
-.submit-button {
+.modal-cancel-button,
+.modal-submit-button {
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   font-size: 0.95rem;
@@ -108,15 +109,16 @@
   transition: all 0.3s ease;
   width: 120px;
   text-align: center;
+  
 }
 
-.cancel-button {
+.modal-cancel-button {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.9);
 }
 
-.submit-button {
+.modal-submit-button {
   background: #00adef;
   border: none;
   color: white;
