@@ -85,7 +85,7 @@ const StarlinkDetailsModal = ({ onClose, onSubmit }) => {
           </div>
 
           <div className="modal-actions">
-            <button type="button" className="cancel-button" onClick={onClose}>
+            <button type="button" className="modal-cancel-button" onClick={onClose}>
               Cancel
             </button>
             <button 
