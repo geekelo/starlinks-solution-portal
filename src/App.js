@@ -16,20 +16,35 @@ import Dashboard from './pages/Dashboard';
 import Billing from './pages/Billing';
 import Profile from './pages/Profile';
 
+// Function to check if the user is logged in
+const isAuthenticated = () => {
+  return localStorage.getItem('userData') !== null;
+};
+
+// Protected route component
+const PrivateRoute = ({ element }) => {
+  return isAuthenticated() ? element : <Navigate to="/login" replace />;
+};
+
 const App = () => (
   <Router>
     <div className="app">
       <Routes>
+        {/* Public Routes */}
         <Route path="/signup" element={<SignUp />} />
         <Route path="/email-confirmation" element={<EmailConfirmation />} />
         <Route path="/login" element={<Login />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/dashboard/:kitId" element={<Dashboard />} />
-        <Route path="/billing" element={<Billing />} />
         <Route path="/activate" element={<ActivateCode />} />
-        <Route path="/profile" element={<Profile />} />
+
+        {/* Protected Routes */}
+        <Route path="/home" element={<PrivateRoute element={<Home />} />} />
+        <Route path="/dashboard/:kitId" element={<PrivateRoute element={<Dashboard />} />} />
+        <Route path="/billing" element={<PrivateRoute element={<Billing />} />} />
+        <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
+
+        {/* Redirect to login if no route matches */}
         <Route path="/" element={<Navigate to="/login" replace />} />
       </Routes>
     </div>
