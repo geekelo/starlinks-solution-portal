@@ -56,7 +56,7 @@ const Login = () => {
         navigate('/home');
       }, 2000);
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Failed to login. Please try again.');
+      toast.error(error.response?.data?.message || 'Incorrect Email or Password. Please try again or create an account.');
     } finally {
       setLoading(false);
     }
