@@ -292,6 +292,10 @@
     width: 100%;
   }
 
+  .mobile-label {
+    display: flex; /* show labels on smaller screens */
+  }
+
   .starlink-card {
     color: white;
     border: 1px solid #ddd;
@@ -375,10 +379,11 @@
   border-radius: 6px;
   background-color: #243752;
   color: white;
-  border: 1px solid #2a3b52;
+  border: 1px solid #00adef;
   cursor: pointer;
   font-size: 0.875rem;
   transition: all 0.2s;
+  color: #00adef;
 }
 
 .manage-button:hover {
@@ -596,9 +601,9 @@ body {
   color: #00adef;
   margin-top: 1rem;
   padding: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 4px;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: #1a2c42;
   text-align: center;
 }
 
