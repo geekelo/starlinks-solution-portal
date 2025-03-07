@@ -8,7 +8,7 @@ import Navbar from "../components/Navbar"
 import "../styles/Dashboard.css"
 import FundAccountModal from "../components/FundAccountModal"
 import { Link } from "react-router-dom"
-import { FaLink } from "react-icons/fa"
+import { FaEdit, FaLink } from "react-icons/fa"
 import WhatsAppButton from "../components/WhatsAppButton"
 import BackButton from '../components/BackButton'
 
@@ -229,13 +229,18 @@ const Dashboard = () => {
           <div className="left-panel">
             <div className="panel-header">
               <h2>{kitData?.company_name || "Loading..."}</h2>
-              <button type="button" className="edit-button" aria-label="Edit" onClick={() => setIsEditingAddress(true)}>
-                Edit
-              </button>
+             
             </div>
             <div className="info-section">
+            <div className="panel-header">
+              <div>
               <h3>Address</h3>
               <p>{kitData?.address || "Loading..."}</p>
+              </div>
+              <button type="button" className="edit-button" aria-label="Edit" onClick={() => setIsEditingAddress(true)}>
+                Edit <FaEdit  />
+              </button>
+              </div>
               <h3>Kit Number</h3>
               <p>{kitData?.kit_number || "Loading..."}</p>
 
@@ -505,10 +510,10 @@ const Dashboard = () => {
                   />
                 </div>
                 <div className="modal-actions">
-                  <button type="button" className="cancel-button" onClick={() => setIsEditingAddress(false)}>
+                  <button type="button" className="modal-cancel-button" onClick={() => setIsEditingAddress(false)}>
                     Cancel
                   </button>
-                  <button type="submit" className="submit-button">
+                  <button type="submit" className="modal-submit-button">
                     Save
                   </button>
                 </div>
