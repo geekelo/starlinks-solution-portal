@@ -11,6 +11,7 @@ import { Link } from "react-router-dom"
 import { FaEdit, FaLink } from "react-icons/fa"
 import WhatsAppButton from "../components/WhatsAppButton"
 import BackButton from '../components/BackButton'
+import { format } from 'date-fns'
 
 const Dashboard = () => {
   const { kitId } = useParams()
@@ -413,7 +414,7 @@ const Dashboard = () => {
                       <td>
                         <div className="mobile-label">{activeTab === "receipts" ? "Date of Renewal" : "Deadline"}:</div>
                         <span className={`status-badge ${activeTab === "receipts" ? "online" : "offline"}`}>
-                          {new Date(item.created_at).toLocaleDateString()}
+                          {format(new Date(item.deadline), 'dd/MM/yyyy')}	
                         </span>
                       </td>
                       <td>
@@ -432,7 +433,8 @@ const Dashboard = () => {
                       </td>
                       <td>
                         <div className="mobile-label">Duration:</div>
-                        {item.start_date || "Start Date"} - {item.end_date || "End Date"}
+                        {format(new Date(item.start_date),'dd/MM/yyyy') || "Start Date"} - 
+                        {format(new Date(item.end_date),'dd/MM/yyyy') || "End Date"}
                       </td>
                     </tr>
                   ))}
