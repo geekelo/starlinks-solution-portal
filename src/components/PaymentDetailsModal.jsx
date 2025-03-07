@@ -3,12 +3,14 @@ import '../styles/Modal.css';
 import { createAxiosInstance } from '../config/axios';
 import { toast } from 'react-toastify';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
   const { referenceNumber, method } = paymentDetails;
   const reference = localStorage.getItem('reference');
   const fundingId = localStorage.getItem('fundingId');
   const amount = localStorage.getItem('PaymentAmount');
+  const navigate = useNavigate();
   const bankDetails = {
     bankName: 'Kuda Microfinance Bank',
     accountNumber: '3000865987',
@@ -47,6 +49,7 @@ const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
      
       toast.success('Thanks for confirming, your wallet would be credited when payment is received!');
       onClose(); 
+      navigate('/billing#history'); // redirect to funding history in billing page
     } catch (error) {
       console.error('Error confirming payment:', error);
       toast.error('Failed to confirm payment. Please try again.');
@@ -58,7 +61,16 @@ const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
       <div className="modal-content">
         <div className="modal-header">
           <h2>Payment Details</h2>
-          <button type="button" className="close-button" onClick={onClose}>×</button>
+          <button 
+            type="button" 
+            className="close-button" 
+            onClick={() => {
+              onClose(); 
+              navigate('/billing#history');
+            }}
+          >
+            ×
+          </button>
         </div>
 
         <div className="payment-details">
