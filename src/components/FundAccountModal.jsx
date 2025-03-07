@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import '../styles/Modal.css';
 import { createAxiosInstance } from '../config/axios';
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const FundAccountModal = ({ onClose, onSubmit, defaultAmount }) => {
   const [formData, setFormData] = useState({
@@ -27,6 +28,8 @@ const FundAccountModal = ({ onClose, onSubmit, defaultAmount }) => {
       [name]: value
     }));
   };
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,10 +62,13 @@ const FundAccountModal = ({ onClose, onSubmit, defaultAmount }) => {
         method: formData.paymentMethod,
         amount: formData.amount
       });
+      navigate('/billing#history');
       onClose(); // Close the modal after successful funding
+
       localStorage.setItem('fundingId', response.data.funding.id);
       localStorage.setItem('reference', response.data.funding.reference);
       console.log(response.data.funding.reference)
+
     } catch (error) {
       console.error('Error funding wallet:', error);
       toast.error('Failed to fund wallet. Please try again.');

@@ -155,7 +155,7 @@ const Billing = () => {
               </div>
             </div>
 
-            <div className="billing-card full-width">
+            <div className="billing-card full-width" id="history">
               <div className="billing-history">
                 <h2>Transaction History</h2>
                 <select
