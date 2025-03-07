@@ -525,7 +525,10 @@ const Home = () => {
           <div className="starlinks-content">
             <div className="starlinks-table">
               <div className="table-header">
+              
+                
                 <div className="header-cell">Kit Number</div>
+                
                 <div className="header-cell">Service Line No.</div>
                 <div className="header-cell">Status</div>
                 <div className="header-cell">Actions</div>
@@ -535,8 +538,10 @@ const Home = () => {
                   <div key={starlink.id} className="starlink-card">
                     <div className="starlink-item">
                       <span className="label mobile-label">Kit Number:</span>
-                      <span className="value">{starlink.kit_number || "N/A"}</span>
+                      <span className="value kitno">{starlink.kit_number || "N/A"}</span>
                     </div>
+                    
+                    
                     <div className="starlink-item">
                       <span className="label mobile-label">Service Line No.:</span>
                       <span className="value">{starlink.service_line_number || "N/A"}</span>
