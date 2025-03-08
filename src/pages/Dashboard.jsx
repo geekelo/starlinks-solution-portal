@@ -435,8 +435,7 @@ const Dashboard = () => {
                       </td>
                       <td>
                         <div className="mobile-label">Duration:</div>
-                        
-                        {format(new Date(item.start_date), 'dd/MM/yyyy') || "Start Date"} - 
+                        {format(new Date(item.start_date),'dd/MM/yyyy') || "Start Date"} - 
                         {format(new Date(item.end_date),'dd/MM/yyyy') || "End Date"}
                       </td>
                     </tr>
