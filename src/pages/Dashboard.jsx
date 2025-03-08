@@ -343,8 +343,14 @@ const Dashboard = () => {
             <div className="info-item">
               <div className="info-label">Status</div>
               <div className="info-value">
-                <span className="status-badge offline">{mapStatus(kitData?.status) || "Loading..."}</span>
-                <button
+              <span className={`status-badge ${
+              !kitData?.status ? 'loading' : 
+              kitData.status === 'active' ? 'active' : 
+              'offline'
+            }`}>
+              {kitData?.status || "Loading..."}
+            </span>
+              <button
                   className="renew-button"
                   disabled={!isRenewButtonEnabled}
                   onClick={isRenewButtonEnabled ? handleRenew : null}
@@ -391,7 +397,7 @@ const Dashboard = () => {
               <thead>
                 <tr>
                   <th>Amount</th>
-                  <th>{activeTab === "receipts" ? "Date of Renewal" : "Deadline"}</th>
+                  <th>{activeTab === "receipts" ? "Date of Payment" : "Deadline"}</th>
                   <th>Month</th>
                   <th>Year</th>
                   <th>Download</th>
@@ -415,7 +421,7 @@ const Dashboard = () => {
                         NGN {Number(item.amount).toLocaleString()}
                       </td>
                       <td>
-                        <div className="mobile-label">{activeTab === "receipts" ? "Date of Renewal" : "Deadline"}:</div>
+                        <div className="mobile-label">{activeTab === "receipts" ? "Date of Payment" : "Deadline"}:</div>
                         <span className={`status-badge ${activeTab === "receipts" ? "online" : "offline"}`}>
                           {format(new Date(item.deadline), 'dd/MM/yyyy')}	
                         </span>
