@@ -362,6 +362,12 @@ const Dashboard = () => {
         <div className="renewal-history-section">
           <div className="card-header">
             <h2>Renewal History</h2>
+            <div className="warning-text">
+              Please ensure you have sufficient wallet balance before renewing your kit to avoid any interruptions.
+              <Link to="/billing" className="billing-link">
+                Fund your wallet <FaLink style={{ marginLeft: "4px" }} />
+              </Link>
+            </div>
             <div className="tabs">
               <button
                 className={`tab ${activeTab === "invoices" ? "active" : ""}`}
@@ -379,12 +385,7 @@ const Dashboard = () => {
           </div>
 
           <div className="table-container">
-            <div className="warning-text">
-              Please ensure you have sufficient wallet balance before renewing your kit to avoid any interruptions.
-              <Link to="/billing" className="billing-link">
-                Fund your wallet <FaLink style={{ marginLeft: "4px" }} />
-              </Link>
-            </div>
+            
 
             <table className="table">
               <thead>

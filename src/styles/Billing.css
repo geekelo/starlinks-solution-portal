@@ -54,7 +54,7 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-.card-header, .billing-history {
+.billing-history {
   display: flex;
   justify-content: space-between;
   align-items: center;
