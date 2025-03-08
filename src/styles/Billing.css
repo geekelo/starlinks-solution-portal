@@ -61,13 +61,23 @@
   margin-bottom: 1.75rem;
 }
 
-.card-header, .billing-history h2 {
+.billing-history h2 {
   color: rgba(255, 255, 255, 0.7);
   font-size: 1.1rem;
   font-weight: normal;
 }
 
+.card-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; 
+  align-items: flex-start; 
+  flex-wrap: wrap; 
+}
+
 .pay-button {
+  display: inline-block;
+  width: fit-content;
   background-color: #00adef;
   color: white;
   border: none;
@@ -293,8 +303,14 @@
 
   .card-header {
     flex-direction: row;
-    align-items: center;
+    justify-content: space-between;
   }
+
+  .pay-button {
+    width: fit-content; 
+    
+  }
+  
   .billing-history {
     flex-direction: row;
     align-items: center;
