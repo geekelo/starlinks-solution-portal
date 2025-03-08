@@ -705,6 +705,15 @@
     width: 100%;
     justify-content: space-between;
   }
+ 
+.tabs {
+  justify-content: flex-start;
+  margin-top: 1rem;
+}
+
+.card-header {
+  gap: 1rem;
+}
 }
 
 @media (max-width: 480px) {
@@ -732,6 +741,6 @@
   .status-filter {
     width: 100%;
     margin-top: 0.5rem;
-  }
+  } 
 }
 
