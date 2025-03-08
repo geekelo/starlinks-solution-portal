@@ -360,7 +360,7 @@ const Dashboard = () => {
         </div>
 
         <div className="renewal-history-section">
-          <div className="card-header">
+          <div className="card-header-dashboard">
             <h2>Renewal History</h2>
             <div className="warning-text">
               Please ensure you have sufficient wallet balance before renewing your kit to avoid any interruptions.
@@ -370,13 +370,13 @@ const Dashboard = () => {
             </div>
             <div className="tabs">
               <button
-                className={`tab ${activeTab === "invoices" ? "active" : ""}`}
+                className={`tab ${activeTab === "invoices" ? "active" : "inactive"}`}
                 onClick={() => setActiveTab("invoices")}
               >
                 Next Payment
               </button>
               <button
-                className={`tab ${activeTab === "receipts" ? "active" : ""}`}
+                className={`tab ${activeTab === "receipts" ? "active" : "inactive"}`}
                 onClick={() => setActiveTab("receipts")}
               >
                 Receipts
