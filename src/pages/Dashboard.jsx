@@ -335,7 +335,9 @@ const Dashboard = () => {
               <div className="info-label">Billing period</div>
               <div className="info-value">
                 Your current subscription expires{" "}
-                <span className="expiration-date">{expirationDate.toLocaleDateString()}</span>
+                <span className="expiration-date">
+                  {format(new Date(expirationDate), 'dd/MM/yyyy')}
+                </span>
               </div>
             </div>
             <div className="info-item">
