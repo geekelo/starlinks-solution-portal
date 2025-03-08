@@ -291,10 +291,7 @@
     margin: 0;
   }
 
-  .card-header {
-    flex-direction: row;
-    align-items: center;
-  }
+ 
   .billing-history {
     flex-direction: row;
     align-items: center;
