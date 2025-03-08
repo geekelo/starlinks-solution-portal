@@ -343,7 +343,11 @@ const Dashboard = () => {
             <div className="info-item">
               <div className="info-label">Status</div>
               <div className="info-value">
-                <span className="status-badge offline">{mapStatus(kitData?.status) || "Loading..."}</span>
+               
+                <span className={`status-badge ${kitData?.status === "deactivated" ? "offline" : "online"}`}>
+                  {mapStatus(kitData?.status) || "Loading..."}
+                </span>
+                
                 <button
                   className="renew-button"
                   disabled={!isRenewButtonEnabled}

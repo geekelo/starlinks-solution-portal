@@ -435,6 +435,10 @@
   background-color: rgba(239, 68, 68, 0.15);
   color: #ef4444;
 }
+.status-badge.online {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
 
 .renewal-history-section {
   background-color: #0a192f;
