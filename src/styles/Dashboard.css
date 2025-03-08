@@ -367,6 +367,10 @@
   align-items: stretch;
 }
 
+.status-pill {
+margin-top: .3rem;
+}
+
 .info-item {
   flex: 1;
   margin-right: 1rem;

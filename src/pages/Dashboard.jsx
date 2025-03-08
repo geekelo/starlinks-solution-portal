@@ -342,7 +342,7 @@ const Dashboard = () => {
             </div>
             <div className="info-item">
               <div className="info-label">Status</div>
-              <div className="info-value">
+              <div className="info-value  status-pill">
               <span className={`status-badge ${
               !kitData?.status ? 'loading' : 
               kitData.status === 'active' ? 'active' : 
