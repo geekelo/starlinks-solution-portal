@@ -28,35 +28,38 @@ const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
       toast.error('Failed to copy account number.');
     });
   };
-
   const handleSubmit = async () => {
     try {
       const axiosInstance = createAxiosInstance();
       const token = localStorage.getItem('token');
+      const fundingId = localStorage.getItem('fundingId');
+
       const payload = {
-        starlink_wallet_funding: {
-          paid: "yes"
-        }
+        starlink_wallet_funding: { paid: "yes" }
       };
-      
-      const response = await axiosInstance.put(`/api/v1/starlink_wallet_fundings/confirm_request?id=${fundingId}`,
-         payload,
-         {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-        );
-     
+
+      await axiosInstance.put(`/api/v1/starlink_wallet_fundings/confirm_request?id=${fundingId}`, payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
       toast.success('Thanks for confirming, your wallet would be credited when payment is received!');
-      onClose(); 
-      navigate('/billing#history'); // redirect to funding history in billing page
+
+      // Close modal and navigate to billing page
+      onClose();
+      navigate('/billing');
+
+      // Wait for navigation before scrolling
+      setTimeout(() => {
+        const billingTable = document.getElementById('billing-table'); // Make sure the table has this ID
+        if (billingTable) {
+          billingTable.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 500); // Timeout to ensure the page loads first
     } catch (error) {
       console.error('Error confirming payment:', error);
       toast.error('Failed to confirm payment. Please try again.');
     }
   };
-
   return (
     <div className="modal-overlay payment-modal">
       <div className="modal-content">
