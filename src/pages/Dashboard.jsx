@@ -12,6 +12,7 @@ import { FaEdit, FaLink } from "react-icons/fa"
 import WhatsAppButton from "../components/WhatsAppButton"
 import BackButton from '../components/BackButton'
 import { format } from 'date-fns'
+import { formatDate } from "../utils/formatDate"
 
 const Dashboard = () => {
   const { kitId } = useParams()
@@ -319,7 +320,7 @@ const Dashboard = () => {
                       aria-label={`Priority Usage: ${graphData.priorityUsage} GB`}
                     />
                   </div>
-                  <div className="x-axis">{graphData.date}</div>
+                  <div className="x-axis">{formatDate( graphData.date)}</div>
                 </div>
               </div>
             </div>
@@ -336,7 +337,7 @@ const Dashboard = () => {
               <div className="info-value">
                 Your current subscription expires{" "}
                 <span className="expiration-date">
-                  {format(new Date(expirationDate), 'dd/MM/yyyy')}
+                  {formatDate(expirationDate)}
                 </span>
               </div>
             </div>
@@ -423,7 +424,7 @@ const Dashboard = () => {
                       <td>
                         <div className="mobile-label">{activeTab === "receipts" ? "Date of Payment" : "Deadline"}:</div>
                         <span className={`status-badge ${activeTab === "receipts" ? "online" : "offline"}`}>
-                          {format(new Date(item.deadline), 'dd/MM/yyyy')}	
+                          {formatDate(item.deadline)}	
                         </span>
                       </td>
                       <td>
@@ -442,8 +443,8 @@ const Dashboard = () => {
                       </td>
                       <td>
                         <div className="mobile-label">Duration:</div>
-                        {format(new Date(item.start_date),'dd/MM/yyyy') || "Start Date"} - 
-                        {format(new Date(item.end_date),'dd/MM/yyyy') || "End Date"}
+                        {formatDate(item.start_date) || "Start Date"} - 
+                        {formatDate(item.end_date) || "End Date"}
                       </td>
                     </tr>
                   ))}
