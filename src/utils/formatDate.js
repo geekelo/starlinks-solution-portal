@@ -19,6 +19,6 @@ export const formatDate = (dateString) => {
   
     return `${day}${suffix} ${month} ${year}`;
   };
-
   
+
   
