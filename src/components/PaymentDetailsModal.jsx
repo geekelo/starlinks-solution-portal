@@ -2,7 +2,9 @@ import PropTypes from 'prop-types';
 import '../styles/Modal.css';
 import { createAxiosInstance } from '../config/axios';
 import { toast } from 'react-toastify';
+import { AiOutlineCopy } from "react-icons/ai";
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 
 const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
@@ -11,6 +13,7 @@ const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
   const reference = localStorage.getItem('reference');
   const fundingId = localStorage.getItem('fundingId');
   const amount = localStorage.getItem('PaymentAmount');
+  const navigate = useNavigate();
   const bankDetails = {
     bankName: 'Kuda Microfinance Bank',
     accountNumber: '3000865987',
@@ -60,16 +63,25 @@ const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
     }
   };
   return (
-    <div className="modal-overlay">
+    <div className="modal-overlay payment-modal">
       <div className="modal-content">
         <div className="modal-header">
           <h2>Payment Details</h2>
-          <button type="button" className="close-button" onClick={onClose}>×</button>
+          <button 
+            type="button" 
+            className="close-button" 
+            onClick={() => {
+              onClose(); 
+              navigate('/billing#history');
+            }}
+          >
+            ×
+          </button>
         </div>
 
         <div className="payment-details">
           <div className="info-group">
-            <label>Reference Number</label>
+            <label className='payment-ref'>Reference Number</label>
             <p className="reference-number">{reference}</p>
             <p className="reference-instruction">Please include this reference number when making your payment</p>
           </div>
@@ -78,22 +90,24 @@ const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
             <div className="bank-details">
               <h3>Bank Transfer Details</h3>
               <div className="info-group">
-                <label>Bank Name</label>
-                <p>{bankDetails.bankName}</p>
+                <label className='bank-name'>Bank Name</label>
+                <p >{bankDetails.bankName}</p>
               </div>
               <div className="info-group">
-                <label>Amount</label>
+                <label className='bank-name'>Amount</label>
                 <p>{amount}</p>
               </div>
               <div className="info-group">
-                <label>Account Number</label>
+                <label className='bank-name'>Account Number</label>
+                <div className='payment-copy'>
                 <p>{bankDetails.accountNumber}</p>
                 <button onClick={() => copyToClipboard(bankDetails.accountNumber)} className="copy-button">
-                  Copy
+               Copy <AiOutlineCopy size={20} />
                 </button>
+                </div>
               </div>
               <div className="info-group">
-                <label>Account Name</label>
+                <label className='bank-name'>Account Name</label>
                 <p>{bankDetails.accountName}</p>
               </div>
             </div>

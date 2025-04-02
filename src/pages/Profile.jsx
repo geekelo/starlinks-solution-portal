@@ -182,8 +182,8 @@ const Profile = () => {
                 />
               </div>
               <div className="modal-actions">
-                <button type="button" className="cancel-button" onClick={() => setIsEditingEmail(false)}>Cancel</button>
-                <button type="submit" className="submit-button">Save</button>
+                <button type="button" className="modal-cancel-button" onClick={() => setIsEditingEmail(false)}>Cancel</button>
+                <button type="submit" className="modal-submit-button">Save</button>
               </div>
             </form>
           </div>
@@ -209,8 +209,8 @@ const Profile = () => {
                 />
               </div>
               <div className="modal-actions">
-                <button type="button" className="cancel-button" onClick={() => setIsEditingPhone(false)}>Cancel</button>
-                <button type="submit" className="submit-button">Save</button>
+                <button type="button" className="modal-cancel-button" onClick={() => setIsEditingPhone(false)}>Cancel</button>
+                <button type="submit" className="modal-submit-button">Save</button>
               </div>
             </form>
           </div>
@@ -236,8 +236,8 @@ const Profile = () => {
                 />
               </div>
               <div className="modal-actions">
-                <button type="button" className="cancel-button" onClick={() => setIsEditingWhatsApp(false)}>Cancel</button>
-                <button type="submit" className="submit-button">Save</button>
+                <button type="button" className="modal-cancel-button" onClick={() => setIsEditingWhatsApp(false)}>Cancel</button>
+                <button type="submit" className="modal-submit-button">Save</button>
               </div>
             </form>
           </div>

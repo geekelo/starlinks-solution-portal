@@ -141,7 +141,7 @@ const SignUp = () => {
             <form className="signup-form" onSubmit={handleSubmit}>
               <div className="name-fields">
                 <div className="form-group">
-                  <label htmlFor="firstName">First Name</label>
+                  <label htmlFor="firstName" className="signup-labels">First Name</label>
                   <input
                     type="text"
                     id="firstName"
@@ -154,7 +154,7 @@ const SignUp = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="middleName">Middle Name</label>
+                  <label htmlFor="middleName" className="signup-labels">Middle Name</label>
                   <input
                     type="text"
                     id="middleName"
@@ -166,7 +166,7 @@ const SignUp = () => {
                 </div>
 
                 <div className="form-group">
-                  <label htmlFor="lastName">Last Name</label>
+                  <label htmlFor="lastName" className="signup-labels">Last Name</label>
                   <input
                     type="text"
                     id="lastName"
@@ -180,7 +180,7 @@ const SignUp = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="email">Email Address</label>
+                <label htmlFor="email" className="signup-labels">Email Address</label>
                 <input
                   type="email"
                   id="email"
@@ -193,7 +193,7 @@ const SignUp = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password" className="signup-labels">Password</label>
                 <input
                   type="password"
                   id="password"
@@ -206,7 +206,7 @@ const SignUp = () => {
               </div>
 
               <div className="form-group">
-                <label htmlFor="confirmPassword">Confirm Password</label>
+                <label htmlFor="confirmPassword" className="signup-labels">Confirm Password</label>
                 <input
                   type="password"
                   id="confirmPassword"
@@ -219,6 +219,7 @@ const SignUp = () => {
               </div>
 
               <div className="form-group phone-input-group">
+                <label htmlFor="confirmPassword" className="signup-labels">WhatsApp Number</label>
                 <select
                   className="country-code"
                   value={formData.starlink_user.whatsappCountryCode}
@@ -243,6 +244,7 @@ const SignUp = () => {
               </div>
 
               <div className="form-group phone-input-group">
+              <label htmlFor="confirmPassword" className="signup-labels">Phone Number</label>
                 <select
                   className="country-code"
                   value={formData.starlink_user.countryCode}
