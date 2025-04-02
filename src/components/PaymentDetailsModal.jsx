@@ -5,10 +5,8 @@ import { toast } from 'react-toastify';
 import { AiOutlineCopy } from "react-icons/ai";
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useNavigate } from 'react-router-dom';
 
 const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
-  const navigate = useNavigate()
   const { referenceNumber, method } = paymentDetails;
   const reference = localStorage.getItem('reference');
   const fundingId = localStorage.getItem('fundingId');
