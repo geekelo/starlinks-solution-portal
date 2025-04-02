@@ -7,6 +7,7 @@ import { ToastContainer, toast } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import { FaInfoCircle } from "react-icons/fa"
 import WhatsAppButton from "../components/WhatsAppButton"
+import { formatDate } from "../utils/formatDate"
 
 const Billing = () => {
   const [selectedStatus, setSelectedStatus] = useState("all")
@@ -15,6 +16,7 @@ const Billing = () => {
   const [walletData, setWalletData] = useState(null)
   const [fundingHistory, setFundingHistory] = useState([])
   const [showFundAccountModal, setShowFundAccountModal] = useState(false)
+  
 
   // Status mapping functions
   const mapStatus = (apiStatus) => {
@@ -70,7 +72,9 @@ const Billing = () => {
 
   // Filter and paginate the history
   const filteredHistory = Array.isArray(fundingHistory)
-  ? fundingHistory.filter((item) => selectedStatus === "all" || item.status === reverseMapStatus(selectedStatus))
+  ? fundingHistory
+      .filter((item) => selectedStatus === "all" || item.status === reverseMapStatus(selectedStatus))
+      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at)) // Sort from recent to oldest
   : [];
 
   const paginatedHistory = filteredHistory?.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage)
@@ -186,10 +190,11 @@ const Billing = () => {
                   <tbody>
                     {paginatedHistory.map((item) => (
                       <tr key={item.id}>
-                        <td>
-                          <div className="mobile-label">Date:</div>
-                          {new Date(item.created_at).toLocaleDateString()}
-                        </td>
+                       <td>
+  <div className="mobile-label">Date:</div>
+  {formatDate(item.created_at)}
+</td>
+
                         <td>
                           <div className="mobile-label">Reference:</div>
                           {item.reference}
