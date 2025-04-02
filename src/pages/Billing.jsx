@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react"
+import { useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar"
 import "../styles/Billing.css"
 import { createAxiosInstance } from "../config/axios"
@@ -9,13 +10,23 @@ import { FaInfoCircle } from "react-icons/fa"
 import WhatsAppButton from "../components/WhatsAppButton"
 
 const Billing = () => {
-  const [selectedStatus, setSelectedStatus] = useState("all")
-  const [currentPage, setCurrentPage] = useState(1)
-  const [rowsPerPage, setRowsPerPage] = useState(10)
-  const [walletData, setWalletData] = useState(null)
-  const [fundingHistory, setFundingHistory] = useState([])
-  const [showFundAccountModal, setShowFundAccountModal] = useState(false)
+  const [selectedStatus, setSelectedStatus] = useState("all");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [walletData, setWalletData] = useState(null);
+  const [fundingHistory, setFundingHistory] = useState([]);
+  const [showFundAccountModal, setShowFundAccountModal] = useState(false);
+  const location = useLocation();
 
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.getElementById(location.hash.substring(1));
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  }, [location]);
+  
   // Status mapping functions
   const mapStatus = (apiStatus) => {
     const statusMap = {
@@ -155,7 +166,7 @@ const Billing = () => {
               </div>
             </div>
 
-            <div className="billing-card full-width">
+            <div className="billing-card full-width" id="history">
               <div className="billing-history">
                 <h2>Transaction History</h2>
                 <select
