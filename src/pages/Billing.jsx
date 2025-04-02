@@ -8,6 +8,7 @@ import "react-toastify/dist/ReactToastify.css"
 import { FaInfoCircle } from "react-icons/fa"
 import WhatsAppButton from "../components/WhatsAppButton"
 import { formatDate } from "../utils/formatDate"
+import PaymentDetailsModal from "../components/PaymentDetailsModal"
 
 const Billing = () => {
   const [selectedStatus, setSelectedStatus] = useState("all")
@@ -16,6 +17,9 @@ const Billing = () => {
   const [walletData, setWalletData] = useState(null)
   const [fundingHistory, setFundingHistory] = useState([])
   const [showFundAccountModal, setShowFundAccountModal] = useState(false)
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentDetails, setPaymentDetails] = useState(null);
+
   
 
   // Status mapping functions
@@ -81,6 +85,13 @@ const Billing = () => {
 
   const handleFundAccountSubmit = (details) => {
     setShowFundAccountModal(false)
+    setPaymentDetails({
+      referenceNumber: details.reference, // Ensure this is part of the response
+      method: details.paymentMethod, // Ensure this is part of the response
+    });
+
+    // Show payment modal after funding
+    setShowPaymentModal(true);
   }
 
   // Reset to first page when filters or rows per page changes
@@ -177,7 +188,7 @@ const Billing = () => {
                 </select>
               </div>
 
-              <div className="table-container">
+              <div className="table-container" id="billing-table">
                 <table className="table">
                   <thead>
                     <tr>
@@ -276,6 +287,9 @@ const Billing = () => {
 
       {showFundAccountModal && (
         <FundAccountModal onClose={() => setShowFundAccountModal(false)} onSubmit={handleFundAccountSubmit} />
+      )}
+       {showPaymentModal && paymentDetails && (
+        <PaymentDetailsModal onClose={() => setShowPaymentModal(false)} paymentDetails={paymentDetails} />
       )}
       <ToastContainer
         position="top-right"
