@@ -10,7 +10,17 @@
   align-items: center;
   z-index: 1000;
 }
-
+.payment-modal{
+  background: #1a2c42;
+}
+.payment-ref{
+  text-align: center;
+}
+.payment-copy {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+}
 .modal-content {
   background-color: #0a192f;
   border-radius: 8px;
@@ -94,12 +104,13 @@
   display: flex;
   justify-content: center;
   gap: 1rem;
-  flex-direction: column;
+  flex-direction: row;
+ 
   margin-top: 2rem;
 }
 
-.cancel-button,
-.submit-button {
+.modal-cancel-button,
+.modal-submit-button {
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   font-size: 0.95rem;
@@ -108,15 +119,16 @@
   transition: all 0.3s ease;
   width: 120px;
   text-align: center;
+  
 }
 
-.cancel-button {
+.modal-cancel-button {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.9);
 }
 
-.submit-button {
+.modal-submit-button {
   background: #00adef;
   border: none;
   color: white;
@@ -139,6 +151,7 @@
 @media (max-width: 480px) {
   .modal-actions {
     gap: 0.75rem;
+    flex-direction: column;
   }
 
   .cancel-button,
@@ -259,6 +272,7 @@
 
 .info-group {
   margin-bottom: 2rem;
+  
 }
 
 .info-group label {
@@ -282,7 +296,9 @@
   text-align: center;
   letter-spacing: 1px;
 }
-
+.info-group .bank-name{
+  color: #00adef !important;
+}
 .reference-instruction {
   background: rgba(0, 173, 239, 0.1);
   border: 1px solid #00adef;
@@ -385,11 +401,16 @@
   background-color: #00adef; /* Button color */
   color: white;
   border: none;
-  padding: 0.5rem 1rem;
+  padding: 0px 6px;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 0.5rem; /* Space above the button */
+ font-weight: 600;
   transition: background-color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 25px;
+  font-size: 12px;
 }
 
 .copy-button:hover {

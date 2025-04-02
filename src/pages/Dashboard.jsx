@@ -8,9 +8,10 @@ import Navbar from "../components/Navbar"
 import "../styles/Dashboard.css"
 import FundAccountModal from "../components/FundAccountModal"
 import { Link } from "react-router-dom"
-import { FaLink } from "react-icons/fa"
+import { FaEdit, FaLink } from "react-icons/fa"
 import WhatsAppButton from "../components/WhatsAppButton"
 import BackButton from '../components/BackButton'
+import { format } from 'date-fns'
 
 const Dashboard = () => {
   const { kitId } = useParams()
@@ -229,13 +230,18 @@ const Dashboard = () => {
           <div className="left-panel">
             <div className="panel-header">
               <h2>{kitData?.company_name || "Loading..."}</h2>
-              <button type="button" className="edit-button" aria-label="Edit" onClick={() => setIsEditingAddress(true)}>
-                Edit
-              </button>
+             
             </div>
             <div className="info-section">
+            <div className="panel-header">
+              <div>
               <h3>Address</h3>
               <p>{kitData?.address || "Loading..."}</p>
+              </div>
+              <button type="button" className="edit-button" aria-label="Edit" onClick={() => setIsEditingAddress(true)}>
+                Edit <FaEdit  />
+              </button>
+              </div>
               <h3>Kit Number</h3>
               <p>{kitData?.kit_number || "Loading..."}</p>
 
@@ -329,14 +335,22 @@ const Dashboard = () => {
               <div className="info-label">Billing period</div>
               <div className="info-value">
                 Your current subscription expires{" "}
-                <span className="expiration-date">{expirationDate.toLocaleDateString()}</span>
+                <span className="expiration-date">
+                  {format(new Date(expirationDate), 'dd/MM/yyyy')}
+                </span>
               </div>
             </div>
             <div className="info-item">
               <div className="info-label">Status</div>
-              <div className="info-value">
-                <span className="status-badge offline">{mapStatus(kitData?.status) || "Loading..."}</span>
-                <button
+              <div className="info-value  status-pill">
+              <span className={`status-badge ${
+              !kitData?.status ? 'loading' : 
+              kitData.status === 'active' ? 'active' : 
+              'offline'
+            }`}>
+              {kitData?.status || "Loading..."}
+            </span>
+              <button
                   className="renew-button"
                   disabled={!isRenewButtonEnabled}
                   onClick={isRenewButtonEnabled ? handleRenew : null}
@@ -352,17 +366,23 @@ const Dashboard = () => {
         </div>
 
         <div className="renewal-history-section">
-          <div className="card-header">
+          <div className="card-header-dashboard">
             <h2>Renewal History</h2>
+            <div className="warning-text">
+              Please ensure you have sufficient wallet balance before renewing your kit to avoid any interruptions.
+              <Link to="/billing" className="billing-link">
+                Fund your wallet <FaLink style={{ marginLeft: "4px" }} />
+              </Link>
+            </div>
             <div className="tabs">
               <button
-                className={`tab ${activeTab === "invoices" ? "active" : ""}`}
+                className={`tab ${activeTab === "invoices" ? "active" : "inactive"}`}
                 onClick={() => setActiveTab("invoices")}
               >
                 Next Payment
               </button>
               <button
-                className={`tab ${activeTab === "receipts" ? "active" : ""}`}
+                className={`tab ${activeTab === "receipts" ? "active" : "inactive"}`}
                 onClick={() => setActiveTab("receipts")}
               >
                 Receipts
@@ -371,18 +391,13 @@ const Dashboard = () => {
           </div>
 
           <div className="table-container">
-            <div className="warning-text">
-              Please ensure you have sufficient wallet balance before renewing your kit to avoid any interruptions.
-              <Link to="/billing" className="billing-link">
-                Fund your wallet <FaLink style={{ marginLeft: "4px" }} />
-              </Link>
-            </div>
+            
 
             <table className="table">
               <thead>
                 <tr>
                   <th>Amount</th>
-                  <th>{activeTab === "receipts" ? "Date of Renewal" : "Deadline"}</th>
+                  <th>{activeTab === "receipts" ? "Date of Payment" : "Deadline"}</th>
                   <th>Month</th>
                   <th>Year</th>
                   <th>Download</th>
@@ -406,9 +421,9 @@ const Dashboard = () => {
                         NGN {Number(item.amount).toLocaleString()}
                       </td>
                       <td>
-                        <div className="mobile-label">{activeTab === "receipts" ? "Date of Renewal" : "Deadline"}:</div>
+                        <div className="mobile-label">{activeTab === "receipts" ? "Date of Payment" : "Deadline"}:</div>
                         <span className={`status-badge ${activeTab === "receipts" ? "online" : "offline"}`}>
-                          {new Date(item.created_at).toLocaleDateString()}
+                          {format(new Date(item.deadline), 'dd/MM/yyyy')}	
                         </span>
                       </td>
                       <td>
@@ -427,7 +442,8 @@ const Dashboard = () => {
                       </td>
                       <td>
                         <div className="mobile-label">Duration:</div>
-                        {item.start_date || "Start Date"} - {item.end_date || "End Date"}
+                        {format(new Date(item.start_date),'dd/MM/yyyy') || "Start Date"} - 
+                        {format(new Date(item.end_date),'dd/MM/yyyy') || "End Date"}
                       </td>
                     </tr>
                   ))}
@@ -505,10 +521,10 @@ const Dashboard = () => {
                   />
                 </div>
                 <div className="modal-actions">
-                  <button type="button" className="cancel-button" onClick={() => setIsEditingAddress(false)}>
+                  <button type="button" className="modal-cancel-button" onClick={() => setIsEditingAddress(false)}>
                     Cancel
                   </button>
-                  <button type="submit" className="submit-button">
+                  <button type="submit" className="modal-submit-button">
                     Save
                   </button>
                 </div>

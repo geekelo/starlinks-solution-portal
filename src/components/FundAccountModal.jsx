@@ -59,10 +59,13 @@ const FundAccountModal = ({ onClose, onSubmit, defaultAmount }) => {
         method: formData.paymentMethod,
         amount: formData.amount
       });
+
       onClose(); // Close the modal after successful funding
+
       localStorage.setItem('fundingId', response.data.funding.id);
       localStorage.setItem('reference', response.data.funding.reference);
       console.log(response.data.funding.reference)
+
     } catch (error) {
       console.error('Error funding wallet:', error);
       toast.error('Failed to fund wallet. Please try again.');
@@ -111,10 +114,10 @@ const FundAccountModal = ({ onClose, onSubmit, defaultAmount }) => {
           </div>
 
           <div className="modal-actions">
-            <button type="button" className="cancel-button" onClick={onClose}>
+            <button type="button" className="modal-cancel-button" onClick={onClose}>
               Cancel
             </button>
-            <button type="submit" className="submit-button">
+            <button type="submit" className="modal-submit-button">
               Proceed
             </button>
           </div>
