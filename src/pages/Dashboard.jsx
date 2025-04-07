@@ -72,7 +72,6 @@ const Dashboard = () => {
       toast.error("Failed to fetch kit details.")
     }
   }, [kitId])
-
   const fetchRenewalHistory = useCallback(async () => {
     const axiosInstance = createAxiosInstance()
     const token = localStorage.getItem("token")
@@ -80,11 +79,12 @@ const Dashboard = () => {
       const response = await axiosInstance.get(`/api/v1/starlink_kit_renewals/user_kit_renewals?kit_id=${kitId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
-
-      setRenewalHistory(response.data || [])
-
-      if (response.data.length > 0) {
-        const lastRenewal = response.data[response.data.length - 1]
+      const sortedRenewalHistory = response.data.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+  
+      setRenewalHistory(sortedRenewalHistory)
+  
+      if (sortedRenewalHistory.length > 0) {
+        const lastRenewal = sortedRenewalHistory[0] 
         setExpirationDate(new Date(lastRenewal.deadline))
       }
     } catch (error) {
@@ -92,7 +92,7 @@ const Dashboard = () => {
       toast.error("Failed to fetch renewal history.")
     }
   }, [kitId])
-
+  
   useEffect(() => {
     if (kitId) {
       fetchKitDetails()
