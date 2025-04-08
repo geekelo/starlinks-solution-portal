@@ -69,7 +69,7 @@ const Login = () => {
           <div className="login-content">
             <div className="login-header">
               <h1>Log In</h1>
-              <p>Access your Starlink account</p>
+              <p>Access your account</p>
             </div>
 
             <form className="login-form" onSubmit={handleSubmit}>
