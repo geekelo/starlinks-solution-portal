@@ -135,7 +135,7 @@ const SignUp = () => {
           <div className="signup-content">
             <div className="signup-header">
               <h1>Sign Up</h1>
-              <p>Create your Starlink account</p>
+              <p>Create your account</p>
             </div>
 
             <form className="signup-form" onSubmit={handleSubmit}>
