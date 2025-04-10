@@ -41,6 +41,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   const [shouldRefetch, setShouldRefetch] = useState(false);
+  const [activatingKitId, setActivatingKitId] = useState(null);
 
   useEffect(() => {
     const initializeHome = async () => {
@@ -232,10 +233,12 @@ const Home = () => {
   // };
 
   const handleActivateKit = async (kitId) => {
+    setActivatingKitId(kitId);
+    
     try {
       const axiosInstance = createAxiosInstance();
       const token = localStorage.getItem("token");
-
+  
       await axiosInstance.post(
         `/api/v1/starlink_activates/${kitId}/activate_kit`,
         {},
@@ -245,18 +248,26 @@ const Home = () => {
           },
         }
       );
-
+  
       toast.success("Activation successful!");
-
+  
+      // Update status to "active" for immediate UI update
       setStarlinks((prevStarlinks) =>
         prevStarlinks.map((starlink) =>
-          starlink.id === kitId ? { ...starlink, status: "approved" } : starlink
+          starlink.id === kitId ? { ...starlink, status: "active" } : starlink
+        )
+      );
+      
+      // Also update in filtered starlinks
+      setFilteredStarlinks((prevFiltered) =>
+        prevFiltered.map((starlink) =>
+          starlink.id === kitId ? { ...starlink, status: "active" } : starlink
         )
       );
     } catch (error) {
       console.error("Error activating kit:", error);
       
-      if (error.response.data.amount_due) {
+      if (error.response?.data?.amount_due) {
         setErrorDetails({
           error: error.response.data.error,
           amountDue: error.response.data.amount_due
@@ -265,6 +276,9 @@ const Home = () => {
       } else {
         toast.error("Failed to activate kit. Please try again.");
       }
+    } finally {
+      // Reset activating state
+      setActivatingKitId(null);
     }
   };
 
@@ -562,8 +576,9 @@ const Home = () => {
                             e.stopPropagation();
                             handleActivateKit(starlink.id);
                           }}
+                          disabled={activatingKitId === starlink.id}
                         >
-                          Activate
+                          {activatingKitId === starlink.id ? "Activating..." : "Activate"}
                         </button>
                       ) :  (
                         <button type="button" className="manage-button"
