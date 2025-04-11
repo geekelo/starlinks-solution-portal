@@ -22,6 +22,8 @@ const SignUp = () => {
     }
   });
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   // Check if user is already logged in
   const isLoggedIn = !!localStorage.getItem('token');
@@ -53,8 +55,19 @@ const SignUp = () => {
     }));
   };
 
+  const togglePasswordVisibility = (field) => {
+    if (field === 'password') {
+      setShowPassword(!showPassword);
+    } else {
+      setShowConfirmPassword(!showConfirmPassword);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Ensure passwords are hidden when form is submitted
+    setShowPassword(false);
+    setShowConfirmPassword(false);
     setLoading(true);
 
     // Validate passwords match
@@ -192,34 +205,62 @@ const SignUp = () => {
                 />
               </div>
 
-              <div className="form-group">
+              <div className="form-group password-input-group">
                 <label htmlFor="password" className="signup-labels">Password</label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  value={formData.starlink_user.password}
-                  onChange={handleChange}
-                  placeholder="Password"
-                  required
-                />
+                <div className="password-field">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    id="password"
+                    name="password"
+                    value={formData.starlink_user.password}
+                    onChange={handleChange}
+                    placeholder="Password"
+                    required
+                  />
+                  <button 
+                    type="button" 
+                    className="password-toggle-button" 
+                    onClick={() => togglePasswordVisibility('password')}
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                    tabIndex="0"
+                  >
+                    {showPassword ? 
+                      <span className="toggle-icon hide-password"></span> : 
+                      <span className="toggle-icon show-password"></span>
+                    }
+                  </button>
+                </div>
               </div>
 
-              <div className="form-group">
+              <div className="form-group password-input-group">
                 <label htmlFor="confirmPassword" className="signup-labels">Confirm Password</label>
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  name="confirm_password"
-                  value={formData.starlink_user.confirm_password}
-                  onChange={handleChange}
-                  placeholder="Confirm Password"
-                  required
-                />
+                <div className="password-field">
+                  <input
+                    type={showConfirmPassword ? "text" : "password"}
+                    id="confirmPassword"
+                    name="confirm_password"
+                    value={formData.starlink_user.confirm_password}
+                    onChange={handleChange}
+                    placeholder="Confirm Password"
+                    required
+                  />
+                  <button 
+                    type="button" 
+                    className="password-toggle-button" 
+                    onClick={() => togglePasswordVisibility('confirm')}
+                    aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                    tabIndex="0"
+                  >
+                    {showConfirmPassword ? 
+                      <span className="toggle-icon hide-password"></span> : 
+                      <span className="toggle-icon show-password"></span>
+                    }
+                  </button>
+                </div>
               </div>
 
               <div className="form-group phone-input-group">
-                <label htmlFor="confirmPassword" className="signup-labels">WhatsApp Number</label>
+                <label htmlFor="whatsappNumber" className="signup-labels">WhatsApp Number</label>
                 <select
                   className="country-code"
                   value={formData.starlink_user.whatsappCountryCode}
@@ -244,7 +285,7 @@ const SignUp = () => {
               </div>
 
               <div className="form-group phone-input-group">
-              <label htmlFor="confirmPassword" className="signup-labels">Phone Number</label>
+                <label htmlFor="phoneNumber" className="signup-labels">Phone Number</label>
                 <select
                   className="country-code"
                   value={formData.starlink_user.countryCode}

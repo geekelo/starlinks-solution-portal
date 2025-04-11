@@ -15,6 +15,7 @@ const Login = () => {
     }
   });
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   // Check if user is already logged in
   const isLoggedIn = !!localStorage.getItem('token');
@@ -35,8 +36,14 @@ const Login = () => {
     }));
   };
 
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // Ensure password is hidden when form is submitted
+    setShowPassword(false);
     setLoading(true);
 
     try {
@@ -85,9 +92,9 @@ const Login = () => {
                 />
               </div>
 
-              <div className="form-group">
+              <div className="form-group password-input-group">
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
                   value={formData.starlink_user.password}
@@ -95,6 +102,18 @@ const Login = () => {
                   placeholder="Password"
                   required
                 />
+                <button 
+                  type="button" 
+                  className="password-toggle-button" 
+                  onClick={togglePasswordVisibility}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  tabIndex="0"
+                >
+                  {showPassword ? 
+                    <span className="toggle-icon hide-password"></span> : 
+                    <span className="toggle-icon show-password"></span>
+                  }
+                </button>
               </div>
 
               <button type="submit" className="login-button" disabled={loading}>
