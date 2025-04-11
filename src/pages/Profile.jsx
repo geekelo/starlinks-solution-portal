@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import { createAxiosInstance } from '../config/axios';
 import '../styles/Profile.css';
 import WhatsAppButton from '../components/WhatsAppButton';
+import { formatDate } from '../utils/formatDate';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -149,7 +150,7 @@ const Profile = () => {
               </div>
               <div className="info-item">
                 <label>Join Date</label>
-                <p>{new Date(userData.created_at).toLocaleDateString()}</p>
+                <p>{formatDate(userData.created_at)}</p>
               </div>
             </div>
           </div>
