@@ -228,9 +228,7 @@ const Home = () => {
     return statusMap[status] || { text: status, class: status };
   };
 
-  // const shouldShowManageButton = (status) => {
-  //   return status === "accepted" || status === "pending";
-  // };
+
 
   const handleActivateKit = async (kitId) => {
     setActivatingKitId(kitId);
