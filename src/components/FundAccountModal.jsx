@@ -52,20 +52,23 @@ const FundAccountModal = ({ onClose, onSubmit, defaultAmount }) => {
           },
         }
       );
+      if (response) {
+        toast.success('Funding process  started. Please proceed to make payment.');
+        onSubmit({
+          reference: response.data.funding.reference,
+          method: response.data.funding.payment_method,
+          amount: response.data.funding.amount,
+          fundingId: response.data.funding.id,
+        });
 
-      toast.success('Funding process  started. Please proceed to make payment.');
-      onSubmit({
-        referenceNumber: response.data.referenceNumber,
-        method: formData.paymentMethod,
-        amount: formData.amount
-      });
 
-      onClose(); // Close the modal after successful funding
-
-      localStorage.setItem('fundingId', response.data.funding.id);
-      localStorage.setItem('reference', response.data.funding.reference);
-      console.log(response.data.funding.reference)
-
+        onClose(); // Close the modal after successful funding
+  
+        localStorage.setItem('fundingId', response.data.funding.id);
+        localStorage.setItem('reference', response.data.funding.reference);
+        localStorage.setItem('method', response.data.funding.payment_method);
+        console.log(response.data.funding.reference)
+      }
     } catch (error) {
       console.error('Error funding wallet:', error);
       toast.error('Failed to fund wallet. Please try again.');

@@ -96,11 +96,7 @@ const Billing = () => {
 
   const handleFundAccountSubmit = (details) => {
     setShowFundAccountModal(false)
-    setPaymentDetails({
-      referenceNumber: details.reference, // Ensure this is part of the response
-      method: details.paymentMethod, // Ensure this is part of the response
-    });
-
+    setPaymentDetails(details);
     // Show payment modal after funding
     setShowPaymentModal(true);
   }
@@ -212,10 +208,10 @@ const Billing = () => {
                   <tbody>
                     {paginatedHistory.map((item) => (
                       <tr key={item.id}>
-                       <td>
-  <div className="mobile-label">Date:</div>
-  {formatDate(item.created_at)}
-</td>
+                        <td>
+                          <div className="mobile-label">Date:</div>
+                          {formatDate(item.created_at)}
+                        </td>
 
                         <td>
                           <div className="mobile-label">Reference:</div>

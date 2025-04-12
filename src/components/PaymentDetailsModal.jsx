@@ -7,10 +7,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
-  const { referenceNumber, method } = paymentDetails;
-  const reference = localStorage.getItem('reference');
-  const fundingId = localStorage.getItem('fundingId');
-  const amount = localStorage.getItem('PaymentAmount');
+  const reference = paymentDetails.reference;
+  const fundingId = paymentDetails.fundingId;
+  const amount = paymentDetails.amount;
+  const method = paymentDetails.method;
   const navigate = useNavigate();
   const bankDetails = {
     bankName: 'Kuda Microfinance Bank',
@@ -32,29 +32,31 @@ const PaymentDetailsModal = ({ onClose, paymentDetails }) => {
     try {
       const axiosInstance = createAxiosInstance();
       const token = localStorage.getItem('token');
-      const fundingId = localStorage.getItem('fundingId');
 
       const payload = {
         starlink_wallet_funding: { paid: "yes" }
       };
 
-      await axiosInstance.put(`/api/v1/starlink_wallet_fundings/confirm_request?id=${fundingId}`, payload, {
+      const response = await axiosInstance.put(`/api/v1/starlink_wallet_fundings/confirm_request?id=${fundingId}`, payload, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      toast.success('Thanks for confirming, your wallet would be credited when payment is received!');
-
-      // Close modal and navigate to billing page
-      onClose();
-      navigate('/billing');
-
-      // Wait for navigation before scrolling
-      setTimeout(() => {
-        const billingTable = document.getElementById('billing-table'); // Make sure the table has this ID
-        if (billingTable) {
-          billingTable.scrollIntoView({ behavior: 'smooth' });
+      
+      if (response) {
+        toast.success('Thanks for confirming, your wallet would be credited when payment is received!');
+  
+        // Close modal and navigate to billing page
+        onClose();
+        if (window.location.pathname === '/billing') {
+          // force full reload with hash
+          window.location.href = '/billing#billing-table';
+          window.location.reload();
+        } else {
+          // navigate normally
+          window.location.href = '/billing#billing-table';
         }
-      }, 500); // Timeout to ensure the page loads first
+        
+        
+      }
     } catch (error) {
       console.error('Error confirming payment:', error);
       toast.error('Failed to confirm payment. Please try again.');
