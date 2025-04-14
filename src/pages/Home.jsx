@@ -5,6 +5,7 @@ import StarlinkDetailsModal from "../components/StarlinkDetailsModal";
 import VerificationModal from "../components/VerificationModal";
 import FundAccountModal from "../components/FundAccountModal";
 import PaymentDetailsModal from "../components/PaymentDetailsModal";
+import AutoRenewToggle from "../components/AutoRenewToggle";
 import "../styles/Home.css";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -281,10 +282,9 @@ const Home = () => {
   };
 
   const fetchKits = async () => {
-
     const userData = JSON.parse(localStorage.getItem("userData"));
     if (!userData?.id) return;
-
+  
     const axiosInstance = createAxiosInstance();
     try {
       const token = localStorage.getItem("token");
@@ -293,14 +293,20 @@ const Home = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      // Ensure data is always an array
-      setStarlinks(Array.isArray(data) ? data : []);
-      setFilteredStarlinks(Array.isArray(data) ? data : []);
+  
+      // Ensure data is always an array and has auto_renew property (default to false if not present)
+      const processedData = Array.isArray(data) 
+        ? data.map(kit => ({
+            ...kit,
+            auto_renew: kit.auto_renew || false
+          })) 
+        : [];
+        
+      setStarlinks(processedData);
+      setFilteredStarlinks(processedData);
     } catch (error) {
       console.error("Error fetching kits:", error);
-      // toast.error("Failed to fetch kits. Please try again.");
-      setStarlinks([]); // Set empty array on error
+      setStarlinks([]);
       setFilteredStarlinks([]);
     }
   };
@@ -537,13 +543,11 @@ const Home = () => {
           <div className="starlinks-content">
             <div className="starlinks-table">
               <div className="table-header">
-              
-                
                 <div className="header-cell">Kit Number</div>
-                
                 <div className="header-cell">Service Line No.</div>
                 <div className="header-cell">Status</div>
                 <div className="header-cell">Actions</div>
+                <div className="header-cell">Auto Renew</div>
               </div>
               {filteredStarlinks.length > 0 ? (
                 filteredStarlinks.map((starlink) => (
@@ -553,17 +557,18 @@ const Home = () => {
                       <span className="value kitno">{starlink.kit_number || "N/A"}</span>
                     </div>
                     
-                    
                     <div className="starlink-item">
                       <span className="label mobile-label">Service Line No.:</span>
                       <span className="value">{starlink.service_line_number || "N/A"}</span>
                     </div>
+                    
                     <div className="starlink-item">
                       <span className="label mobile-label">Status:</span>
                       <span className={`status-badge ${mapStatus(starlink.status).class}`}>
                         {mapStatus(starlink.status).text}
                       </span>
                     </div>
+                    
                     <div className="starlink-item">
                       <span className="label mobile-label">Actions:</span>
                       {starlink.status === "pending" ? (
@@ -578,14 +583,25 @@ const Home = () => {
                         >
                           {activatingKitId === starlink.id ? "Activating..." : "Activate"}
                         </button>
-                      ) :  (
-                        <button type="button" className="manage-button"
-                         onClick={(e) =>{
-                           handleKitClick(starlink.kit_number, starlink.id)
-                         }}>
+                      ) : (
+                        <button 
+                          type="button" 
+                          className="manage-button"
+                          onClick={(e) => {
+                            handleKitClick(starlink.kit_number, starlink.id)
+                          }}
+                        >
                           Manage
                         </button>
-                      ) }
+                      )}
+                    </div>
+                    
+                    <div className="starlink-item">
+                      <span className="label mobile-label">Auto Renew:</span>
+                      <AutoRenewToggle 
+                        kitId={starlink.id} 
+                        initialStatus={starlink.auto_renew || false} 
+                      />
                     </div>
                   </div>
                 ))

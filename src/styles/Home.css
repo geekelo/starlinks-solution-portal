@@ -108,31 +108,95 @@
 }
 
 .table-header {
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 1fr 1fr 1fr;
+  gap: 10px;
+  padding: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  font-weight: 600;
   background-color: transparent;
-  font-weight: bold;
 }
 
 .header-cell {
-  padding: 20px 25px;
+  padding: 15px;
   text-align: left;
   color: #94a3b8;
-  font-size: 1rem;
+  font-size: 0.9rem;
+}
+
+.starlink-card {
+  display: grid;
+  grid-template-columns: 1.5fr 1.5fr 1fr 1fr 1fr;
+  gap: 10px;
+  padding: 15px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  align-items: center;
 }
 
-.table-row {
-  cursor: pointer;
-  transition: background-color 0.3s;
+/* Responsive adjustments */
+@media (min-width: 1024px) and (max-width: 1200px) {
+  /* Adjust for smaller desktop screens */
+  .table-header,
+  .starlink-card {
+    grid-template-columns: 1.2fr 1.2fr 0.8fr 0.8fr 1fr;
+  }
 }
 
-.table-row:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+@media (min-width: 768px) and (max-width: 1023px) {
+  /* Tablet view */
+  .table-header,
+  .starlink-card {
+    grid-template-columns: 1fr 1fr 0.7fr 0.7fr 1fr;
+    padding: 10px;
+  }
+  
+  .header-cell {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+  
+  .starlink-item {
+    padding: 10px;
+  }
 }
 
-.table-row td {
-  padding: 20px 25px;
-  color: white;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+@media (max-width: 767px) {
+  /* Mobile view */
+  .starlinks-table {
+    display: block;
+  }
+
+  .table-header {
+    display: none;
+  }
+
+  .starlink-card {
+    display: block;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 15px;
+  }
+
+  .starlink-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  .starlink-item:last-child {
+    border-bottom: none;
+  }
+
+  .mobile-label {
+    display: block;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.7);
+    min-width: 120px;
+  }
 }
 
 /* Column width distribution */
