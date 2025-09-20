@@ -23,6 +23,12 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
 
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [itemsPerPage] = useState(10); // Set to 10 for better UX, can be made configurable
+
   // Verification states
   const [showEmailVerification, setShowEmailVerification] = useState(false);
   const [showPhoneVerification, setShowPhoneVerification] = useState(false);
@@ -281,7 +287,7 @@ const Home = () => {
     }
   };
 
-  const fetchKits = async () => {
+  const fetchKits = async (page = 1, perPage = itemsPerPage) => {
     const userData = JSON.parse(localStorage.getItem("userData"));
     if (!userData?.id) return;
   
@@ -292,22 +298,49 @@ const Home = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        params: {
+          page: page,
+          per_page: perPage
+        }
       });
   
-      // Ensure data is always an array and has auto_renew property (default to false if not present)
-      const processedData = Array.isArray(data) 
-        ? data.map(kit => ({
-            ...kit,
-            auto_renew: kit.auto_renew || false
-          })) 
-        : [];
-        
-      setStarlinks(processedData);
-      setFilteredStarlinks(processedData);
+      // Handle the paginated response structure from the backend
+      if (data.kits) {
+        // Backend returns paginated data
+        const processedData = Array.isArray(data.kits) 
+          ? data.kits.map(kit => ({
+              ...kit,
+              auto_renew: kit.auto_renew || false
+            })) 
+          : [];
+            
+        setStarlinks(processedData);
+        setFilteredStarlinks(processedData);
+        setTotalPages(data.total_pages || 1);
+        setTotalCount(data.total_count || 0);
+        setCurrentPage(page);
+      } else {
+        // Fallback for non-paginated response (backward compatibility)
+        const processedData = Array.isArray(data) 
+          ? data.map(kit => ({
+              ...kit,
+              auto_renew: kit.auto_renew || false
+            })) 
+          : [];
+            
+        setStarlinks(processedData);
+        setFilteredStarlinks(processedData);
+        setTotalPages(1);
+        setTotalCount(processedData.length);
+        setCurrentPage(1);
+      }
     } catch (error) {
       console.error("Error fetching kits:", error);
       setStarlinks([]);
       setFilteredStarlinks([]);
+      setTotalPages(1);
+      setTotalCount(0);
+      setCurrentPage(1);
     }
   };
 
@@ -316,26 +349,78 @@ const Home = () => {
     fetchKits();
   }, []);
 
+  // Handle page change
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages && newPage !== currentPage) {
+      fetchKits(newPage, itemsPerPage);
+    }
+  };
+
+  // Generate page numbers for pagination
+  const getPageNumbers = () => {
+    const pages = [];
+    const maxVisiblePages = 5;
+    
+    if (totalPages <= maxVisiblePages) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      if (currentPage <= 3) {
+        for (let i = 1; i <= 4; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1);
+        pages.push('...');
+        for (let i = totalPages - 3; i <= totalPages; i++) {
+          pages.push(i);
+        }
+      } else {
+        pages.push(1);
+        pages.push('...');
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pages.push(i);
+        }
+        pages.push('...');
+        pages.push(totalPages);
+      }
+    }
+    
+    return pages;
+  };
+
   useEffect(() => {
-    let filtered = starlinks;
+    // Reset to page 1 when search or filter changes and refetch data
+    if (searchQuery || statusFilter !== "all") {
+      // For now, we'll handle filtering on the frontend since the backend pagination
+      // doesn't include search/filter parameters yet. In a production app, 
+      // these should be sent to the backend as query parameters.
+      let filtered = starlinks;
 
-    if (statusFilter !== "all") {
-      filtered = filtered.filter(
-        (item) => mapStatus(item.status).class === statusFilter
-      );
+      if (statusFilter !== "all") {
+        filtered = filtered.filter(
+          (item) => mapStatus(item.status).class === statusFilter
+        );
+      }
+
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        filtered = filtered.filter(
+          (item) =>
+            (item.kit_number && item.kit_number.toLowerCase().includes(query)) ||
+            (item.service_line_number &&
+              item.service_line_number.toLowerCase().includes(query))
+        );
+      }
+
+      setFilteredStarlinks(filtered);
+    } else {
+      // No filters applied, show all starlinks from current page
+      setFilteredStarlinks(starlinks);
     }
-
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(
-        (item) =>
-          (item.kit_number && item.kit_number.toLowerCase().includes(query)) ||
-          (item.service_line_number &&
-            item.service_line_number.toLowerCase().includes(query))
-      );
-    }
-
-    setFilteredStarlinks(filtered);
   }, [searchQuery, statusFilter, starlinks]);
 
   const handleAddStarlink = () => {
@@ -413,11 +498,11 @@ const Home = () => {
   // This effect runs when shouldRefetch is set to true
   useEffect(() => {
     if (shouldRefetch) {
-      fetchKits();
+      fetchKits(currentPage, itemsPerPage);
       // Reset the flag after fetching
       setShouldRefetch(false);
     }
-  }, [shouldRefetch]);
+  }, [shouldRefetch, currentPage, itemsPerPage]);
 
   useEffect(() => {
     const fetchWalletBalance = async () => {
@@ -512,7 +597,7 @@ const Home = () => {
 
         <div className="starlinks-section">
           <div className="starlinks-header">
-            <h2>Added Kit(s)</h2>
+            <h2>Added Kit(s) {totalCount > 0 && `(${totalCount} total)`}</h2>
             <div className="starlinks-actions">
               <div className="search-container">
                 <input
@@ -611,6 +696,43 @@ const Home = () => {
                 </div>
               )}
             </div>
+            
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+              <div className="pagination-container">
+                <div className="pagination-info">
+                  Showing {((currentPage - 1) * itemsPerPage) + 1} to {Math.min(currentPage * itemsPerPage, totalCount)} of {totalCount} kits
+                </div>
+                <div className="pagination-controls">
+                  <button 
+                    className="pagination-btn"
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  >
+                    ← Previous
+                  </button>
+                  
+                  {getPageNumbers().map((page, index) => (
+                    <button
+                      key={index}
+                      className={`pagination-btn ${page === currentPage ? 'active' : ''} ${page === '...' ? 'ellipsis' : ''}`}
+                      onClick={() => typeof page === 'number' && handlePageChange(page)}
+                      disabled={page === '...'}
+                    >
+                      {page}
+                    </button>
+                  ))}
+                  
+                  <button 
+                    className="pagination-btn"
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next →
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
